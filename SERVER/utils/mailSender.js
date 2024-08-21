@@ -7,7 +7,7 @@ exports. sendEmail = async ({email, title, body}) => {
 
 //1:- create transporter
 const transporter = nodemailer.createTransporter({
-    host:process.env.HOST,
+    host:process.env.EMAIL_HOST,
     auth:{
         user:process.env.USER,
         pass:process.env.PASS,

@@ -6,7 +6,7 @@ const deleteFileFromCloudinary = require('../utils/cloudinaryFileUpload');
 require('dotenv').config();
 
 //controlelr for creating a new section
-exports. createSection = async (req, resp) => {
+exports. createSubSection = async (req, resp) => {
     try{
         //fetch data related to the subsection
         const {sectionId,title, timeDuration, description } = req.body;
@@ -49,7 +49,7 @@ exports. createSection = async (req, resp) => {
 }
 
 //controller for updating a section
-exports. updateSection = async (req,resp) => {
+exports. updateSubSection = async (req,resp) => {
     try{
         //fetch data related to the subsection
         const { subsectionId, title, timeDuration, description } = req.body;

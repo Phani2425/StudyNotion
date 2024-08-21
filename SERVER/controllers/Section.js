@@ -1,6 +1,6 @@
 const Section = require('../models/Section');
 const Course = require('../models/Course');
-
+const SubSection = require("../models/SubSection");
 
 //controller for creation of a section
 exports.CreateSection = async (req, resp) => {
@@ -112,6 +112,9 @@ exports. updateSection = async (req, resp) => {
         // console.log('updated course : ', updatedCourse);
 
         //THERE ARE $push and $pull operator [i forgot that i thought it was pop]
+
+        //pehle $in operator ko use karke section ke andar ke sare subsection ko delete kardunga
+		await SubSection.deleteMany({_id: {$in: section.subSection}});
         
         //phir section delete kardo
         const deletedSection = await Section.findByIdAndDelete(sectionId);

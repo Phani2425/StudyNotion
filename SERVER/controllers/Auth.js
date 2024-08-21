@@ -30,7 +30,7 @@ exports. GenerateOtp = async (req, resp) => {
         }
 
         //agar user pehle se registered nehi hai then:-
-        const otp = await otpGenerator.generate(6,{
+        const otp = otpGenerator.generate(6,{
             digits:true,
             lowerCaseAlphabets:false,
             upperCaseAlphabets:false,
@@ -41,7 +41,7 @@ exports. GenerateOtp = async (req, resp) => {
         let result =await OTP.findOne({otp:otp});//used let as the refernece it is refering to going to be changed in future in the loop below
 
         while(result){
-            otp = await otpGenerator.generate(6, {
+            otp = otpGenerator.generate(6, {
                 digits:true,
                 lowerCaseAlphabets:false,
                 upperCaseAlphabets:false,
@@ -217,7 +217,7 @@ exports.Login = async(req,resp) => {
 }
 
 //change password
-exports. ChnagePassword = async(req, resp) => {
+exports. ChangePassword = async(req, resp) => {
     try{
         //get data from request ki body
         //get old password, new password,confirm new passsword
