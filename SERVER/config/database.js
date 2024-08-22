@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-exports.  connectTodatabase = () => {
+exports.  connectToDatabase = () => {
     try{
-        mongoose.connnect(process.env.DATABASE_URL).then(() => {
+        mongoose.connect(process.env.DATABASE_URL).then(() => {
             console.log('database connection established');
         }); 
 

@@ -80,7 +80,7 @@ exports. updateSubSection = async (req,resp) => {
 }
 
 //controller for deleting a subsection
-exports. deleteSubsection = async (req, resp) => {
+exports. deleteSubSection = async (req, resp) => {
     try{
         //fetch data (assuming data is passed as parameters in the path url) // NOTICE THAT IN DELETING CONTROLLERS WE ARE TRYING TO TAKE INPUT IN PARAMETERS
         const {subSectionId} = req.params;

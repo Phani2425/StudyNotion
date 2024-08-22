@@ -1,4 +1,4 @@
-const RatingAndReview = require("../models/RatingAndRaview");
+const RatingAndReview = require("../models/RatingAndReview");
 const Course = require("../models/Course");
 const { mongo, default: mongoose } = require("mongoose");
 
@@ -65,9 +65,8 @@ exports.createRating = async (req, res) => {
     }
 }
 
-
-
-//getAverageRating
+//controller for geting average rating which will be displayed on the course page
+// //getAverageRating
 exports.getAverageRating = async (req, res) => {
     try {
             //get course ID

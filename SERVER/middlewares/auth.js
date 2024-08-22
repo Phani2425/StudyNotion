@@ -6,7 +6,7 @@ exports.auth = async (req, resp, next) => {
     try {
         //fetch the token from any 3 ways possible
         //most optimised is the header of the request
-        const token = req.cookies.token || req.body.token || req.headers('Authorization').replace('Bearer ', '');
+        const token = req.cookies.mycookie || req.body.token || req.header('Authorization').replace('Bearer ', '');
         if (!token) {
             return resp.status(401).json({
                 success: false,
@@ -24,13 +24,19 @@ exports.auth = async (req, resp, next) => {
         }
         req.user = decoded;//inserting the whole payload i have got from verify() into the user field of request object
         //now this object will traverse throgh the auth middlewares then route controller and all can access the user's data throgh this payload
-        resp.status(200).json({
-            success: true,
-            message: 'authorization successful'
-        })
+
+
+        next();
+
+        // HERE IF WE RETURN RESPONSE THEN CONTROLL WILL NOT GO FORWARD
+
+        // resp.status(200).json({
+        //     success: true,
+        //     message: 'authentication successful'
+        // })
 
         //passing the controll to the next middleware by calliing the next methoid provided by the mongoose 
-        next();
+        
 
     } catch (err) {
         console.error(err.message);
@@ -47,10 +53,14 @@ exports.isStudent = async (req, resp, next) => {
     try {
         const accountType = req.user.accountType;
         if (accountType === 'Student') {
-            resp.status(200).json({
-                success: true,
-                message: 'welcome the the protected route for student'
-            })
+            //call next if he is a student
+            next();
+
+            //IF WE RETURN RESPONSE THEN CONTROLL WILL NOT GO FOWARD
+            // resp.status(200).json({
+            //     success: true,
+            //     message: 'welcome the the protected route for student'
+            // })
         }
         else {
             return resp.status(401).json({
@@ -58,8 +68,6 @@ exports.isStudent = async (req, resp, next) => {
                 message: 'unauthorized access... please login as a student'
             })
         }
-
-        next();
 
     } catch (err) {
         console.error(err.message);
@@ -75,10 +83,14 @@ exports.isInstructor = async (req, resp, next) => {
     try {
         const accountType = req.user.accountType;
         if (accountType === 'Instructor') {
-            resp.status(200).json({
-                success: true,
-                message: 'welcome the the protected route for instructor'
-            })
+
+            next();
+
+                        //IF WE RETURN RESPONSE THEN CONTROLL WILL NOT GO FOWARD
+            // resp.status(200).json({
+            //     success: true,
+            //     message: 'welcome the the protected route for instructor'
+            // })
         }
         else {
             return resp.status(401).json({
@@ -87,7 +99,7 @@ exports.isInstructor = async (req, resp, next) => {
             })
         }
 
-        next();
+
 
     } catch (err) {
         console.error(err.message);
@@ -103,10 +115,14 @@ exports.isAdmin = async (req, resp, next) => {
     try {
         const accountType = req.user.accountType;
         if (accountType === 'Admin') {
-            resp.status(200).json({
-                success: true,
-                message: 'welcome the the protected route for admin'
-            })
+
+            next();
+
+                        //IF WE RETURN RESPONSE THEN CONTROLL WILL NOT GO FOWARD
+            // resp.status(200).json({
+            //     success: true,
+            //     message: 'welcome the the protected route for admin'
+            // })
         }
         else {
             return resp.status(401).json({
@@ -114,8 +130,6 @@ exports.isAdmin = async (req, resp, next) => {
                 message: 'unauthorized access... please login as an admin'
             })
         }
-
-        next();
 
     } catch (err) {
         console.error(err.message);

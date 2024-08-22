@@ -1,16 +1,17 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-exports. sendEmail = async ({email, title, body}) => {
+exports. sendEmail = async (email, title, body) => {
   try{
 //2 step process
 
 //1:- create transporter
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
     host:process.env.EMAIL_HOST,
+    secure:true,
     auth:{
-        user:process.env.USER,
-        pass:process.env.PASS,
+        user:process.env.EMAIL_USER,
+        pass:process.env.EMAIL_PASS,
     }
 });
 

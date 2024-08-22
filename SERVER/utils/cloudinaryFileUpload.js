@@ -4,7 +4,7 @@ exports. uploadFileToCloudinary = async (file,folder, height, quality) => {
     try{
         //upload the file to cloudinary
         const options = {folder};
-        options.resoure_type = auto;
+        options.resoure_type = "auto";
         //agar function ke parameter me koi quality pass hua hai??? then:- option ka quakity property set kardo
         if(quality){
             options.quality = quality;
@@ -15,7 +15,7 @@ exports. uploadFileToCloudinary = async (file,folder, height, quality) => {
         }
 
         //call the uploader function
-        const response = await cloudinary.uploader.upload(file, options);
+        const response = await cloudinary.uploader.upload(file.tempFilePath, options);
         return response;
         
     }catch(err){

@@ -3,7 +3,7 @@ const OTP = require('../models/OTP');
 const Profile = require('../models/Profile');
 const otpGenerator =  require('otp-generator');
 const { response } = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { sendEmail } = require('../utils/mailSender');
@@ -105,11 +105,11 @@ exports. Signup = async (req, resp) => {
             })
         }
         //fetch most recent otp generated with the mail of the user from database {as theree can be multiple otps associated with the email of the user}
-        const rectentOtp = await OTP.find({email:email}).sort({createdAt:-1}).limit(1);
+        const rectentOtp = await OTP.find({email}).sort({createdAt:-1}).limit(1);
         console.log(rectentOtp);
         //then match the otp from db with the otp entered by user
         //validate otp
-        if(rectentOtp.length === 0 || rectentOtp !== otp){
+        if(rectentOtp.length === 0 || rectentOtp[0].otp != otp){
             return resp.status(401).json({
                 success: false,
                 message:'invalid otp'
@@ -119,7 +119,12 @@ exports. Signup = async (req, resp) => {
         //if matched then add the data of user to database(don't forget to hash the password) if not then prompt that otp is incorrect 
         const hashedPassword = await bcrypt.hash(password,10);
 
-        //before creating user data i have to create profile document for the user
+        //before creating user data i have to create profile document for the user // although it is not mandatory to do this
+        //while creating profile of a user in profile.js controller we can add the _id of created profile in that users additional information field
+
+        //as here we are creating the profile first so there in profile.js controller we will just update the profile from null value to the user entered value
+        
+        //so we can use any way amoung these two ways for profile creation
         const newProfile = await Profile.create({
             gender:null,
             dateOfBirth:null,
@@ -132,7 +137,6 @@ exports. Signup = async (req, resp) => {
             firstName:firstName,
             lastName:lastName,
             email:email,
-            phoneNumber:PhoneNumber,
             password: hashedPassword,
             accountType: accountType,
             additionalDetails: newProfile._id,
@@ -161,6 +165,7 @@ exports. Signup = async (req, resp) => {
     }
 }
 
+
 //login controller
 
 exports.Login = async(req,resp) => {
@@ -175,15 +180,16 @@ exports.Login = async(req,resp) => {
             })
         }
         //check wheather the user is registerd
-        const existingUser = User.findOne({email:email});
-        if(existingUser){
+        const existingUser = await User.findOne({email:email});
+        if(!existingUser){
             return resp.status(401).json({
                 success: false,
                 message:'user not registered... please sign up first'
             })
         }
+
         //compare the passwords
-        const isMatch = await bcrypt.compare(password,existingUser.password);
+        const isMatch = await bcrypt.compare(password, existingUser.password);
 
         if(!isMatch){
             return resp.status(401).json({
@@ -197,15 +203,19 @@ exports.Login = async(req,resp) => {
             email:existingUser.email,
             accountType: existingUser.accountType,
         }
-        const token =  jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: '7d' });
-        existingUser = {...existingUser, token: token,password: undefined};//important i forgot that
+
+        const token =  jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '7d' });
+      // Save token to user document in database
+      existingUser.token = token
+      existingUser.password = undefined;//important i forgot that
         //return that with cookies and also return a succesful response
 
-        resp.cookie('mycookie', token, {expires: 5*60*60*1000, httpOnly:true }).status(200).json({
+        resp.cookie('mycookie', token, {expires: new Date(Date.now() + 3*24*60*60*1000), httpOnly:true }).status(200).json({
             success:true,
             token:token,
             message:'user logged in successfully'
-        })
+        })//[httpOnly:true] means the token can only be read when it is send with http request... means in server only... it cannot be read in client side.. basically it is done for safety puposes ..beacuse if someone can read it in client side then even if he is unautheticated he will prepare his own fake cookie with the real cookie data and try to access server routes
+        //in this way server will not recognise the fake cookie and will allow for access...this is why we dont allow cookies to be redable in client side and make it readable only with http request or in server side...
 
     }catch(err){
         console.error(err.message);

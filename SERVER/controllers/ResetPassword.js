@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const {sendEmail} = require('../utils/mailSender');
 
 //route handler for creating resetPasswordToken
@@ -27,9 +27,10 @@ exports.CreateResetToken = async (req, resp) => {
 
 
         // update the token and the expiry time in the user model
-        userExists.resetPasswordToken = token;
-        userExists.resetPasswordExpires = Date.now() + 5 * 60 * 1000;//5 min
-        const updatedDetails = await userExists.save();
+
+        const response = await User.findOneAndUpdate({email: email},{token: token,resetPasswordExpires:Date.now() + 5 * 60 * 1000 },{new:true});
+
+        console.log('printing updated user : -' , response);
 
         // generate unique  link for user to reset password
         const resetLink = `http://localhost:3000/reset-password/${token}`;
@@ -39,6 +40,7 @@ exports.CreateResetToken = async (req, resp) => {
 
         return resp.status(200).json({
             success: true,
+            data:response,
             message: "Password reset token sent to user's email",
         })
 
@@ -67,7 +69,7 @@ exports.ResetPassword = async (req, resp) => {
         }
 
         //get user details from db using token
-        const userExist = User.findOne({resetPasswordToken:token});
+        const userExist = await User.findOne({token:token});
         if(!userExist){
             return resp.status(404).json({
                 success: false,
@@ -93,13 +95,12 @@ exports.ResetPassword = async (req, resp) => {
         //hash Pwd
         const hashedPassword = await bcrypt.hash(password,10);
         // update password
-        userExist.password = hashedPassword;
-        userExist.resetPasswordToken = undefined;
-        userExist.resetPasswordExpires = undefined;
-        await userExist.save();
+        const updatedUser = await User.findOneAndUpdate({token:token},{password:hashedPassword},{new:true});
+        console.log(updatedUser);
 
         return resp.status(200).json({
             success: true,
+            data: updatedUser,
             message: 'Password reset successfully',
         })
         //redirect user to login page or any other page he/she wants to redirect to after resetting password

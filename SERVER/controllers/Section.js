@@ -3,7 +3,7 @@ const Course = require('../models/Course');
 const SubSection = require("../models/SubSection");
 
 //controller for creation of a section
-exports.CreateSection = async (req, resp) => {
+exports.createSection = async (req, resp) => {
     try {
         //fetch data from request body
         //here interesting part is we will also recieve the course id in req as it is required to update the course with the newly created section
