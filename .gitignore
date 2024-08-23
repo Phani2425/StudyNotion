@@ -1,1 +1,5 @@
 node_modules
+
+# when you are trying to ignore files from root directory direct write the file name but when you are trying to ignore files from child or nested directory then provide relative path of that file instead
+SERVER/.env
+SERVER/node_modules
