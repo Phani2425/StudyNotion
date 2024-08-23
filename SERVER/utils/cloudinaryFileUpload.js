@@ -4,7 +4,7 @@ exports. uploadFileToCloudinary = async (file,folder, height, quality) => {
     try{
         //upload the file to cloudinary
         const options = {folder};
-        options.resoure_type = "auto";
+        options.resource_type =  'auto' ;
         //agar function ke parameter me koi quality pass hua hai??? then:- option ka quakity property set kardo
         if(quality){
             options.quality = quality;
@@ -19,7 +19,7 @@ exports. uploadFileToCloudinary = async (file,folder, height, quality) => {
         return response;
         
     }catch(err){
-        console.log("error occured during uploading file to cloudinary",err.message);
+        console.log("error occured during uploading file to cloudinary:- ",err.message);
         console.error(err.message);
     }
 }
@@ -28,7 +28,7 @@ exports. uploadFileToCloudinary = async (file,folder, height, quality) => {
 exports.deleteFileFromCloudinary = async (publicId, resourceType) => {
     try{
         //delete the file from cloudinary
-        const deletedData = await cloudinary.uploader.destroy(publicId, {resource_type: resourceType});
+        const deletedData = await cloudinary.uploader.destroy(publicId, {resource_type: resourceType,invalidate: true});
         return deletedData;
     }catch(err){
         console.log("error occured during deleting file from cloudinary",err.message);

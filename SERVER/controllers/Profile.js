@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Profile = require('../models/Profile');
 const Course = require('../models/Course');
+const CourseProgress = require('../models/CourseProgress');
 const { uploadFileToCloudinary } = require('../utils/cloudinaryFileUpload');
 
 //controlelr for creating profile or in other terms adding additional details to the user data
@@ -54,6 +55,13 @@ exports. updateProfile = async (req,resp) => {
 
 
 exports. deleteAccount = async(req, resp) => {
+//TODO:- FIND MORE ON JOB SCHEDULE
+//const job = schedule.scheduleJob("10 * * * * *", function(){
+//    console.log("the answer to life, the universe and everything!!!");
+//                                                              })
+// console.log(job);
+
+
     try{
       //fetch user id
       const userId = req.user.id;
@@ -78,7 +86,7 @@ exports. deleteAccount = async(req, resp) => {
       const coursesEnrolled = user.courses;
       coursesEnrolled.forEach((course) => {
         //find course and remove user from enrolled users array
-        Course.findByIdAndUpdate(course, { $pull: { studentsEnrolled: userId }}, {new:true}).exec();
+         Course.findByIdAndUpdate(course, { $pull: { studentsEnrolled: userId }}, {new:true}).exec();
       });
 
       //then delete user from database

@@ -88,7 +88,7 @@ exports. updateSection = async (req, resp) => {
  exports. deleteSection = async(req, resp) => {
     try{
         //fetch data (assuming data is sent in params)(we can pass in multiple ways so just trying this way out to learn this) 
-        const {sectionId} = req.params;
+        const {courseId,sectionId} = req.body;
         //validate
         if(!sectionId){
             return resp.status(403).json({
@@ -107,14 +107,16 @@ exports. updateSection = async (req, resp) => {
 
         // TODO :---> DO WE ACTUALLY NEED TO DELETE SECTION ID FROM COURSE SCHEMA???? OR IT GETS DELETED AUTOMATICALLY WHEN WE DELETE THE SECTION??? [MEANS DOES WHEN WE DELETE A DATA OBJECT THEN DOES REFERENCE TO THAT DATA OBJECT FROM OTHER SCHMA GET DELETED AUTOMATICALLY????] {VERY VERY IMPORTANT} {YE HAM TESTING KE WAKT DEKHENGE}
 
-        // //phir courseId ke madad se course me jake courseContent me se ye wala section id ko pop kardo
-        // const updatedCourse = await Course.findByIdAndUpdate(courseId, {$pull : {courseContent : sectionId}}, {new:true}).populate({path: 'courseContent', populate : {path : 'subSection'}}).exec();
-        // console.log('updated course : ', updatedCourse);
+        //yes we need to delet it from course...... there is no such feature which allows for automatic deletion of references when we delete a data object
+
+        //phir courseId ke madad se course me jake courseContent me se ye wala section id ko pop kardo
+        const updatedCourse = await Course.findByIdAndUpdate(courseId, {$pull : {courseContent : sectionId}}, {new:true}).populate({path: 'courseContent', populate : {path : 'subSection'}}).exec();
+        console.log('updated course : ', updatedCourse);
 
         //THERE ARE $push and $pull operator [i forgot that i thought it was pop]
 
         //pehle $in operator ko use karke section ke andar ke sare subsection ko delete kardunga
-		await SubSection.deleteMany({_id: {$in: section.subSection}});
+		await SubSection.deleteMany({_id: {$in: existingSection.subSection}});
         
         //phir section delete kardo
         const deletedSection = await Section.findByIdAndDelete(sectionId);
@@ -123,7 +125,7 @@ exports. updateSection = async (req, resp) => {
             success: true,
             message:'section deleted successfully',
             data: deletedSection,
-            course: updatedCourse
+            // course: updatedCourse
         })
 
     }catch(err){

@@ -158,7 +158,7 @@ exports. getAllCourses = async (req, resp) => {
                                                 category: true,
                                             });
 
-        return response.status(200).json({
+        return resp.status(200).json({
             success: true,
             message:'all courses fetched successfully',
             data: allCourse
@@ -175,7 +175,7 @@ exports. getAllCourses = async (req, resp) => {
     }
 }
 
-//controller for getting course details where there should not be any object id so i ahve to poppulater every references
+//controller for getting course details where there should not be any object id so i have to poppulater every references
 exports. getCourseDetails = async (req, resp) => {
     try{
         //fetch  courseid from the req body

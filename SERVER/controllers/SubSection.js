@@ -1,9 +1,9 @@
 //importing required model
 const Section = require('../models/Section');
 const SubSection = require('../models/SubSection');
-const uploadFileToCloudinary = require('../utils/cloudinaryFileUpload');
-const deleteFileFromCloudinary = require('../utils/cloudinaryFileUpload');
+const {deleteFileFromCloudinary} = require('../utils/cloudinaryFileUpload');
 require('dotenv').config();
+const {uploadFileToCloudinary} = require('../utils/cloudinaryFileUpload');
 
 //controlelr for creating a new section
 exports. createSubSection = async (req, resp) => {
@@ -25,7 +25,7 @@ exports. createSubSection = async (req, resp) => {
         //make a entry in db about new subsection from where we will get the id of the subsection
         const newSubsection = await SubSection.create({title, description, timeDuration, videoUrl: uploadResponse.secure_url});
         //the insert that id into its parent section
-        const updatedSection = await Section.findByIdAndUpdate(sectionId, { $push: { subsections: newSubsection._id } }, {new:true}).populate('subSection').exec();
+        const updatedSection = await Section.findByIdAndUpdate(sectionId, { $push: { subSection: newSubsection._id } }, {new:true}).populate('subSection').exec();
         console.log('updated section looks like :- ',updatedSection);
 
         //after that return the success response
@@ -49,72 +49,184 @@ exports. createSubSection = async (req, resp) => {
 }
 
 //controller for updating a section
-exports. updateSubSection = async (req,resp) => {
-    try{
-        //fetch data related to the subsection
-        const { subsectionId, title, timeDuration, description } = req.body;
-        //validate all data
-        if(!title ||!timeDuration ||!description || !subsectionId){
-            return resp.status(403).json({
-                success: false,
-                message: 'all fields are required'
-            })
-        }        
-        //update the subsection in db
-        const updatedSubsection = await SubSection.findByIdAndUpdate(subsectionId, { title, description, timeDuration }, {new:true});
-        console.log('updated subsection looks like :- ',updatedSubsection);
+// exports. updateSubSection = async (req,resp) => {
+//     try{
+//         //fetch data related to the subsection
+//         const { subsectionId, title, timeDuration, description } = req.body;
+//         //validate all data
+//         if(!title ||!timeDuration ||!description || !subsectionId){
+//             return resp.status(403).json({
+//                 success: false,
+//                 message: 'all fields are required'
+//             })
+//         }        
+//         //update the subsection in db
+//         const updatedSubsection = await SubSection.findByIdAndUpdate(subsectionId, { title, description, timeDuration }, {new:true});
+//         console.log('updated subsection looks like :- ',updatedSubsection);
 
-        //after that return the success response
-        return resp.status(200).json({
-            success: true,
-            message: 'subsection updated successfully',
-            data: updatedSubsection,
+//         //after that return the success response
+//         return resp.status(200).json({
+//             success: true,
+//             message: 'subsection updated successfully',
+//             data: updatedSubsection,
+//         })
+//     }catch(err){
+//         return resp.status(500).json({
+//             success: false,
+//             message: 'internal server error',
+//             error: err.message
+//         })
+//     }
+// }
+
+// //controller for deleting a subsection
+// exports. deleteSubSection = async (req, resp) => {
+//     try{
+//         //fetch data (assuming data is passed as parameters in the path url) // NOTICE THAT IN DELETING CONTROLLERS WE ARE TRYING TO TAKE INPUT IN PARAMETERS
+//         const {subSectionId} = req.params;
+//         //validate
+//         if(!subSectionId){
+//             return resp.status(403).json({
+//                 success: false,
+//                 message: 'all fields are required'
+//             })
+//         }
+//         //delete the video from cloudinary
+//         const subSection = await SubSection.findById(subSectionId);
+//         //extracting public id from the file which is passed as 1st parameter to delete a file
+//         const publicId = subSection.videoUrl.split('/').pop().split('.')[0]; // assuming public Id dont have any slash
+//         console.log('public id of the file is :- ', publicId);
+        
+//         const deletedData = await deleteFileFromCloudinary(publicId, 'video');
+//         console.log('deleted data is :- ', deletedData);
+//         //delete the subsection from db
+//         const deletedSubsection = await SubSection.findByIdAndDelete(subSectionId);
+//         //return response
+//         return resp.status(200).json({
+//             success: true,
+//             message:'subsection deleted successfully',
+//             data: deletedSubsection,
+//         })
+
+//     }catch(err){
+//         console.log('error occurred while deleting a subsection', err.message);
+//         console.error(err.message);
+//         resp.status(500).json({
+//             success: false,
+//             message: 'internal server error',
+//             error: err.message
+//         })
+//     }
+// }
+
+exports.updateSubSection = async (req, res) => {
+    try {
+      const { sectionId, subSectionId, title, description } = req.body
+      const subSection = await SubSection.findById(subSectionId)
+  
+      if (!subSection) {
+        return res.status(404).json({
+          success: false,
+          message: "SubSection not found",
         })
-    }catch(err){
-        return resp.status(500).json({
-            success: false,
-            message: 'internal server error',
-            error: err.message
-        })
+      }
+  
+      if (title !== undefined) {
+        subSection.title = title
+      }
+  
+      if (description !== undefined) {
+        subSection.description = description
+      }
+      //important to check if there is req.files before checking req.files.video
+      if (req.files && req.files.video !== undefined) {
+        const video = req.files.video
+        const uploadDetails = await uploadFileToCloudinary(
+          video,
+          process.env.FOLDER_NAME
+        )
+        subSection.videoUrl = uploadDetails.secure_url
+        subSection.timeDuration = `${uploadDetails.duration}`//this is important to know
+      }
+  
+      await subSection.save()
+  
+      // find updated section and return it
+      const updatedSection = await Section.findById(sectionId).populate(
+        "subSection"
+      )
+  
+      console.log("updated section", updatedSection)
+  
+      return res.json({
+        success: true,
+        message: "Section updated successfully",
+        data: updatedSection,
+      })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while updating the section",
+      })
     }
-}
+  }
+  
 
-//controller for deleting a subsection
-exports. deleteSubSection = async (req, resp) => {
-    try{
-        //fetch data (assuming data is passed as parameters in the path url) // NOTICE THAT IN DELETING CONTROLLERS WE ARE TRYING TO TAKE INPUT IN PARAMETERS
-        const {subSectionId} = req.params;
-        //validate
-        if(!subSectionId){
-            return resp.status(403).json({
-                success: false,
-                message: 'all fields are required'
-            })
+  //THIS IS NOT DELETEING FILES FROM CLOUDINARY CHECK IT ONCE :- CHECK THE SYNTAX OF THE DELETING FUNCTION DEFINES IN UTILS
+  exports.deleteSubSection = async (req, res) => {
+    try {
+      const { subSectionId, sectionId } = req.body
+      await Section.findByIdAndUpdate(
+        { _id: sectionId },
+        {
+          $pull: {
+            subSection: subSectionId,
+          },
         }
-        //delete the video from cloudinary
-        const subSection = await SubSection.findById(subSectionId);
+      )
+
+      //fetching the subsection data for getting secure url
+      const subSection = await SubSection.findById(subSectionId);
+
+      if (!subSection) {
+        return res
+         .status(404)
+         .json({ success: false, message: "Subsection not found" })
+      }
+
+      //delete the video from cloudinary
+
         //extracting public id from the file which is passed as 1st parameter to delete a file
         const publicId = subSection.videoUrl.split('/').pop().split('.')[0]; // assuming public Id dont have any slash
         console.log('public id of the file is :- ', publicId);
         
         const deletedData = await deleteFileFromCloudinary(publicId, 'video');
         console.log('deleted data is :- ', deletedData);
-        //delete the subsection from db
-        const deletedSubsection = await Subsection.findByIdAndDelete(subSectionId);
-        //return response
-        return resp.status(200).json({
-            success: true,
-            message:'subsection deleted successfully',
-            data: deletedSubsection,
-        })
 
-    }catch(err){
-        console.log('error occurred while deleting a subsection', err.message);
-        console.error(err.message);
-        resp.status(500).json({
-            success: false,
-            message: 'internal server error',
-            error: err.message
-        })
+      const deletedsubSection = await SubSection.findByIdAndDelete({ _id: subSectionId })
+  
+      if (!deletedsubSection) {
+        return res
+          .status(404)
+          .json({ success: false, message: "SubSection not found" })
+      }
+  
+      // find updated section and return it
+      const updatedSection = await Section.findById(sectionId).populate(
+        "subSection"
+      )
+  
+      return res.json({
+        success: true,
+        message: "SubSection deleted successfully",
+        data: updatedSection,
+      })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while deleting the SubSection",
+      })
     }
-}
+  }
