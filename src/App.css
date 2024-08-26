@@ -82,6 +82,11 @@
     z-index: 1;
     transition: transform 0.3s ease;
   }
+
+  /* style of nav bar link */
+  .active p{
+    color: #ddb30c;
+  }
   
 
 

@@ -10,6 +10,7 @@ import InstructorSection from "../Components/core/HomePage/InstructorSection";
 import ExploreMore from "../Components/core/HomePage/ExploreMore";
 import CountUp from "react-countup";
 
+
 //images
 import TimelineImg from "../assets/Images/TimelineImage.png";
 import logo1 from "../assets/TimeLineLogo/Logo1.svg";

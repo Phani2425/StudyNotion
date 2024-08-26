@@ -49,14 +49,10 @@ const ExploreMore = () => {
             <div
             ref={(currentElement)=>{buttonRef.current[index] =  currentElement}}
               key={index}
-              className={` card-button hover:bg-richblack-900 hover:text-white px-5 py-2 rounded-3xl text-richblack-300 font-semibold  cursor-pointer`}
+              className={` card-button  hover:text-white px-5 py-2 rounded-3xl text-richblack-300 font-semibold  cursor-pointer`}
               onClick={() => {
                 setcurrentTab(index);
               }}
-
-              // ${
-              //   index === currentTab ? "bg-richblack-900" : "bg-richblack-800"
-              // }
             >
               {tabs}
             </div>
