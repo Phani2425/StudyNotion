@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LightLogo from "../../../assets/Logo/Logo-Full-Light.png";
 import { Link, NavLink } from "react-router-dom";
 import { NavbarLinks } from "../../../data/navbar-links";
@@ -6,6 +6,19 @@ import { FaAngleDown } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropDown from "../Auth/ProfileDropDown";
+import { apiconnector } from "../../../Services/apiconnector";
+import { categories } from "../../../Services/apis";
+
+const sublinks = [
+  {
+    title: "python",
+    link: "/catalog/python",
+  },
+  {
+    title: "java",
+    link: "/catalog/java",
+  },
+];
 
 const NavBar = () => {
   const { token } = useSelector((state) => {
@@ -17,6 +30,27 @@ const NavBar = () => {
   const { totalItems } = useSelector((state) => {
     return state.cart;
   });
+
+  //declaring state variables for the link going to be used in the categories drop down
+  const [subLinks, setsublinks] = useState([]);
+
+  //calling the getallcategories api for getting the created categories from db
+
+  // async function getLinks(){
+  //   try{
+  //     const result = await apiconnector("GET",categories.CATEGORIES_API);
+  //     console.log("printing the result:- ", result);
+  //     setsublinks(result.data.data);
+
+  //   }catch(err){
+  //     console.log("error occured while fetching the data",err.message);
+
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   getLinks();
+  // },[]);
 
   return (
     <div
@@ -39,7 +73,7 @@ const NavBar = () => {
               return (
                 <li key={index}>
                   {link.title === "Catalog" ? (
-                    <div className="flex items-center gap-1 group ">
+                    <div className="flex items-center gap-1 group relative">
                       <p className="cursor-pointer font-normal text-lg text-richblack-50">
                         {link.title}
                       </p>
@@ -48,6 +82,31 @@ const NavBar = () => {
                         color="#C5C7D4"
                         size={22}
                       />
+
+                      {/* creating modal */}
+                      <div className="invisible absolute left-[50%] top-[50%] flex flex-col rounded-lg bg-richblack-5 px-2 py-3 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 w-[300px] -translate-x-[40%] translate-y-[40%] z-10 ">
+                        {/* diamond shape of modal */}
+                        <div className="absolute left-[47%] -top-[10%]  h-6 w-6 rotate-45 bg-richblack-5 opacity-0 group-hover:opacity-100 rounded-md transition-all duration-150 "></div>
+
+                        {/* adding sublink data */}
+
+                        {sublinks.length > 0 ? (
+                          sublinks.map((link, index) => {
+                            return (
+                              <Link
+                                className="hover:bg-richblack-100 rounded-md px-3 py-2 z-10"
+                                to={link.link}
+                              >
+                                <p className="text-black font-medium">
+                                  {link.title}
+                                </p>
+                              </Link>
+                            );
+                          })
+                        ) : (
+                          <div className="spinner"></div>
+                        )}
+                      </div>
                     </div>
                   ) : (
                     <NavLink to={link.path}>
@@ -61,7 +120,6 @@ const NavBar = () => {
             })}
           </ul>
         </nav>
-
 
         <div className="hidden items-center gap-x-4 md:flex">
           {user && user?.accountType !== "Instructor" && (
@@ -92,7 +150,6 @@ const NavBar = () => {
           )}
 
           {token !== null && <ProfileDropDown />}
-
         </div>
       </div>
     </div>
