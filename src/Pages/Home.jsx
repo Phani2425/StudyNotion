@@ -7,6 +7,8 @@ import Banner from "../assets/Images/banner.mp4";
 import CodeBlocks from "../Components/core/HomePage/CodeBlocks";
 import LearningLanguageSection from "../Components/core/HomePage/LearningLanguageSection";
 import InstructorSection from "../Components/core/HomePage/InstructorSection";
+import ExploreMore from "../Components/core/HomePage/ExploreMore";
+import CountUp from "react-countup";
 
 //images
 import TimelineImg from "../assets/Images/TimelineImage.png";
@@ -14,6 +16,8 @@ import logo1 from "../assets/TimeLineLogo/Logo1.svg";
 import logo2 from "../assets/TimeLineLogo/Logo2.svg";
 import logo3 from "../assets/TimeLineLogo/Logo3.svg";
 import logo4 from "../assets/TimeLineLogo/Logo4.svg";
+import Footer from "../Components/core/Common/Footer";
+
 
 //timeline array
 const timeline = [
@@ -40,6 +44,8 @@ const timeline = [
 ];
 
 const Home = () => {
+
+
   return (
     <div>
       {/* section 1 */}
@@ -126,6 +132,10 @@ const Home = () => {
             backgroundGradient={<div className="codeblock2 absolute"></div>}
           />
         </div>
+
+        {/* explore more part */}
+        <ExploreMore/>
+
       </div>
 
       {/* section 2 */}
@@ -168,7 +178,7 @@ const Home = () => {
                 <div key={index} className=" flex flex-col items-start">
                   <div className="flex gap-7 items-center">
                     <div className="w-[50px] h-[50px] rounded-full bg-white flex justify-center items-center">
-                      <img className="w-[25px] h-[25px]" src={elem.logo} />
+                      <img className="w-[25px] h-[25px]" src={elem.logo} alt=""/>
                     </div>
                     <div className="flex flex-col gap-1">
                       <h2 className="text-lg font-bold text-richblack-800">
@@ -187,18 +197,19 @@ const Home = () => {
             <img
               className=" shadow-[10px_-5px_50px_-5px] shadow-[#1FA2FF]"
               src={TimelineImg}
+              alt=""
             />
 
             <div className=" px-4 pl-5 absolute bg-caribbeangreen-700 lg:w-[400px] h-[90px] text-white flex items-center justify-between bottom-[-45px] left-[120px]">
               <div className=" w-[45%] gap-5 flex  items-center justify-center ">
-                <h1 className="font-bold text-3xl">10</h1>
+                <h1 className="font-bold text-3xl"><CountUp end={10} enableScrollSpy  /></h1>
                 <p className="text-caribbeangreen-300 font-semibold">
                   YEARS OF EXPERIENCE
                 </p>
               </div>
               <div className="w-[1px] h-14 bg-caribbeangreen-300 my-auto"></div>
               <div className=" w-[45%] gap-4 flex  items-center justify-between">
-                <h1 className="font-bold text-3xl">50</h1>
+                <h1 className="font-bold text-3xl"><CountUp end={50} enableScrollSpy  /></h1>
                 <p className="text-caribbeangreen-400 font-semibold">
                   TYPES OF COURSES
                 </p>
@@ -223,6 +234,8 @@ const Home = () => {
 
         {/* <ReviewSlider /> */}
       </div>
+
+      <Footer/>
 
     </div>
   );

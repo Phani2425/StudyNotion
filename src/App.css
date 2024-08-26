@@ -53,3 +53,35 @@
   .backimg{
     background-image: url('./assets/Images/bghome.svg');
   }
+
+  .button-bar {
+    position: relative;
+    display: flex;
+    width: fit-content;
+    margin: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .card-button {
+    position: relative;
+    z-index: 2;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .bg-highlight {
+    position: absolute;
+    top: 0;
+    left: -4px;
+    z-index: 1;
+    transition: transform 0.3s ease;
+  }
+  
+
+
