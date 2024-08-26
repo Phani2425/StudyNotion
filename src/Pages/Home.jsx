@@ -141,7 +141,7 @@ const Home = () => {
 
       {/* section 2 */}
 
-      <div className="bg-richblack-5 my-16 py-16">
+      <div className="bg-richblack-5 my-16 pb-16">
         <div className="backimg flex flex-wrap justify-center items-end py-7 h-[300px]">
           <div className="flex gap-4 items-center justify-center">
             <Button linkto={"/"} active={1}>

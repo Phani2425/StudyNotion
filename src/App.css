@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.container{
+  scroll-behavior: smooth;
+}
 
 .codeblock1 {
     width: 372.95px;

@@ -28,7 +28,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh', // Full viewport height
-    width: '100vw', // Full viewport width
+   // Full viewport width
   },
   animation: {
     width: '650px', // Set your desired width

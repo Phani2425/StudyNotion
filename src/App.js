@@ -8,7 +8,7 @@ import './App.css'
 
 const App = () => {
   return (
-    <div className="width-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+    <div className="container width-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
 
   {/* navbar is a common componenet that is why we will place this here and that will dont have any route */}
   {/* as nav bar is common so we will make its component in common folder of core of component */}
