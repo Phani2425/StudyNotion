@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React from 'react'
 import { Routes } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import Home from './Pages/Home'
@@ -7,10 +7,13 @@ import NavBar from "./Components/core/Common/NavBar";
 import './App.css'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
+import OpenRoute from './Components/core/Auth/OpenRoute'
+import ForgotPassword from './Pages/ForgotPassword'
+import UpdatePassword from './Pages/UpdatePassword'
 
 const App = () => {
 
-  const [isLoggedIn, setLoggedIn] = useState(false);
+
 
   return (
     <div className="container width-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
@@ -22,9 +25,11 @@ const App = () => {
       <Routes>
 
         <Route path='/' element= {<Home/>} />
-        <Route path='/*' element={<PageNotFound/>}/>
-        <Route path='/login' element={<Login setLoggedIn={setLoggedIn} />} />
-        <Route path='/signup' element={<Signup setLoggedIn={setLoggedIn} />} />
+        <Route path='*' element={<PageNotFound/>}/>
+        <Route path='login' element={<OpenRoute> <Login/> </OpenRoute> } />
+        <Route path='signup' element={<OpenRoute> <Signup/> </OpenRoute>}/>
+        <Route path='forgot-password' element={<OpenRoute> <ForgotPassword/> </OpenRoute>}/>
+        <Route path='reset-password/:uuid' element={<UpdatePassword/>}/>
 
      </Routes>
 

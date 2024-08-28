@@ -2,7 +2,7 @@ import React from 'react'
 import Template from '../Components/core/Common/Template';
 import login from '../assets/Images/login.webp';
 
-const Login = ({setLoggedIn}) => {
+const Login = () => {
   return (
   
        <Template 
@@ -11,7 +11,6 @@ const Login = ({setLoggedIn}) => {
        desc2={`Education to future proof your career`}
        image={login}
        formtype='login'
-       setLoggedIn={setLoggedIn}
        />
     
   )

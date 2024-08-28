@@ -2,6 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #afb2bf;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 3px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #000814;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #afb2bf;
+  border-radius: 10px;
+  visibility: hidden;
+}
+
+*:active::-webkit-scrollbar-thumb,
+*:focus::-webkit-scrollbar-thumb,
+*:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
+/* Hide default styling of details/summary */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* https://10015.io/tools/css-loader-generator */
+.spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 9px solid #f1f2ff;
+  animation: spinner-bulqg1 0.8s infinite linear alternate,
+    spinner-oaa3wk 1.6s infinite linear;
+}
+
+
 .container{
   scroll-behavior: smooth;
 }
@@ -73,7 +125,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 26px;
     outline: none;
   }
   
@@ -89,6 +141,31 @@
   .active p{
     color: #ddb30c;
   }
+
+  /* code for spinner */
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 80px;
+  aspect-ratio: 1;
+  --_g: no-repeat radial-gradient(farthest-side,#fff 90%,#fff);
+  background: var(--_g), var(--_g), var(--_g);
+  background-size: 25% 25%;
+  animation: l17 1s infinite;
+}
+@keyframes l17{ 
+  0%     {background-position: 0% -100%,50% -100%,100% -100%}
+  16.67% {background-position: 0%   50%,50% -100%,100% -100%}
+  33.33% {background-position: 0%   50%,50%   50%,100% -100%}
+  45%,55%{background-position: 0%   50%,50%   50%,100%   50%}
+  66.67% {background-position: 0%  200%,50%   50%,100%   50%}
+  83.33% {background-position: 0%  200%,50%  200%,100%   50%}
+  100%   {background-position: 0%  200%,50%  200%,100%  200%}
+}
+
+.form-style {
+  @apply rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none;
+}
+
   
 
 

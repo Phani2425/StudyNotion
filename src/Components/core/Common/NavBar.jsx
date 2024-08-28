@@ -94,6 +94,7 @@ const NavBar = () => {
                           sublinks.map((link, index) => {
                             return (
                               <Link
+                              key={index}
                                 className="hover:bg-richblack-100 rounded-md px-3 py-2 z-10"
                                 to={link.link}
                               >

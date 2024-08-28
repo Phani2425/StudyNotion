@@ -5,7 +5,7 @@ import frameimg from '../../../assets/Images/frame.png';
 import { FcGoogle } from "react-icons/fc";
 import HighlightText from '../HomePage/HighlightText';
 
-const Template = ({title,desc1,desc2,image,formtype,setLoggedIn}) => {
+const Template = ({title,desc1,desc2,image,formtype}) => {
   return (
     <div className='flex justify-between items-center mx-auto mt-12 mb-8 w-[70%] text-richblack-25 gap-5'>
         {/* left side div */}
@@ -18,7 +18,7 @@ const Template = ({title,desc1,desc2,image,formtype,setLoggedIn}) => {
           </div>
 
           
-            {formtype === 'signup' ? (<SignupForm setLoggedIn={setLoggedIn}/>) : (<LoginForm setLoggedIn={setLoggedIn}/>)}
+            {formtype === 'signup' ? (<SignupForm/>) : (<LoginForm/>)}
           
           {/* buttons div */}
           <div className=''>
