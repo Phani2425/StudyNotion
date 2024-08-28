@@ -10,6 +10,7 @@ import Signup from './Pages/Signup'
 import OpenRoute from './Components/core/Auth/OpenRoute'
 import ForgotPassword from './Pages/ForgotPassword'
 import UpdatePassword from './Pages/UpdatePassword'
+import VerifyEmail from './Pages/VerifyEmail'
 
 const App = () => {
 
@@ -30,6 +31,8 @@ const App = () => {
         <Route path='signup' element={<OpenRoute> <Signup/> </OpenRoute>}/>
         <Route path='forgot-password' element={<OpenRoute> <ForgotPassword/> </OpenRoute>}/>
         <Route path='reset-password/:uuid' element={<UpdatePassword/>}/>
+        <Route path='verify-email' element={<VerifyEmail/>}/>
+        
 
      </Routes>
 

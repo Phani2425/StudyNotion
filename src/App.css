@@ -125,7 +125,7 @@ details > summary::-webkit-details-marker {
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 26px;
+    font-size: 16px;
     outline: none;
   }
   
@@ -142,6 +142,7 @@ details > summary::-webkit-details-marker {
     color: #ddb30c;
   }
 
+  /* code for spinner */
   /* code for spinner */
 /* HTML: <div class="loader"></div> */
 .loader {

@@ -6,12 +6,9 @@ import { useDispatch } from "react-redux";
 import toast from 'react-hot-toast';
 import Tab from '../Common/Tab';
 import { ACCOUNT_TYPE } from '../../../utils/constants';
+import { setSignupData } from '../../../redux/slices/authSlice';
+import { sendOtp } from '../../../Services/operations/authAPI';
 
-
-// import { sendOtp } from "../../../services/operations/authAPI"
-// import { setSignupData } from "../../../slices/authSlice"
-// import { ACCOUNT_TYPE } from "../../../utils/constants"
-// import Tab from "../../common/Tab"
 
 const SignupForm = () => {
   const navigate = useNavigate()
@@ -55,7 +52,7 @@ const SignupForm = () => {
     const submitHandler = (e) => {
         e.preventDefault()
     
-        if (confirmPassword === password) {
+        if (confirmPassword !== password) {
           toast.error("Passwords Do Not Match")
           return
         }
@@ -67,11 +64,11 @@ const SignupForm = () => {
         // Setting signup data to state
         // To be used after otp verification
 
-        // dispatch(setSignupData(signupData))
+        dispatch(setSignupData(signupData))
 
         // Send OTP to user for verification
 
-        // dispatch(sendOtp(FormData.email, navigate))
+        dispatch(sendOtp(FormData.email, navigate))
     
         // Reset
         setFormData({

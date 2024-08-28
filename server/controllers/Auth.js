@@ -99,7 +99,7 @@ exports. Signup = async (req, resp) => {
         //validate and match password and confirm password
 
         if(password !== confirmPassword) {
-            return resp.status(401).josn({
+            return resp.status(401).json({
                 success: false,
                 message:"password and confirm password do not match"
             })

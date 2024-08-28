@@ -33,7 +33,7 @@ export function sendOtp(email, navigate) {
       }
 
       toast.success("OTP Sent Successfully")
-      navigate("/verify-email")
+      navigate("/verify-email") 
     } catch (error) {
       console.log("SENDOTP API ERROR............", error)
       toast.error("Could Not Send OTP")
@@ -55,7 +55,8 @@ export function signUp(
 ) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
-    dispatch(setLoading(true))
+    dispatch(setLoading(true));
+
     try {
       const response = await apiConnector("POST", SIGNUP_API, {
         accountType,
@@ -75,7 +76,8 @@ export function signUp(
       toast.success("Signup Successful")
       navigate("/login")
     } catch (error) {
-      console.log("SIGNUP API ERROR............", error)
+      console.log("SIGNUP API ERROR............", error.response ? error.response.data : error.message);
+
       toast.error("Signup Failed")
       navigate("/signup")
     }
@@ -156,6 +158,8 @@ export function getPasswordResetToken(email , setEmailSent) {
   }
 }
 
+//i was correct but previos code you can remove it
+
 // export function resetPassword(password, confirmPassword, token) {
 //   return async(dispatch) => {
 //     dispatch(setLoading(true));
@@ -185,6 +189,7 @@ export function getPasswordResetToken(email , setEmailSent) {
 export function resetPassword(password,confirmPassword,uuid,setresetPasswordDone,setemail){
   return async(dispatch) => {
     dispatch(setLoading(true));
+    toast.loading('Loading....')
     try{
       const response = await apiConnector("POST", RESETPASSWORD_API, {password, confirmPassword, uuid});
 

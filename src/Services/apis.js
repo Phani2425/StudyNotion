@@ -7,7 +7,7 @@ export const categories = {
 
 // AUTH ENDPOINTS
 export const endpoints = {
-    SENDOTP_API: BASE_URL + "/auth/sendotp",
+    SENDOTP_API: BASE_URL + "/auth/generateOtp",
     SIGNUP_API: BASE_URL + "/auth/signup",
     LOGIN_API: BASE_URL + "/auth/login",
     RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
