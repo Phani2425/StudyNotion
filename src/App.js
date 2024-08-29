@@ -13,6 +13,9 @@ import UpdatePassword from './Pages/UpdatePassword'
 import VerifyEmail from './Pages/VerifyEmail'
 import ContactUs from './Pages/ContactUs'
 import AboutUs from './Pages/AboutUs'
+import Dashboard from './Pages/Dashboard'
+import Profile from './Components/core/Dashboard/Profile';
+import EnrolledCourses from './Components/core/Dashboard/EnrolledCourses';
 
 const App = () => {
 
@@ -36,6 +39,13 @@ const App = () => {
         <Route path='verify-email' element={<VerifyEmail/>}/>
         <Route path='contact' element={<ContactUs/>}/>
         <Route path='about' element={<AboutUs/>}/>
+
+        {/* nested route */}
+        <Route path='/dashboard' element={<Dashboard/>}>
+            <Route path='/dashboard/my-profile' element={<Profile/>}/>
+            <Route path='/dashboard/enrolled-courses' element={<EnrolledCourses/>}/>
+            {/* <Route path='/dashboard/cart' element={<Cart/>}/> */}
+        </Route>
         
 
      </Routes>
