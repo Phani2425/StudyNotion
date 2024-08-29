@@ -13,7 +13,7 @@ const {
   LOGIN_API,
   RESETPASSTOKEN_API,
   RESETPASSWORD_API,
-} = endpoints
+} = endpoints;
 
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
@@ -43,13 +43,14 @@ export function sendOtp(email, navigate) {
   }
 }
 
+
 export function signUp(
-  accountType,
   firstName,
   lastName,
   email,
   password,
   confirmPassword,
+  accountType,
   otp,
   navigate
 ) {
@@ -102,11 +103,11 @@ export function login(email, password, navigate) {
         throw new Error(response.data.message)
       }
 
-      toast.success("Login Successful")
+      toast.success("Login Successful");
       dispatch(setToken(response.data.token))
       const userImage = response.data?.user?.image
         ? response.data.user.image
-        : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
+        : `https://api.dicebear.com/9.x/initials/svg?radius=50 seed=${response.data.user.firstName} ${response.data.user.lastName}`
       dispatch(setUser({ ...response.data.user, image: userImage }))
       
       localStorage.setItem("token", JSON.stringify(response.data.token))
@@ -114,7 +115,7 @@ export function login(email, password, navigate) {
       navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("LOGIN API ERROR............", error)
-      toast.error("Login Failed")
+      toast.error("Login Failed");
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
@@ -157,31 +158,6 @@ export function getPasswordResetToken(email , setEmailSent) {
     dispatch(setLoading(false));
   }
 }
-
-//i was correct but previos code you can remove it
-
-// export function resetPassword(password, confirmPassword, token) {
-//   return async(dispatch) => {
-//     dispatch(setLoading(true));
-//     try{
-//       const response = await apiConnector("POST", RESETPASSWORD_API, {password, confirmPassword, token});
-
-//       console.log("RESET Password RESPONSE ... ", response);
-
-
-//       if(!response.data.success) {
-//         throw new Error(response.data.message);
-//       }
-
-//       toast.success("Password has been reset successfully");
-//     }
-//     catch(error) {
-//       console.log("RESET PASSWORD TOKEN Error", error);
-//       toast.error("Unable to reset password");
-//     }
-//     dispatch(setLoading(false));
-//   }
-// }
 
 
 //function for making a call to backend for resetting the password ...

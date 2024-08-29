@@ -80,6 +80,13 @@ exports. Signup = async (req, resp) => {
     try{
         //fetch data from request
         const {firstName, lastName, email, password, confirmPassword, accountType, otp}  = req.body;
+
+        console.log("inside signup controller");
+        console.log(firstName, lastName, email, password,confirmPassword, accountType, otp);
+        console.log('type of password',typeof password, password.length);
+        console.log('type of confirmPassword',typeof confirmPassword, confirmPassword.length);
+        
+
         //validate the data
         if(!firstName || !lastName || !email || !password || !confirmPassword || !otp){
             return resp.status(401).josn({
@@ -99,6 +106,10 @@ exports. Signup = async (req, resp) => {
         //validate and match password and confirm password
 
         if(password !== confirmPassword) {
+            console.log(password);
+            console.log(confirmPassword);
+            
+            console.log('password match nehi kar raha dosto');
             return resp.status(401).json({
                 success: false,
                 message:"password and confirm password do not match"
@@ -110,6 +121,7 @@ exports. Signup = async (req, resp) => {
         //then match the otp from db with the otp entered by user
         //validate otp
         if(rectentOtp.length === 0 || rectentOtp[0].otp != otp){
+            console.log('otp match nehi kar raha dosto');
             return resp.status(401).json({
                 success: false,
                 message:'invalid otp'
@@ -147,6 +159,7 @@ exports. Signup = async (req, resp) => {
         })
 
         // return response
+        console.log('user ban gaya doston');
 
         resp.status(200).json({
             success:true,
@@ -158,6 +171,7 @@ exports. Signup = async (req, resp) => {
         
     }catch(error){
         console.error(error.message);
+        console.log('error yaha pe ho raha:- ', error.message)
         resp.status(500).json({
             success:false,
             message:'internal server error during signing up'
@@ -213,7 +227,8 @@ exports.Login = async(req,resp) => {
         resp.cookie('mycookie', token, {expires: new Date(Date.now() + 3*24*60*60*1000), httpOnly:true }).status(200).json({
             success:true,
             token:token,
-            message:'user logged in successfully'
+            message:'user logged in successfully',
+            user:existingUser
         })//[httpOnly:true] means the token can only be read when it is send with http request... means in server only... it cannot be read in client side.. basically it is done for safety puposes ..beacuse if someone can read it in client side then even if he is unautheticated he will prepare his own fake cookie with the real cookie data and try to access server routes
         //in this way server will not recognise the fake cookie and will allow for access...this is why we dont allow cookies to be redable in client side and make it readable only with http request or in server side...
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../Components/core/Common/Spinner";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
@@ -11,6 +10,8 @@ import { RxCounterClockwiseClock } from "react-icons/rx";
 
 const VerifyEmail = () => {
   const { signupData } = useSelector((state) => state.auth);
+
+  console.log('signup data from the redux store:- ', signupData);
 
   const [otp, setotp] = useState("");
 
@@ -25,6 +26,8 @@ const VerifyEmail = () => {
 
     const { firstName, lastName, email, password, confirmPassword, accountType } =
     signupData;
+
+    console.log('printing after extracting from signup data:', firstName, lastName, email, password, confirmPassword, accountType);
 
     dispatch(
       signUp(
@@ -50,7 +53,7 @@ const VerifyEmail = () => {
   return (
     <div className="min-h-[calc(100vh-3.5rem)] grid place-items-center">
       {loading ? (
-        <Spinner />
+        <div className="loader"></div>
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
           <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">
@@ -62,7 +65,7 @@ const VerifyEmail = () => {
           <form onSubmit={submithandler}>
             <OTPInput
               value={otp}
-              onChange={setotp}
+              onChange={setotp}//return otp that is typed into the otp field but it will not do anything if we paste otp in the field
               numInputs={6}
               renderInput={(props) => (
                 <input

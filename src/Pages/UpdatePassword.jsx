@@ -34,20 +34,19 @@ const UpdatePassword = () => {
   //i got forgot that the function form service layers are dispatched
   const dispatch = useDispatch();
 
-   let response;
   const submitHandler = (e) => {
     e.preventDefault();
     // here we will call the function of service layer which will send a request to server for password reset
     // also here we will pass the token which we got from the server when user clicked on the reset password link in email
     // and also we will pass the new password which user entered in the form
-     response = dispatch(resetPassword(formData.password,formData.confirmPassword,uuid,setresetPasswordDone,setemail));
+     dispatch(resetPassword(formData.password,formData.confirmPassword,uuid,setresetPasswordDone,setemail));
     // so after calling this function we will set the state variable resetPasswordDone to true but not here in that service layer function
   }
 
   return (
     <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
       {loading ? (
-        <div className="spinner"></div>
+        <div className="loader"></div>
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
           <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">

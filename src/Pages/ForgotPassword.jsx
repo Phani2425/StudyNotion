@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import { getPasswordResetToken } from "../Services/operations/authAPI";
-import Spinner from "../Components/core/Common/Spinner";
 
 const ForgotPassword = () => {
   const { loading } = useSelector((state) => state.auth);
@@ -19,7 +18,7 @@ const ForgotPassword = () => {
   return (
     <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
       {loading ? (
-        <Spinner/>
+        <div className="loader"></div>
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
           <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">

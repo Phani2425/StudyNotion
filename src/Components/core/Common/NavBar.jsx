@@ -6,8 +6,8 @@ import { FaAngleDown } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropDown from "../Auth/ProfileDropDown";
-import { apiconnector } from "../../../Services/apiconnector";
-import { categories } from "../../../Services/apis";
+// import { apiconnector } from "../../../Services/apiconnector";
+// import { categories } from "../../../Services/apis";
 
 const sublinks = [
   {
@@ -94,7 +94,7 @@ const NavBar = () => {
                           sublinks.map((link, index) => {
                             return (
                               <Link
-                              key={index}
+                                key={index}
                                 className="hover:bg-richblack-100 rounded-md px-3 py-2 z-10"
                                 to={link.link}
                               >

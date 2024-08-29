@@ -11,6 +11,8 @@ import OpenRoute from './Components/core/Auth/OpenRoute'
 import ForgotPassword from './Pages/ForgotPassword'
 import UpdatePassword from './Pages/UpdatePassword'
 import VerifyEmail from './Pages/VerifyEmail'
+import ContactUs from './Pages/ContactUs'
+import AboutUs from './Pages/AboutUs'
 
 const App = () => {
 
@@ -32,6 +34,8 @@ const App = () => {
         <Route path='forgot-password' element={<OpenRoute> <ForgotPassword/> </OpenRoute>}/>
         <Route path='reset-password/:uuid' element={<UpdatePassword/>}/>
         <Route path='verify-email' element={<VerifyEmail/>}/>
+        <Route path='contact' element={<ContactUs/>}/>
+        <Route path='about' element={<AboutUs/>}/>
         
 
      </Routes>

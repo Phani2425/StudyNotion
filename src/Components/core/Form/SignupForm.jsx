@@ -23,11 +23,12 @@ const SignupForm = () => {
   const [FormData, setFormData] = useState({firstName: '',lastName: '',email:'',password:'',confirmPassword:''});
 
   const { firstName, lastName, email, password, confirmPassword } = FormData;
+  
 
   const changeHandler = (event) => {
     const {name,value} = event.target;
     setFormData( (prevdata)=> {
-       return { ...prevdata, [name]: value };
+       return { ...prevdata, [name]:value };
     })
   }
 
@@ -60,6 +61,8 @@ const SignupForm = () => {
           ...FormData,
           accountType,
         }
+
+        console.log('signupdata:- ',signupData);
     
         // Setting signup data to state
         // To be used after otp verification

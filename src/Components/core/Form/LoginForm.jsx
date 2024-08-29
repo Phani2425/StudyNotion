@@ -3,7 +3,6 @@ import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
-import toast from 'react-hot-toast';
 
 import { login } from "../../../Services/operations/authAPI";
 
