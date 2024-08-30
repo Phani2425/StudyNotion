@@ -8,7 +8,7 @@ const UpdatePassword = () => {
 
     //as when user generated the resetpassword token then a uuid is generated and that is attached with a frontend link . that linnk is sent to user through a mail by clicking which user can change the password ...this is done to know which user is changing the pasword as after creating the token we also store that token in the database and user model so that when the link will appear in url we will extract that using useParams() hook and send it back to backend....there in backend the api will try to find a user which have this token in its data and also check for its expiary time and if both are valid then password will be changed
 
-    const {uuid} = useParams();//it returns the route prameter of  the url and from that we are destructuring it
+    const {token} = useParams();//it returns the route prameter of  the url and from that we are destructuring it
 
 
 
@@ -39,7 +39,7 @@ const UpdatePassword = () => {
     // here we will call the function of service layer which will send a request to server for password reset
     // also here we will pass the token which we got from the server when user clicked on the reset password link in email
     // and also we will pass the new password which user entered in the form
-     dispatch(resetPassword(formData.password,formData.confirmPassword,uuid,setresetPasswordDone,setemail));
+     dispatch(resetPassword(formData.password,formData.confirmPassword,token,setresetPasswordDone,setemail));
     // so after calling this function we will set the state variable resetPasswordDone to true but not here in that service layer function
   }
 

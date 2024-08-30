@@ -4,45 +4,46 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { logout } from "../../../Services/operations/authAPI";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 //mere pass abhi sirf icons ka nnam hain in data so to use them i will impport all the icons .....not exactly all but all the icons having vsc as their prefix .... because all icons in our data  have vsc as their prefix
 //what a geniuss observation
 
 import * as Icons from 'react-icons/vsc';
 //this wiill return array of all icons having vsc as their prefix
+import { IoSettingsOutline } from "react-icons/io5";
+import { PiSignOut } from "react-icons/pi";
 
-const Sidebar = () => {
+const Sidebar = ({setshowModal}) => {
   const { user } = useSelector((state) => state.profile);
   console.log("user from the redux store:- ", user);
 
   const dispatch = useDispatch();
-
-  //a state variable for knowing which tab is currently clicked so thhat we can turn its bg yellow color
-
-  const [currentTab, setcurrentTab] = useState(1);
+  const loaction = useLocation();
+  console.log(loaction.pathname);
 
   return (
-    <div className="flex flex-col gap-5 absolute top-0 left-0 h-screen bg-richblack-700 text-richblack-300 w-52">
-      <div className=" flex flex-col py-3   gap-4 transition-all duration-200">
+    <div className="flex flex-col gap-5 absolute left-0 min-h-full bg-richblack-700 text-richblack-300 w-52 ">
+      <div className=" flex flex-col py-3 gap-4 transition-all duration-200">
         {sidebarLinks.map((link, index) => {
             //getting the icon form icon name
             //from the array i will direcatly access the icon
           const Icon = Icons[link.icon];
           if (!link.type) {
             return (
-              <NavLink key={index} to={link.path} onClick={()=>{setcurrentTab(link.id)}}>
-                <div className={`flex items-center justify-start gap-4 px-4 py-2 border-l-[3px]  ${currentTab === link.id ? ('bg-yellow-50 bg-opacity-20  border-l-yellow-200') : ('border-l-transparent')}`}>
-                    <Icon/>
+              <NavLink key={index} to={link.path} >
+                <div className={`flex items-center justify-start gap-3 px-4 py-2 border-l-[3px]  ${loaction.pathname === link.path ? ('bg-yellow-50 bg-opacity-20  border-l-yellow-200') : ('border-l-transparent')}`}>
+                    <Icon className= {` text-xl ${loaction.pathname === link.path && 'text-yellow-100'}`}/>
                   <p>{link.name}</p>
                 </div>
               </NavLink>
             );
           }
 
-          if (link.type === user.accountType) {
+          if (user && link.type === user?.accountType) {
             return (
-              <NavLink key={index} to={link.path} onClick={()=>{setcurrentTab(link.id)}}>
-                <div className={`flex items-center justify-start gap-4 px-4 py-2 border-l-[3px]  ${currentTab === link.id ? ('bg-yellow-50 bg-opacity-20  border-l-yellow-200') : ('border-l-transparent')}`}>
-                 <Icon/>
+              <NavLink key={index} to={link.path} >
+                <div className={`flex items-center justify-start gap-3 px-4 py-2 border-l-[3px]  ${loaction.pathname === link.path ? ('bg-yellow-50 bg-opacity-20  border-l-yellow-200') : ('border-l-transparent')}`}>
+                  <Icon className= {` text-xl ${loaction.pathname === link.path && 'text-yellow-100'}`} />
                   <p>{link.name}</p>
                 </div>
               </NavLink>
@@ -53,20 +54,22 @@ const Sidebar = () => {
 
       <div className="h-[1px] bg-richblack-500"></div>
 
-      <div className="flex flex-col px-4 py-2  gap-5">
-        <NavLink>
-          <div>
+      <div className="flex flex-col  gap-4">
+        <NavLink to={'/dashboard/settings'}>
+          <div className={`flex items-center justify-start gap-4 px-4 py-2 border-l-[3px]  ${loaction.pathname === '/dashboard/settings' ? ('bg-yellow-50 bg-opacity-20  border-l-yellow-200') : ('border-l-transparent')}`}>
+          <IoSettingsOutline className= {` text-xl ${loaction.pathname === '/dashboard/settings' && 'text-yellow-100'}`}/>
             <p>Settings</p>
           </div>
         </NavLink>
 
         <div
-        className="cursor-pointer "
+        className="cursor-pointer group flex items-center justify-start gap-4 px-4 py-2"
           onClick={() => {
-            dispatch(logout());
+            setshowModal(true);
           }}
         >
-          <p>LogOut</p>
+          <PiSignOut className="text-xl group-hover:text-yellow-100"/>
+          <p className="group-hover:text-yellow-100 ">LogOut</p>
         </div>
       </div>
     </div>

@@ -22,7 +22,6 @@ export function sendOtp(email, navigate) {
     try {
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
-        checkUserPresent: true,
       })
       console.log("SENDOTP API RESPONSE............", response)
 
@@ -162,12 +161,13 @@ export function getPasswordResetToken(email , setEmailSent) {
 
 //function for making a call to backend for resetting the password ...
 //these are the functions returning a function
-export function resetPassword(password,confirmPassword,uuid,setresetPasswordDone,setemail){
+export function resetPassword(password,confirmPassword,token,setresetPasswordDone,setemail){
   return async(dispatch) => {
+    console.log('the token of this page is:- ',token);
     dispatch(setLoading(true));
-    toast.loading('Loading....')
+    const toastid = toast.loading('Loading....')
     try{
-      const response = await apiConnector("POST", RESETPASSWORD_API, {password, confirmPassword, uuid});
+      const response = await apiConnector("POST", RESETPASSWORD_API, {password, confirmPassword, token});
 
       console.log('reset password response', response);
 
@@ -179,11 +179,13 @@ export function resetPassword(password,confirmPassword,uuid,setresetPasswordDone
       toast.success('Password reset successful');
       setresetPasswordDone(true);
       setemail(response.data.data.email);
-
+      toast.dismiss(toastid);
     }catch(err){
+      toast.dismiss(toastid);
       toast.error('Error reset password');
       console.log('error occured while reseting the password', err.message);
       console.error(err.message);
+      
 
     }
   }

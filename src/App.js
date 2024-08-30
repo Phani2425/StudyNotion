@@ -16,6 +16,8 @@ import AboutUs from './Pages/AboutUs'
 import Dashboard from './Pages/Dashboard'
 import Profile from './Components/core/Dashboard/Profile';
 import EnrolledCourses from './Components/core/Dashboard/EnrolledCourses';
+import PrivateRoute from './Components/core/Auth/PrivateRoute'
+import Setting from './Components/core/Dashboard/Setting';
 
 const App = () => {
 
@@ -35,16 +37,17 @@ const App = () => {
         <Route path='login' element={<OpenRoute> <Login/> </OpenRoute> } />
         <Route path='signup' element={<OpenRoute> <Signup/> </OpenRoute>}/>
         <Route path='forgot-password' element={<OpenRoute> <ForgotPassword/> </OpenRoute>}/>
-        <Route path='reset-password/:uuid' element={<UpdatePassword/>}/>
+        <Route path='reset-password/:token' element={<UpdatePassword/>}/>
         <Route path='verify-email' element={<VerifyEmail/>}/>
         <Route path='contact' element={<ContactUs/>}/>
         <Route path='about' element={<AboutUs/>}/>
 
         {/* nested route */}
-        <Route path='/dashboard' element={<Dashboard/>}>
+        <Route path='/dashboard' element={<PrivateRoute><Dashboard/></PrivateRoute>}>
             <Route path='/dashboard/my-profile' element={<Profile/>}/>
             <Route path='/dashboard/enrolled-courses' element={<EnrolledCourses/>}/>
             {/* <Route path='/dashboard/cart' element={<Cart/>}/> */}
+            <Route path='/dashboard/settings' element={<Setting/>}/>
         </Route>
         
 
