@@ -1,7 +1,7 @@
 const User = require('../models/User');
-const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const {sendEmail} = require('../utils/mailSender');
+const crypto = require("crypto");
 
 //route handler for creating resetPasswordToken
 exports.CreateResetToken = async (req, resp) => {
@@ -23,12 +23,12 @@ exports.CreateResetToken = async (req, resp) => {
             })
         }
         //create token by using "uuid" package 
-        const token = uuidv4();
+        const token = crypto.randomBytes(20).toString("hex");
 
 
         // update the token and the expiry time in the user model
 
-        const response = await User.findOneAndUpdate({email: email},{token: token,resetPasswordExpires:Date.now() + 5 * 60 * 1000 },{new:true});
+        const response = await User.findOneAndUpdate({email: email} ,{token: token,resetPasswordExpires:Date.now() + 5 * 60 * 1000 },{new:true});
 
         console.log('printing updated user : -' , response);
 
@@ -67,9 +67,11 @@ exports.ResetPassword = async (req, resp) => {
                 message: 'Password and confirm password fields are required',
             })
         }
-
+        
+        console.log('the token is:- ',token);
         //get user details from db using token
         const userExist = await User.findOne({token:token});
+        console.log('we got this user from the token',userExist);
         if(!userExist){
             return resp.status(404).json({
                 success: false,

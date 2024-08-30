@@ -194,7 +194,7 @@ exports.Login = async(req,resp) => {
             })
         }
         //check wheather the user is registerd
-        const existingUser = await User.findOne({email:email});
+        const existingUser = await User.findOne({email:email}).populate('additionalDetails').exec();
         if(!existingUser){
             return resp.status(401).json({
                 success: false,

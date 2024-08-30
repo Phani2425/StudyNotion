@@ -15,7 +15,7 @@ exports.contactUsController = async (req, res) => {
       email,
       "Your message sent successfully",
       contactUsEmail(email, firstName, lastName, message, phoneNo, countrycode)
-    )
+    );
     console.log("Email Res ", emailRes.response)
     return res.json({
       success: true,
