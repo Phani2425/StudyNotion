@@ -42,9 +42,9 @@ const ChangePassword = () => {
 
 
   return (
-    <div className="flex flex-col gap-3 mb-5">
+    <div className="flex flex-col gap-3">
       <div className="flex flex-col justify-between bg-richblack-800 px-12 py-9 w-full rounded-lg">
-        <h1 className="font-semibold text-base mb-3">Password</h1>
+        <h1 className="font-semibold text-lg mb-3">Password</h1>
 
         <form onSubmit={handleSubmit(SubmitHandler)} className="flex justify-between items-center gap-10">
           <div className="flex flex-col gap-1 items-start relative w-full">

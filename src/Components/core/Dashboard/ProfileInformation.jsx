@@ -34,7 +34,7 @@ const ProfileInformation = () => {
 
 
       <div className="flex flex-col justify-between bg-richblack-800 px-12 py-9 w-full rounded-lg">
-        <h1 className="font-semibold text-base mb-3">Profile Information</h1>
+        <h1 className="font-semibold text-lg mb-3">Profile Information</h1>
 
         <form onSubmit={handleSubmit(submitHandler)} className="grid grid-cols-1 lg:grid-cols-2 w-full gap-x-10 gap-y-4">
           <div className="flex flex-col gap-1 items-start text-white">

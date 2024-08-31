@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { sidebarLinks } from "../../../data/dashboard-links";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { logout } from "../../../Services/operations/authAPI";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 //mere pass abhi sirf icons ka nnam hain in data so to use them i will impport all the icons .....not exactly all but all the icons having vsc as their prefix .... because all icons in our data  have vsc as their prefix
@@ -22,7 +21,8 @@ const Sidebar = ({setshowModal}) => {
   console.log(loaction.pathname);
 
   return (
-    <div className="flex flex-col gap-5 absolute left-0 min-h-full bg-richblack-700 text-richblack-300 w-52 ">
+       <div className="fixed  ">
+            <div className="flex flex-col gap-5 absolute left-0 h-screen  bg-richblack-700 text-richblack-300 w-52 pt-4">
       <div className=" flex flex-col py-3 gap-4 transition-all duration-200">
         {sidebarLinks.map((link, index) => {
             //getting the icon form icon name
@@ -73,6 +73,7 @@ const Sidebar = ({setshowModal}) => {
         </div>
       </div>
     </div>
+       </div>
   );
 };
 

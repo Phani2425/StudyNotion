@@ -38,7 +38,7 @@ const Profile = () => {
         
           <div className="flex flex-col justify-between  gap-4">
              <h2 className="font-semibold text-base">About</h2>
-             <p className="text-richblack-100">Share Something About Yourself.</p>
+             <p className="text-richblack-100">{user?.additionalDetails?.about ?? 'Share Something About Yourself.'}</p>
           </div>
         
         

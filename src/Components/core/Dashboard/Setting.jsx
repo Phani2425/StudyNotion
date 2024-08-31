@@ -68,13 +68,13 @@ const Setting = () => {
 
   return (
     <div className="flex flex-col text-white gap-5">
-    <h1 className="font-bold text-3xl mb-5">Edit Profile</h1>
+    <h1 className="font-bold text-4xl mb-5">Edit Profile</h1>
 
     <div className="flex justify-between bg-richblack-800 px-12 py-9 w-full rounded-lg">
       <div className="flex gap-7 items-center">
-        <img src={ `${user?.image}`} className="rounded-full w-14 h-14" />
+        <img src={ `${user?.image}`} className="rounded-full w-20 h-20" />
         <div className='flex flex-col items-start justify-center gap-5'>
-           <h2 className="font-semibold text-base">Change Profile Picture</h2>
+           <h2 className="font-semibold text-lg">Change Profile Picture</h2>
            
            {/* section for photo browsing and uploading */}
            <div className='flex flex-row justify-start items-center gap-5'>
@@ -89,7 +89,7 @@ const Setting = () => {
                  <button className={` bg-yellow-50 cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900 `} text={'Upload'} onClick={()=>{uploadToCloudinary(file)}}>
                     {
                       loading ? (<div className='loader h-5 w-7'></div>) : 
-                      (<div className='flex items-center'>                   
+                      (<div className='flex items-center gap-2 justify-center'>                   
                          Upload
                         <FiUpload />
                         </div>)

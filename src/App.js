@@ -15,9 +15,12 @@ import ContactUs from './Pages/ContactUs'
 import AboutUs from './Pages/AboutUs'
 import Dashboard from './Pages/Dashboard'
 import Profile from './Components/core/Dashboard/Profile';
-import EnrolledCourses from './Components/core/Dashboard/EnrolledCourses';
+import EnrolledCourses from './Components/core/Dashboard/Courses/EnrolledCourses'
 import PrivateRoute from './Components/core/Auth/PrivateRoute'
 import Setting from './Components/core/Dashboard/Setting';
+import Cart from './Components/core/Dashboard/Cart/index';
+import StudentOnlyRoute from './Components/core/Auth/StudentOnlyRoute'
+import InstructorOnlyRoute from './Components/core/Auth/InstructorOnlyRoute'
 
 const App = () => {
 
@@ -45,9 +48,10 @@ const App = () => {
         {/* nested route */}
         <Route path='/dashboard' element={<PrivateRoute><Dashboard/></PrivateRoute>}>
             <Route path='/dashboard/my-profile' element={<Profile/>}/>
-            <Route path='/dashboard/enrolled-courses' element={<EnrolledCourses/>}/>
-            {/* <Route path='/dashboard/cart' element={<Cart/>}/> */}
             <Route path='/dashboard/settings' element={<Setting/>}/>
+            <Route path='/dashboard/enrolled-courses' element={<StudentOnlyRoute><EnrolledCourses/></StudentOnlyRoute>}/>
+            <Route path='/dashboard/cart' element={<StudentOnlyRoute><Cart/></StudentOnlyRoute>}/>
+            
         </Route>
         
 
