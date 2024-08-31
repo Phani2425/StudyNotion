@@ -190,3 +190,40 @@ export function resetPassword(password,confirmPassword,token,setresetPasswordDon
     }
   }
 }
+
+
+//THIS IS THE FUNCTION WHICH WILL BE USED FOR CHANGING PASSWORD AND IT WILL BE USED IN THE CHNAGE PASSWORD COMPONENET OF THE SETTING COMPONENET OF DASHBOARD/MY-PROFILE PAGE.......
+
+export function changePassword(token,formdata) {
+  return async (dispatch) => {
+    const toastId = toast.loading('Password change in Progress');
+    try{
+
+      const response = await apiConnector('POST', endpoints.CHANGEPASSWORD_API, formdata,
+        //passing token in header as this route of server is auth protected means this call will first got o auth and then to this api route
+        //ANOTHER IMP THING IS HEADER IS JSON SO PASS IT IN JSON FORMAT
+        {
+           "Content-Type":"multipart/form-data",
+           "Authorization": `Bearer ${token}`
+        }  
+      )
+
+        //cheking wheather the call was succesfull or not 
+        //if not then directly throw an error
+        if(!response.data.success){
+           throw new Error(response.data.message);
+        }
+
+        //else
+        toast.dismiss(toastId);
+        toast.success('Password changed successfully');
+    
+
+    }catch(err){
+      console.log('error occured while connecting to the backend in changepassword function in operations folder:- ',err.message);
+      console.error(err.message);
+      toast.dismiss(toastId);
+      toast.error('Error in changing password');
+    }
+  }
+}

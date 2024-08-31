@@ -19,7 +19,7 @@ const ProfileDropDown = () => {
         {
           user && (
              <div className='flex items-center group relative cursor-pointer gap-2'>
-              <img className='h-[25px] w-[25px] rounded-full' src={`http://${user?.image}`}  alt='profile-pic'/>
+              <img className='h-[25px] w-[25px] rounded-full' src={`${user?.image}`}  alt='profile-pic'/>
               <FaCaretDown size={20} className='group-hover:rotate-180 text-white transition-all duration-200' />
 
               <div className='flex flex-col absolute top-6 -left-3 text-richblack-100 justify-between bg-richblack-800 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 z-10'>

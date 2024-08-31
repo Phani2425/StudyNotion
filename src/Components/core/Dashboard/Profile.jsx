@@ -20,7 +20,7 @@ const Profile = () => {
 
       <div className="flex justify-between bg-richblack-800 px-7 py-9 w-full rounded-lg">
         <div className="flex gap-4">
-          <img src={`http://${user?.image}`} className="rounded-full w-12 h-12" />
+          <img src={`${user?.image}`} className="rounded-full w-12 h-12" />
           <div>
              <h2 className="font-semibold text-lg">{user?.firstName} {user.lastName}</h2>
              <p className="text-richblack-100">{user?.email}</p>
@@ -87,7 +87,7 @@ const Profile = () => {
             <div>
               <p className="mb-2 text-sm text-richblack-600">Phone Number</p>
               <p className="text-sm font-medium text-richblack-5">
-                {user?.additionalDetails?.contactNumber ?? "Add Contact Number"}
+                {user?.additionalDetails?.contactNo ?? "Add Contact Number"}
               </p>
             </div>
             {/* <div>

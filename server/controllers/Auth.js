@@ -141,7 +141,7 @@ exports. Signup = async (req, resp) => {
             gender:null,
             dateOfBirth:null,
             about:null,
-            contactNumber:null,
+            contactNo:null,
         })
 
 
@@ -153,7 +153,7 @@ exports. Signup = async (req, resp) => {
             accountType: accountType,
             additionalDetails: newProfile._id,
             courses:[],
-            image:`api.dicebear.com/9.x/initials/svg?seed=${firstName} ${lastName}`,
+            image:`http://api.dicebear.com/9.x/initials/svg?seed=${firstName} ${lastName}`,
             courseProgress:[],
             
         })
@@ -248,7 +248,7 @@ exports. ChangePassword = async(req, resp) => {
         //get old password, new password,confirm new passsword
         const {email,oldpassword, newpassword, confirmnewpassword} = req.body;
         //validation
-        if(!email || !oldpassword || !newpassword || !confirmnewpassword){
+        if(!email || !oldpassword || !newpassword){
             return resp.status(403).json({
                 success:false,
                 message:'all fields are required'
@@ -258,7 +258,7 @@ exports. ChangePassword = async(req, resp) => {
         const existingUser = await User.findOne({email:email});
         //ek baar ye check karna hai ki kya user bina registet hue password change karne jaa sakta hai
 
-        const isMatch = await bcrypt(oldpassword, existingUser.password);
+        const isMatch = await bcrypt.compare(oldpassword, existingUser.password);
         if(!isMatch){
             return resp.status(403).json({
                 success:false,
@@ -266,12 +266,12 @@ exports. ChangePassword = async(req, resp) => {
             })
         }
         //checking wheather the newpassword and confirmpassword entered by the user is smae or not
-        if(newpassword!== confirmnewpassword){
-            return resp.status(403).json({
-                success:false,
-                message:'new password and confirm password do not match'
-            })
-        }
+        // if(newpassword!== confirmnewpassword){
+        //     return resp.status(403).json({
+        //         success:false,
+        //         message:'new password and confirm password do not match'
+        //     })
+        // }
         
         //update  pwd in db by hashing it
         const hashedPassword = await bcrypt.hash(newpassword, 10);
@@ -290,7 +290,7 @@ exports. ChangePassword = async(req, resp) => {
     }catch(err){
       console.log('error occured while changing the password')
       console.error(err.message);
-      resp.status(500).jason({
+      resp.status(500).json({
         success:false,
         message:'internal server error during changing the password'
       })

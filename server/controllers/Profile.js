@@ -30,7 +30,7 @@ exports. updateProfile = async (req,resp) => {
           // Find the updated user details
     const updatedUserDetails = await User.findById(userId)
     .populate("additionalDetails")
-    .exec()
+    .exec();
 
         //after that return the success response
         return resp.status(200).json({
@@ -157,8 +157,18 @@ exports.getAllUserDetails = async(req, resp) => {
 
 exports.updateDisplayPicture = async (req, res) => {
   try {
+    console.log('updating display picture');
     const displayPicture = req.files.displayPicture
     const userId = req.user.id
+    if(!displayPicture){
+      return res.status(400).json({
+        success: false,
+        message: "Please upload a display picture",
+      })
+    }
+
+    console.log(displayPicture);
+
     const image = await uploadFileToCloudinary(
       displayPicture,
       process.env.FOLDER_NAME,
@@ -177,6 +187,7 @@ exports.updateDisplayPicture = async (req, res) => {
       data: updatedProfile,
     })
   } catch (error) {
+    console.log("error occures:- ",error.message);
     return res.status(500).json({
       success: false,
       message: error.message,
