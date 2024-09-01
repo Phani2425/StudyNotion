@@ -12,13 +12,13 @@ export function updateProfilePicture(token, formData) {
 
       // Make the API request with FormData
       const response = await apiConnector(
-        "PUT", 
-        profile.UPDATE_DISPLAY_PICTURE, 
-        formData, 
-         {
-            "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`, // Pass token in the Authorization header
-         }
+        "PUT",
+        profile.UPDATE_DISPLAY_PICTURE,
+        formData,
+        {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`, // Pass token in the Authorization header
+        }
       );
 
       console.log('response', response);
@@ -30,7 +30,7 @@ export function updateProfilePicture(token, formData) {
 
       console.log('New user details after updating the profile pic which will be set to user slice and  localstorage :', response.data.data);
       dispatch(setUser(response.data.data));
-      localStorage.setItem('user',JSON.stringify(response.data.data));
+      localStorage.setItem('user', JSON.stringify(response.data.data));
       toast.dismiss(toastId);
       toast.success('Profile picture updated successfully');
 
@@ -44,76 +44,76 @@ export function updateProfilePicture(token, formData) {
   }
 }
 
-export const updateProfile = (token,data) => {
-   
-   return async(dispatch) => {
+export const updateProfile = (token, data) => {
+
+  return async (dispatch) => {
     const toastId = toast.loading('Updating Profile');
-    try{
-      const response = await apiConnector('PUT', profile.UPDATE_PROFILE, data, 
+    try {
+      const response = await apiConnector('PUT', profile.UPDATE_PROFILE, data,
         //passing header which is generally in json format
         {
           "Content-Type": "multipart/form-data",
           "Authorization": `Bearer ${token}`, // Pass token in the Authorization header
-       }
-       )
+        }
+      )
 
-       if(!response.data.success){
+      if (!response.data.success) {
         toast.dismiss(toastId);
-         toast.error('error updating profile');
-         throw new Error(response.data.message);
-       }
+        toast.error('error updating profile');
+        throw new Error(response.data.message);
+      }
 
-       //else
+      //else
       console.log('updated user details after updating profile:- ', response.data.updatedUserDetails);
-       dispatch(setUser(response.data.updatedUserDetails));
-       localStorage.setItem('user', JSON.stringify(response.data.updatedUserDetails));
-       toast.dismiss(toastId);
-       toast.success('profile updated');
+      dispatch(setUser(response.data.updatedUserDetails));
+      localStorage.setItem('user', JSON.stringify(response.data.updatedUserDetails));
+      toast.dismiss(toastId);
+      toast.success('profile updated');
 
-    }catch(err){
-      console.log('error occured while updating profile',err.message);
+    } catch (err) {
+      console.log('error occured while updating profile', err.message);
       console.error(err.message);
     }
-   }
+  }
 
 }
 
 //function for deleting the profile
-export const deleteProfile = (token,navigate) => {
+export const deleteProfile = (token, navigate) => {
   return async (dispatch) => {
     const toastId = toast.loading('Deleting Account');
-    try{
+    try {
 
-      const response = await apiConnector('DELETE',profile.DELETE_ACCOUNT,
+      const response = await apiConnector('DELETE', profile.DELETE_ACCOUNT,
         //empty body
-         {}, 
-         //header having token
-         {
-             "Content-Type": "multipart/form-data",
-             "Authorization": `Bearer ${token}`
-         }
-    )
+        {},
+        //header having token
+        {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`
+        }
+      )
 
-    if(!response.data.success){
-      throw new Error(response.data.message);
-    }
-    
-    
-    dispatch(setUser(null));
-    dispatch(setToken(null));
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/');
-    toast.dismiss(toastId);
-    toast.success('Profile deleted successfully');
-    
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
 
-    }catch(err){
+
+      dispatch(setUser(null));
+      dispatch(setToken(null));
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      navigate('/');
+      toast.dismiss(toastId);
+      toast.success('Profile deleted successfully');
+
+
+    } catch (err) {
       toast.dismiss(toastId);
       toast.error('error deleting profile');
-      console.log('error occurred while deleting profile',err.message);
+      console.log('error occurred while deleting profile', err.message);
       console.error(err.message);
-      
+
     }
   }
 }
@@ -148,3 +148,4 @@ export async function getUserEnrolledCourses(token) {
   toast.dismiss(toastId)
   return result
 }
+

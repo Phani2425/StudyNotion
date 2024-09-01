@@ -8,7 +8,7 @@ export default function ConfirmationModal(modalData) {
   //what am i doing??? i am setting the reference object to point to the outer div and when someone will click the outer div then only the modal closes
   const clickHandler = (e) => {
     if(e.target === refObj.current){
-      modalData.setshowModal(false);
+      modalData.setshowModal();
     }
   }
 

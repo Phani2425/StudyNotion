@@ -7,6 +7,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.5",
     "concurrently": "^8.2.2",
+    "dateformat": "^5.0.3",
     "gh-pages": "^6.1.1",
     "lottie-web": "^5.12.2",
     "react": "^18.2.0",
@@ -20,6 +21,7 @@
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
     "react-stars": "^2.2.5",
+    "react-super-responsive-table": "^6.0.0",
     "react-type-animation": "^3.2.0",
     "redux": "^5.0.1",
     "web-vitals": "^2.1.4"

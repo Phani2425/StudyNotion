@@ -17,10 +17,10 @@ export default function IconBtn({
         type={type}
       >
         {children ? (
-          <>
+          <div className="flex items-center gap-4">
             <span className={`${outline && "text-yellow-50"}`}>{text}</span>
             {children}
-          </>
+          </div>
         ) : (
           text
         )}
