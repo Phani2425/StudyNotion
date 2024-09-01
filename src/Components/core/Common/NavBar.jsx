@@ -6,19 +6,9 @@ import { FaAngleDown } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropDown from "../Auth/ProfileDropDown";
-// import { apiconnector } from "../../../Services/apiconnector";
-// import { categories } from "../../../Services/apis";
+import { apiConnector } from "../../../Services/apiconnector";
+import { courseEndpoints } from '../../../Services/apis'
 
-const sublinks = [
-  {
-    title: "python",
-    link: "/catalog/python",
-  },
-  {
-    title: "java",
-    link: "/catalog/java",
-  },
-];
 
 const NavBar = () => {
   const { token } = useSelector((state) => {
@@ -36,21 +26,21 @@ const NavBar = () => {
 
   //calling the getallcategories api for getting the created categories from db
 
-  // async function getLinks(){
-  //   try{
-  //     const result = await apiconnector("GET",categories.CATEGORIES_API);
-  //     console.log("printing the result:- ", result);
-  //     setsublinks(result.data.data);
+  async function getLinks(){
+    try{
+      const result = await apiConnector("GET",courseEndpoints.COURSE_CATEGORIES_API);
+      console.log("printing the result:- ", result);
+      setsublinks(result.data.data);
 
-  //   }catch(err){
-  //     console.log("error occured while fetching the data",err.message);
+    }catch(err){
+      console.log("error occured while fetching the data",err.message);
 
-  //   }
-  // }
+    }
+  }
 
-  // useEffect(()=>{
-  //   getLinks();
-  // },[]);
+  useEffect(()=>{
+    getLinks();
+  },[]);
 
   return (
     <div
@@ -90,22 +80,22 @@ const NavBar = () => {
 
                         {/* adding sublink data */}
 
-                        {sublinks.length > 0 ? (
-                          sublinks.map((link, index) => {
+                        {subLinks.length > 0 ? (
+                          subLinks.map((link, index) => {
                             return (
                               <Link
                                 key={index}
                                 className="hover:bg-richblack-100 rounded-md px-3 py-2 z-10"
-                                to={link.link}
+                                to={`/catalog/${link.name}`}
                               >
                                 <p className="text-black font-medium">
-                                  {link.title}
+                                  {link.name}
                                 </p>
                               </Link>
                             );
                           })
                         ) : (
-                          <div className="spinner"></div>
+                          <span className="text-black font-semibold text-xl text-center z-20">No Categories</span>
                         )}
                       </div>
                     </div>

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
 
-import { setCourses, setEditCourse } from "../../../../redux/slices/courseSlice"
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
 import { useState } from "react"
 import { FaCheck } from "react-icons/fa"
@@ -19,7 +18,7 @@ import { COURSE_STATUS } from "../../../../utils/constants"
 import ConfirmationModal from "../../Common/ConfirmationModal"
 
 
-export default function CoursesTable() {
+export default function CoursesTable({courses,setCourses}) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { token } = useSelector((state) => state.auth)
@@ -37,9 +36,6 @@ export default function CoursesTable() {
     setConfirmationModal(null)
     setLoading(false)
   }
-
-  //impporting course state from course slice
-  const {courses} = useSelector((state)=> state.course)
 
   // console.log("All Course ", courses)
 

@@ -16,12 +16,15 @@ const InstructorCourses = () => {
  //getting token which will bee passed to function of service layer and inturn it will be passed to the backend api as "Authorisation header"
  const {token} = useSelector((state) => state.auth);
 
+ //state variable where all courses of him will get stored after fetching
+ const [courses, setCourses] = useState(null);
+
   const fetchAllCoursesForInstructor = async () => {
     setloading(true);
     try{
 
      const fetchedCourses = await getAllCoursesOfInstructor(token);
-     dispatch(setCourses(fetchedCourses));
+     setCourses(fetchedCourses);
      setloading(false);
 
     }catch(err){
@@ -42,7 +45,7 @@ const InstructorCourses = () => {
         (
           <div className='flex flex-col gap-6 items-start p-5'>
               <h1 className='text-richblack-50 text-4xl font-bold'>My Courses</h1>
-              <CoursesTable/>
+              <CoursesTable courses={courses} setCourses={setCourses} />
               <div className='self-end'>
               <IconBtn
               text={'New'}

@@ -44,3 +44,19 @@ export const deleteCourse = async ({courseId},token) => {
         console.error(err.message);
     }
 }
+
+export const getAllCategories = async (token) => {
+    try{
+         const response = await apiConnector('GET', courseEndpoints.COURSE_CATEGORIES_API, null, {
+            'Authorization': `Bearer ${token}`
+         })
+         if (!response.data.success){
+             throw new Error(response.data.message);
+         }
+         return response.data.data;
+    }catch(err){
+        toast.error('Failed to fetch categories')
+        console.log('error occured while fetching categories:- ',err.message);
+        console.error(err.message);
+    }
+}

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import IconBtn from "../Common/IconBtn";
 import { FaEdit } from "react-icons/fa";
+import dateFormat, { masks } from "dateformat";
 
 
 const Profile = () => {
@@ -90,13 +91,13 @@ const Profile = () => {
                 {user?.additionalDetails?.contactNo ?? "Add Contact Number"}
               </p>
             </div>
-            {/* <div>
+            <div>
               <p className="mb-2 text-sm text-richblack-600">Date Of Birth</p>
               <p className="text-sm font-medium text-richblack-5">
-                {formattedDate(user?.additionalDetails?.dateOfBirth) ??
+                {dateFormat(user?.additionalDetails?.dateOfBirth, " mmmm dS, yyyy") ??
                   "Add Date Of Birth"}
               </p>
-            </div> */}
+            </div>
           </div>
         </div>
         </div>

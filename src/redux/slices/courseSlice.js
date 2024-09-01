@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     step:1,
     //now it is null upon fetching courses an array  willl be assigned to it either empty or having some elements
-    courses:null,
+    course:null,
+    //this says us wheather acourse can be edited or not
     editCourse:false,
     paymentLoading:false,
 }
