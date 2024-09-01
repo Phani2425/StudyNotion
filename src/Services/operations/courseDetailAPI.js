@@ -60,3 +60,25 @@ export const getAllCategories = async (token) => {
         console.error(err.message);
     }
 }
+
+export const createCourse = async (token,formData) => {
+    try{
+        const response = await apiConnector('POST', courseEndpoints.CREATE_COURSE_API, formData, {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        toast.success('Course details added successfully');
+        console.log("data from the create course",response.data.data);
+
+        return response.data.data;
+    }catch(err){
+        toast.error('Failed to create course')
+        console.log('error occured while creating course:- ',err.message);
+        console.error(err.message);
+    }
+}

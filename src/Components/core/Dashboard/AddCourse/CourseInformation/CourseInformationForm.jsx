@@ -8,6 +8,10 @@ import ImageUploader  from './ImageUploader';
 import { setStep } from '../../../../../redux/slices/courseSlice';
 import IconBtn from '../../../Common/IconBtn';
 import { MdNavigateNext } from "react-icons/md";
+import toast from 'react-hot-toast';
+import { COURSE_STATUS } from '../../../../../utils/constants';
+import { createCourse } from '../../../../../Services/operations/courseDetailAPI';
+import { setCourse } from '../../../../../redux/slices/courseSlice';
 
 const CourseInformationForm = () => {
 
@@ -66,20 +70,20 @@ const CourseInformationForm = () => {
        //then course me mujhe bohot se values mile honge to ham unko strings se map karwa denge
 
       //  Function Used: setValue is likely a function from a form handling library like react-hook-form. It is used to set the values of form fields programmatically.
-       if (editCourse) {
-        // console.log("data populated", editCourse)
-        setValue("courseTitle", course.courseName)
-        setValue("courseShortDesc", course.courseDescription)
-        setValue("coursePrice", course.price)
-        setValue("courseTags", course.tag)
-        setValue("courseBenefits", course.whatYouWillLearn)
-        setValue("courseCategory", course.category)
-        setValue("courseRequirements", course.instructions)
-        setValue("courseImage", course.thumbnail)
-      }
+      //  if (editCourse) {
+      //   // console.log("data populated", editCourse)
+      //   setValue("courseTitle", course.courseName)
+      //   setValue("courseShortDesc", course.courseDescription)
+      //   setValue("coursePrice", course.price)
+      //   setValue("courseTags", course.tag)
+      //   setValue("courseBenefits", course.whatYouWillLearn)
+      //   setValue("courseCategory", course.category)
+      //   setValue("courseRequirements", course.instructions)
+      //   setValue("courseImage", course.thumbnail)
+      // }
 
       const [TagsArray , setTagsArray]  = useState([]);
-      const [BenifitsArray , setBenifitsArray]  = useState([]);
+      const [InstructionArray , setInstructionArray]  = useState([]);
 
       const keyDownHandler = (e) => {
          if((e.key == 'Enter' || e.key == ',') && e.target.value !== ''){
@@ -94,7 +98,7 @@ const CourseInformationForm = () => {
           setTagsArray([...TagsArray.filter((tag,index) => index !== removeIndex)]);
         }
         else if(type === 'benefit'){
-          setBenifitsArray([...BenifitsArray.filter((benefit,index) => index!== removeIndex)]);
+          setInstructionArray([...InstructionArray.filter((benefit,index) => index!== removeIndex)]);
         }
       }
 
@@ -102,13 +106,47 @@ const CourseInformationForm = () => {
       const refObject = useRef({});
       const AddButtonClickHandler = (e) => {
             if(refObject.current.value !== ''){
-              setBenifitsArray([...BenifitsArray,refObject.current.value]);
+              setInstructionArray([...InstructionArray,refObject.current.value]);
               refObject.current.value = '';
             }
       }
 
-      const submitHandler = async(formData) => {
+      const submitHandler = async(Data) => {
+          const toastid = toast.loading('Loading...');
+          const formData = new FormData();
+          formData.append('courseName', Data.courseTitle);
+          formData.append('courseDescription', Data.courseShortDesc);
+          formData.append('price', Data.coursePrice);
+          formData.append('whatYouWillLearn', Data.courseBenefits);
+          formData.append('category', Data.courseCategory);
+          formData.append('thumbnailImage', ThumbnailFormData);
+          formData.append('status', COURSE_STATUS.DRAFT);
 
+          // Append each tag individually....otherwise if we append this as everyone then all tags or instruction will be stored as a single string and as single element in tag and instructions because  [The FormData object converts arrays to a comma-separated string by default.]
+
+          //but we want our each tag or instruction to be separate element of a array so we will traverse through each element of array and append it to the same field for which an array will be created automatically
+
+          TagsArray.forEach((tag) => {
+            formData.append('tag', tag);
+          });
+
+          // Append each instruction/requirement individually
+          InstructionArray.forEach((instruction) => {
+            formData.append('instructions', instruction);
+          });
+          
+
+          try{
+              const result = await createCourse(token,formData);
+              dispatch(setCourse(result));
+              console.log('new course looks like:- ',result);
+          }catch(err){
+            console.log('error occured while creating course:- ',err.message);
+            console.error(err.message);
+          }finally{
+            toast.dismiss(toastid);
+            dispatch(setStep(2)); // move to next step
+          }
       }
 
   return (
@@ -257,11 +295,11 @@ const CourseInformationForm = () => {
                     
                     <button type='button' className='text-yellow-100 font-semibold text-lg self-start mt-2' onClick={AddButtonClickHandler}>Add</button>
 
-                    <div className={` flex-wrap gap-2 h-fit ${BenifitsArray.length > 0 ? 'flex flex-col' : ' hidden' }`}>
+                    <div className={` flex-wrap gap-2 h-fit ${InstructionArray.length > 0 ? 'flex flex-col' : ' hidden' }`}>
                       {
-                        BenifitsArray.length > 0 && 
+                        InstructionArray.length > 0 && 
                         (
-                          BenifitsArray.map((benifit,index) => 
+                          InstructionArray.map((benifit,index) => 
                             (
                                 <div key={index} className='flex w-fit bg-richblack-700 text-white justify-center items-center gap-2 rounded-2xl px-3 py-1'>
                                     <RxCross2 className='cursor-pointer' onClick={()=> {removeHandler('benefit',index)}}/>

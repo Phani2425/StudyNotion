@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     step:1,
-    //now it is null upon fetching courses an array  willl be assigned to it either empty or having some elements
     course:null,
     //this says us wheather acourse can be edited or not
     editCourse:false,
@@ -17,8 +16,8 @@ const initialState = {
         setStep : (state,value) => {
             state.step = value.payload;
         },
-        setCourses : (state,value)=>{
-            state.courses = value.payload;
+        setCourse : (state,value)=>{
+            state.course = value.payload;
         },
         setEditCourse : (state,value)=>{
             state.editCourse = value.payload;
@@ -34,5 +33,5 @@ const initialState = {
     }
 })
 
-export const { setStep, setCourses, setEditCourse, setPaymentLoading, resetCourseSlice } = courseSlice.actions;
+export const { setStep, setCourse, setEditCourse, setPaymentLoading, resetCourseSlice } = courseSlice.actions;
 export default courseSlice.reducer;

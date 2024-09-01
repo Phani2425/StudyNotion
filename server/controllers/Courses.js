@@ -11,11 +11,11 @@ require('dotenv').config();
 exports. createCourse = async(req,resp) => {
   try{
     //fetch data
-    const {courseName ,courseDescription, whatYouWillLearn, price, category } = req.body;
+    const {courseName ,courseDescription, whatYouWillLearn, price, category,tag,instructions,status } = req.body;
     //fetch image data
     const thumbnail = req.files.thumbnailImage;
     //validate data
-    if(!courseName || !courseDescription || !whatYouWillLearn || !price || !thumbnail){
+    if(!courseName || !courseDescription || !whatYouWillLearn || !price || !tag || !instructions || !status){
         return resp.status(403).json({
             success: false,
             message:'all fields are required',
@@ -43,6 +43,9 @@ exports. createCourse = async(req,resp) => {
         price,
         thumbnail:fileUploadResponse.secure_url,
         category:existingCategory._id,
+        tag,
+        instructions,
+        status
     });
     console.log(newCourse);
 
