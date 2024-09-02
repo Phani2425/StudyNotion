@@ -50,7 +50,7 @@ const Dashboard = () => {
       </div>
 
         <Sidebar setshowModal={setshowModal}/>
-        <div className='min-h-[calc(100vh-3.5rem)] min-w-[calc(100vw-13rem)] absolute left-40'>
+        <div className='min-h-[calc(100vh-3.5rem)] min-w-[calc(100vw-13rem)] absolute left-36'>
             <div className='mx-auto w-11/12 max-w-[1000px] py-10'>
                 <Outlet/> 
             </div>

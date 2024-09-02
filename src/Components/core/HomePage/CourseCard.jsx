@@ -11,12 +11,12 @@ const CourseCard = ({ currentTab }) => {
   }, [currentTab]);
 
   return (
-    <div className=" flex justify-center gap-14">
+    <div className=" flex flex-col lg:flex-row justify-center gap-14">
       {HomePageExplore[currentTab].courses.map((card, index) => {
         return (
           <div
             key={index}
-            className={`w-[330px] lg:w-[27%] ${
+            className={`mx-auto w-11/12 lg:w-[27%] ${
               index === selectedCard ? "bg-white" : "bg-richblack-800"
             } flex flex-col p-6 h-[330px] justify-between`}
             onClick={() => {

@@ -61,7 +61,7 @@ const ContactUsForm = () => {
         <div className="loader"></div>
       ) : (
         <form onSubmit={handleSubmit(customSubmitHandler)}>
-          <div className="flex flex-col gap-4 mt-10 text-white">
+          <div className="flex flex-col gap-4 mt-10 text-white w-[95%] mx-auto">
             <div className="flex justify-between">
               <div className="flex flex-col gap-1 w-[48%]">
                 <label htmlFor="firstName">FirstName</label>

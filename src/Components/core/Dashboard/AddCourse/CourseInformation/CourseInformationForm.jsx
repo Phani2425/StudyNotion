@@ -153,7 +153,7 @@ const CourseInformationForm = () => {
 
 
      <form onSubmit={handleSubmit(submitHandler)} >
-       <div className="flex flex-col gap-4 mt-10 text-white">
+       <div className="flex flex-col gap-4 mt-10 text-white bg-richblack-800 p-6 rounded-lg">
 
 {/* title */}
 

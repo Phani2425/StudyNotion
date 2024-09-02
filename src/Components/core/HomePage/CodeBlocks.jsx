@@ -15,9 +15,9 @@ const CodeBlocks = ({
   codeside
 }) => {
   return (
-    <div className={`flex ${codeside ? 'flex-row-reverse' : 'flex-row'} ${position} my-24 justify-between gap-10 w-9/12 mx-auto `}>
+    <div className={`flex ${codeside ? 'flex-row-reverse' : 'flex-row'} ${position} my-24 justify-between gap-10 w-11/12 lg:w-9/12 mx-auto `}>
       {/* section 1 */}
-      <div className="flex w-[45%] flex-col gap-8">
+      <div className="flex md:w-[45%] flex-col gap-3 md:gap-8">
         <div className="text-4xl font-bold leading-snug">{heading}</div>
         <div className="text-richblack-300 font-bold">{subheading}</div>
 

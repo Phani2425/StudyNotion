@@ -52,7 +52,7 @@ const LearningGridArray = [
 
 const LearningGrid = () => {
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-4 auto-rows-auto mx-auto w-[350px] xl:w-fit">
+    <div className="grid grid-cols-1 lg:grid-cols-4 auto-rows-auto mx-auto w-[350px] xl:w-fit">
       {LearningGridArray.map((box, index) => {
         {
           return box.order < 0 ? (

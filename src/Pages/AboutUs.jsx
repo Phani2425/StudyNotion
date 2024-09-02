@@ -105,7 +105,7 @@ const About = () => {
       <StatsComponenet />
       <section className="mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white">
         <LearningGrid />
-        <ContactFormSection />
+        <div className="border-[1px] border-richblack-300 p-5 w-[95%] lg:w-[50%] mx-auto rounded-lg"><ContactFormSection /></div>
       </section>
 
       <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">

@@ -7,7 +7,7 @@ import Footer from '../Components/core/Common/Footer'
 const ContactUs = () => {
   return (
     <div>
-      <div className='flex flex-row gap-10 justify-center mt-[80px]'>
+      <div className=' lg:w-9/12 mx-auto flex flex-col lg:flex-row gap-7 justify-center mt-[80px]'>
         <ContactDetails/>
         <ContactForm/>
       </div>

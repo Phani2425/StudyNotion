@@ -50,20 +50,20 @@ const Home = () => {
   return (
     <div>
       {/* section 1 */}
-      <div className="relative mx-auto flex flex-col w-11/12 items-center text-white justify-between select-none ">
-        <Link to="/signup" className="m-8">
+      <div className="relative mx-auto flex flex-col w-11/12 items-start md:items-center text-white justify-between select-none ">
+        <Link to="/signup" className=" mt-8 md:m-8">
           <div className="flex gap-2 px-4 py-1 rounded-2xl items-center bg-richblack-800 font-bold text-richblack-200 transition-all duration-200 hover:scale-95 w-fit shadow-md hover:shadow-lg hover:bg-richblack-800 hover:shadow-richblack-600">
             <p className="font-bold">Become an Instructor</p>
             <FaArrowRight size={15} />
           </div>
         </Link>
 
-        <div className="text-center text-4xl font-semibold mt-7 ">
+        <div className="md:text-center text-4xl font-semibold mt-7 ">
           Empower Your Future with{" "}
           <HighlightText text={"Coding Skills"} color={1} />
         </div>
 
-        <div className="mt-4 w-[80%] text-center text-lg font-bold text-richblack-300 ">
+        <div className="mt-4 w-[80%] md:text-center text-lg font-bold text-richblack-300 ">
           With our online coding courses, you can learn at your own pace, from
           anywhere in the world , and get access to wealth of resources.
           Including hands-on projects, quizzes, and personalized feedback from
@@ -96,7 +96,7 @@ const Home = () => {
         <div className="text-white">
           {/* code section 1 */}
           <CodeBlocks
-            position={"lg:flex-row"}
+            position={"flex-col lg:flex-row"}
             heading={
               <>
                 Unlock Your
@@ -115,7 +115,7 @@ const Home = () => {
           />
           {/* code Section 2 */}
           <CodeBlocks
-            position={"lg:flex-row-reverse"}
+            position={" flex-col lg:flex-row-reverse"}
             heading={
               <>
                 Start
@@ -157,8 +157,8 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex flex-wrap  w-9/12 mx-auto h-[300px] justify-between items-center">
-          <div className="text-5xl font-inter font-bold text-richblack-800 lg:w-[45%] leading-tight">
+        <div className="flex flex-wrap w-10/12  lg:w-9/12 mx-auto h-[300px] justify-between items-center">
+          <div className="text-4xl lg:text-5xl font-inter font-bold text-richblack-800 lg:w-[45%] leading-tight">
             Get the skills you need for a{" "}
             <HighlightText text={" Job that is in demand "} color={1} />
           </div>
@@ -172,8 +172,8 @@ const Home = () => {
           </div>
         </div>
 
-        <div className=" w-10/12 mx-auto flex justify-between flex-wrap items-center my-20 px-12">
-          <div className="lg:w-[45%] flex flex-col gap-5">
+        <div className=" w-10/12 mx-auto flex justify-between flex-wrap items-center my-20 lg:px-12">
+          <div className="lg:w-[45%] flex flex-col gap-5 ">
             {timeline.map((elem, index) => {
               return (
                 <div key={index} className=" flex flex-col items-start">
@@ -201,15 +201,15 @@ const Home = () => {
               alt=""
             />
 
-            <div className=" px-4 pl-5 absolute bg-caribbeangreen-700 lg:w-[400px] h-[90px] text-white flex items-center justify-between bottom-[-45px] left-[120px]">
-              <div className=" w-[45%] gap-5 flex  items-center justify-center ">
+            <div className=" px-8  lg:px-4 lg:pl-5 absolute bg-caribbeangreen-700 w-[50%] h-[60%] lg:w-[400px] lg:h-[90px] text-white flex flex-col lg:flex-row items-start  lg:items-center justify-around lg:justify-between right-[5%] bottom-[7%] lg:bottom-[-10%] lg:right-[17%]">
+              <div className=" lg:w-[45%] gap-5 flex items-center justify-center ">
                 <h1 className="font-bold text-3xl"><CountUp end={10} enableScrollSpy  /></h1>
                 <p className="text-caribbeangreen-300 font-semibold">
                   YEARS OF EXPERIENCE
                 </p>
               </div>
-              <div className="w-[1px] h-14 bg-caribbeangreen-300 my-auto"></div>
-              <div className=" w-[45%] gap-4 flex  items-center justify-between">
+              <div className="w-[1px] hidden lg:block h-14 bg-caribbeangreen-300 my-auto"></div>
+              <div className=" lg:w-[45%] gap-5 flex  items-center justify-between">
                 <h1 className="font-bold text-3xl"><CountUp end={50} enableScrollSpy  /></h1>
                 <p className="text-caribbeangreen-400 font-semibold">
                   TYPES OF COURSES

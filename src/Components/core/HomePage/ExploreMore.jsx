@@ -27,7 +27,7 @@ const ExploreMore = () => {
 
 
   return (
-    <div className="flex flex-col gap-6 items-center relative pb-[130px] w-[100%]">
+    <div className="flex flex-col gap-6 items-center relative pb-[930px] lg:pb-[130px] w-[100%]">
       <h1 className="text-5xl font-bold">
         Unlock the <HighlightText text={" Power of Code "} color={0} />
       </h1>
@@ -36,7 +36,7 @@ const ExploreMore = () => {
       </p>
 
       {/* tabs section */}
-      <div className="button-bar flex gap-5 rounded-3xl bg-richblack-800 px-1 py-1 mt-6 border-b border-b-richblack-400 ">
+      <div className="button-bar hidden lg:flex gap-5 rounded-3xl bg-richblack-800 px-1 py-1 mt-6 border-b border-b-richblack-400 ">
 
       <div
       className={`bg-highlight rounded-3xl px-5 py-2 bg-richblack-900 h-[40px] self-center m-1 `}
@@ -61,7 +61,7 @@ const ExploreMore = () => {
       </div>
 
       {/* cards group */}
-      <div className="w-[100%] absolute -bottom-[250px] ">
+      <div className="w-[100%] absolute -bottom-[200px]  lg:-bottom-[250px] ">
         <CourseCard currentTab={currentTab} />
       </div>
     </div>

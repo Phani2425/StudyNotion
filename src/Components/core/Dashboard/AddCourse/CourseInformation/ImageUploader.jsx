@@ -43,7 +43,7 @@ const ImageUploader = ({setThumbnailFormData}) => {
       
      {
         uploaded ? (<img className='w-fit h-fit rounded-lg' src={`${previewSource}`}></img>) : (
-            <FileUploader handleChange={handleChange} types={fileTypes} >
+            <FileUploader handleChange={handleChange} types={fileTypes} hoverTitle={'Drop here'} >
                             <div className='flex flex-col gap-7 items-center'>
         <div className='flex flex-col items-center gap-2 text-richblack-25'>
             <div className='w-10 h-10 rounded-full bg-yellow-900 flex justify-center items-center'><FiUploadCloud size={22} className='text-yellow-100' /></div>
