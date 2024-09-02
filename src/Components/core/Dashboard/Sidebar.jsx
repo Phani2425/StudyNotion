@@ -22,7 +22,7 @@ const Sidebar = ({setshowModal}) => {
 
   return (
        <div className="fixed  ">
-            <div className="flex flex-col gap-5 absolute left-0 h-screen  bg-richblack-700 text-richblack-300 w-52 pt-4">
+            <div className="flex flex-col gap-5 absolute left-0 h-screen  bg-richblack-700 text-richblack-300 w-36 lg:w-40  xl:w-52 pt-4">
       <div className=" flex flex-col py-3 gap-4 transition-all duration-200">
         {sidebarLinks.map((link, index) => {
             //getting the icon form icon name

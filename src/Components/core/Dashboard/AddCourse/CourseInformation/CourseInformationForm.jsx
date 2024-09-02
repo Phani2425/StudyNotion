@@ -170,7 +170,7 @@ const CourseInformationForm = () => {
 
                     {/* errors handling for it */}
 
-                    {errors.courseTitle && <span>Field is required</span>}
+                    {errors.courseTitle && <span className='text-[#D70040]'>Field is required</span>}
                   </div>
 {/* description */}
                   <div className="flex flex-col gap-1">
@@ -186,7 +186,7 @@ const CourseInformationForm = () => {
 
                     {/* errors handling for it */}
 
-                    {errors.courseShortDesc && <span>Field is required</span>}
+                    {errors.courseShortDesc && <span className='text-[#D70040]'>Field is required</span>}
                   </div>
 {/* price */}
                   <div className="flex flex-col gap-1 relative">
@@ -204,12 +204,15 @@ const CourseInformationForm = () => {
 
                     {/* errors handling for it */}
 
-                    {errors.coursePrice && <span>Field is required</span>}
+                    {errors.coursePrice && <span className='text-[#D70040]'>Field is required</span>}
                   </div>
 {/* category */}
                   <div className="flex flex-col gap-1">
                     <label htmlFor='courseCategory'>Category</label>
-                    <select className=" bg-richblack-700 placeholder:text-richblack-300 p-4 rounded-lg border-b-[3px] border-b-richblack-500 focus:outline-none"
+                    <select 
+                    name="courseCategory"
+                    id="courseCategory"
+                    className=" bg-richblack-700 placeholder:text-richblack-300 p-4 rounded-lg border-b-[3px] border-b-richblack-500 focus:outline-none"
                     placeholder="Enter Price"
                     {...register('courseCategory', {required:true})}>
                       {
@@ -219,7 +222,7 @@ const CourseInformationForm = () => {
                       }
                     </select>
                     {
-                      errors.courseCategory && <span>Field is required</span>
+                      errors.courseCategory && <span className='text-[#D70040]'>Field is required</span>
                     }
                   </div>
 {/* tags */}
@@ -255,7 +258,7 @@ const CourseInformationForm = () => {
 
                     {/* errors handling for it */}
 
-                    {errors.courseTitle && <span>Field is required</span>}
+                    {errors.courseTitle && <span className='text-[#D70040]'>Field is required</span>}
                   </div>
 
                   {/* create a separate component for uploading and showing preview of the thumbnail of the course  */}
@@ -276,7 +279,7 @@ const CourseInformationForm = () => {
 
                     {/* errors handling for it */}
 
-                    {errors.courseBenefits && <span>Field is required</span>}
+                    {errors.courseBenefits && <span className='text-[#D70040]'>Field is required</span>}
                   </div>
 
 {/* requirements */}

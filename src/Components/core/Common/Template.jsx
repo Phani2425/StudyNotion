@@ -7,9 +7,9 @@ import HighlightText from '../HomePage/HighlightText';
 
 const Template = ({title,desc1,desc2,image,formtype}) => {
   return (
-    <div className='flex justify-between items-center mx-auto mt-12 mb-8 w-[70%] text-richblack-25 gap-5'>
+    <div className='flex justify-between items-center mx-auto mt-12 mb-8 w-[90%] lg:w-[70%] text-richblack-25 gap-5'>
         {/* left side div */}
-        <div className='w-[45%]'>
+        <div className='w-[99%] lg:w-[45%]'>
 
           <div className='flex flex-col gap-2'>
           <h1 className='text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]'>{title}</h1>
@@ -28,7 +28,7 @@ const Template = ({title,desc1,desc2,image,formtype}) => {
         </div>
 
     {/* right  side div */}
-    <div className='relative max-w-[450px] '>
+    <div className='hidden lg:block relative max-w-[450px] '>
         <img className='w-[458px] h-[400px]' src={frameimg} alt='frame' loading='lazy'></img>
         <img className='w-[458px] h-[390px] absolute top-[-10px] left-[-15px]' src={image} alt='mainImage' loading='lazy'></img>
     </div>

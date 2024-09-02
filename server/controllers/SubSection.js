@@ -4,16 +4,17 @@ const SubSection = require('../models/SubSection');
 const {deleteFileFromCloudinary} = require('../utils/cloudinaryFileUpload');
 require('dotenv').config();
 const {uploadFileToCloudinary} = require('../utils/cloudinaryFileUpload');
+const Course = require('../models/Course');
 
 //controlelr for creating a new section
 exports. createSubSection = async (req, resp) => {
     try{
         //fetch data related to the subsection
-        const {sectionId,title, timeDuration, description } = req.body;
+        const {courseId, sectionId,title, timeDuration, description } = req.body;
         //fetch file or video
         const videoFile = req.files.videoFile;
         //validate all data and file
-        if(!videoFile || !sectionId || !title || !timeDuration || !description){
+        if(!videoFile || !sectionId || !title || !timeDuration || !description || !courseId){
             return resp.status(403).json({
                 success: false,
                 message: 'all fields are required'
@@ -28,12 +29,16 @@ exports. createSubSection = async (req, resp) => {
         const updatedSection = await Section.findByIdAndUpdate(sectionId, { $push: { subSection: newSubsection._id } }, {new:true}).populate('subSection').exec();
         console.log('updated section looks like :- ',updatedSection);
 
+        //getting updated course after this operation
+        const updatedCourse = await Course.findById(courseId).populate({path:'courseContent', populate : {path:'subSection'}}).exec();
+
         //after that return the success response
         return resp.status(201).json({
             success: true,
             message: 'new subsection created successfully',
             data: newSubsection,
             section: updatedSection,
+            course: updatedCourse,
         })
 
 
@@ -121,7 +126,7 @@ exports. createSubSection = async (req, resp) => {
 
 exports.updateSubSection = async (req, res) => {
     try {
-      const { sectionId, subSectionId, title, description } = req.body
+      const {courseId,  sectionId, subSectionId, title, description } = req.body
       const subSection = await SubSection.findById(subSectionId)
   
       if (!subSection) {
@@ -157,11 +162,14 @@ exports.updateSubSection = async (req, res) => {
       )
   
       console.log("updated section", updatedSection)
+
+      const updatedCourse = await Course.findById(courseId).populate({path:'courseContent', populate : {path:'subSection'}}).exec();
   
       return res.json({
         success: true,
         message: "Section updated successfully",
         data: updatedSection,
+        course: updatedCourse,
       })
     } catch (error) {
       console.error(error)
@@ -176,7 +184,7 @@ exports.updateSubSection = async (req, res) => {
   //THIS IS NOT DELETEING FILES FROM CLOUDINARY CHECK IT ONCE :- CHECK THE SYNTAX OF THE DELETING FUNCTION DEFINES IN UTILS
   exports.deleteSubSection = async (req, res) => {
     try {
-      const { subSectionId, sectionId } = req.body
+      const {courseId, subSectionId, sectionId } = req.body
       await Section.findByIdAndUpdate(
         { _id: sectionId },
         {
@@ -216,11 +224,15 @@ exports.updateSubSection = async (req, res) => {
       const updatedSection = await Section.findById(sectionId).populate(
         "subSection"
       )
+
+        //getting updated course after this operation
+        const updatedCourse = await Course.findById(courseId).populate({path:'courseContent', populate : {path:'subSection'}}).exec();      
   
       return res.json({
         success: true,
         message: "SubSection deleted successfully",
         data: updatedSection,
+        course: updatedCourse,
       })
     } catch (error) {
       console.error(error)

@@ -82,3 +82,112 @@ export const createCourse = async (token,formData) => {
         console.error(err.message);
     }
 }
+
+export const createSection = async ({sectionName, courseId},token ) => {
+    try{
+
+        const response = await apiConnector('POST', courseEndpoints.CREATE_SECTION_API, {sectionName, courseId}, {
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        return response.data.course;
+
+    }catch(err){
+        console.log('error occured while creating a section: ',err.message);
+        console.error(err.message);
+    }
+}
+
+export const updateSection = async ({sectionName, sectionId, courseId},token) => {
+    try{
+        const response = await apiConnector('PUT', courseEndpoints.UPDATE_SECTION_API, {sectionName, sectionId,courseId}, {
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        return response.data.course;
+    }catch(err){
+        console.log('error occured while updating a section: ',err.message);
+        console.error(err.message);
+    }
+}
+
+export const deleteSection = async (courseId , sectionId, token) => {
+    try{
+
+        const response = await apiConnector('DELETE', courseEndpoints.DELETE_SECTION_API, {courseId:courseId, sectionId: sectionId}, {
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        return response.data.course;
+
+    }catch(err){
+       console.log('error occured while deleting a section: ',err.message);
+       console.error(err.message);
+    }
+}
+
+export const deleteSubsection =  async (courseId,sectionId,subSectionId,token) => {
+    try{
+        const response = await apiConnector('DELETE', courseEndpoints.DELETE_SUBSECTION_API, {courseId:courseId, sectionId:sectionId, subSectionId: subSectionId}, {
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        return response.data.course;
+    }catch(err){
+        console.log('error occured while deleting a subsection: ',err.message);
+        console.error(err.message);
+    }
+}
+
+export const createSubSection = async (courseId,sectionId,token) => {
+    try{
+        const response = await apiConnector('POST', courseEndpoints.CREATE_SUBSECTION_API, {courseId:courseId, sectionId:sectionId}, {
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        return response.data.course;
+
+    }catch(err){
+        console.log('error occured while creating a subsection: ',err.message);
+        console.error(err.message);
+
+    }
+}
+
+export const updateSubsection = async (courseId, sectionId, subSectionId, subsectionData, token) => {
+    try{
+        const response = await apiConnector('PUT', courseEndpoints.UPDATE_SUBSECTION_API, {courseId:courseId, sectionId:sectionId, subSectionId: subSectionId, ...subsectionData}, {
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        return response.data.course;
+
+    }catch(err){
+        console.log('error occured while updating a subsection: ',err.message);
+        console.error(err.message);
+    }
+}

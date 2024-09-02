@@ -58,9 +58,9 @@ exports.createSection = async (req, resp) => {
 exports. updateSection = async (req, resp) => {
     try{
         //data fetch(name)
-        const {sectionName, sectionId} = req.body;
+        const {sectionName, sectionId ,courseId} = req.body;
         //validate
-        if(!sectionName ||!sectionId){
+        if(!sectionName ||!sectionId || !courseId ){
             return resp.status(403).json({
                 success: false,
                 message:'all fields are required'
@@ -68,11 +68,17 @@ exports. updateSection = async (req, resp) => {
         }
         //make db update
         const updatedSection = await Section.findByIdAndUpdate(sectionId, {sectionName}, {new:true});
+
+        //once section is updated course containing tha section also updated so we will find that course , populate it [most important part][it helps us in frontend a lot][read about it in the buildForm component of AddCourse folder inside the dashboard foolder ][it helps us by making us to store only one value that is updated course and getitng information about all of its section and subsection form there ] and also return the updated course which will be then used in frontend to update the redux state of  'course' varibale and the commponents subscribed to it will also get rerewndered and will show the updated information
+
+        const updatedCourse = await Course.findById(courseId).populate({path:'courseContent', populate : {path:'subSection'}}).exec();
+
         //return response
         return resp.status(200).json({
             success: true,
             message:'section updated successfully',
-            data: updatedSection
+            data: updatedSection,
+            course: updatedCourse,
         })
     }catch(err){
         console.error(err.message);
@@ -125,7 +131,7 @@ exports. updateSection = async (req, resp) => {
             success: true,
             message:'section deleted successfully',
             data: deletedSection,
-            // course: updatedCourse
+            course: updatedCourse
         })
 
     }catch(err){

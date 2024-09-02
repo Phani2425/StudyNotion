@@ -27,7 +27,7 @@ const initialState = {
         },
         resetCourseSlice : (state,value) => {
             state.step = 1;
-            state.courses = null;
+            state.course = null;
             state.editCourse = false;
         }
     }

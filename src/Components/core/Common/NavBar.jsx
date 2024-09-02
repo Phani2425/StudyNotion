@@ -58,7 +58,7 @@ const NavBar = () => {
 
         {/* nav Links */}
         <nav>
-          <ul className="flex gap-6">
+          <ul className="hidden lg:flex gap-6">
             {NavbarLinks.map((link, index) => {
               return (
                 <li key={index}>
@@ -112,7 +112,7 @@ const NavBar = () => {
           </ul>
         </nav>
 
-        <div className="hidden items-center gap-x-4 md:flex">
+        <div className=" items-center gap-x-4 flex">
           {user && user?.accountType !== "Instructor" && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
