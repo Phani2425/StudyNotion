@@ -10,11 +10,11 @@ const Course = require('../models/Course');
 exports. createSubSection = async (req, resp) => {
     try{
         //fetch data related to the subsection
-        const {courseId, sectionId,title, timeDuration, description } = req.body;
+        const {courseId, sectionId,title, description } = req.body;
         //fetch file or video
         const videoFile = req.files.videoFile;
         //validate all data and file
-        if(!videoFile || !sectionId || !title || !timeDuration || !description || !courseId){
+        if(!videoFile || !sectionId || !title || !description || !courseId){
             return resp.status(403).json({
                 success: false,
                 message: 'all fields are required'
@@ -24,7 +24,7 @@ exports. createSubSection = async (req, resp) => {
         const uploadResponse = await uploadFileToCloudinary(videoFile, process.env.CLOUDINARY_FOLDER);//me yaha pe await bhul gaya tha .... ye bohot important hai
 
         //make a entry in db about new subsection from where we will get the id of the subsection
-        const newSubsection = await SubSection.create({title, description, timeDuration, videoUrl: uploadResponse.secure_url});
+        const newSubsection = await SubSection.create({title, description, videoUrl: uploadResponse.secure_url});
         //the insert that id into its parent section
         const updatedSection = await Section.findByIdAndUpdate(sectionId, { $push: { subSection: newSubsection._id } }, {new:true}).populate('subSection').exec();
         console.log('updated section looks like :- ',updatedSection);
@@ -43,7 +43,7 @@ exports. createSubSection = async (req, resp) => {
 
 
     }catch(err){
-        console.log('error ocuured while creating a subsection', err.message);
+        console.log('error ocuured while creating a subsection:-', err.message);
         console.error(err.message);
         resp.status(500).json({
             success: false,
@@ -126,7 +126,7 @@ exports. createSubSection = async (req, resp) => {
 
 exports.updateSubSection = async (req, res) => {
     try {
-      const {courseId,  sectionId, subSectionId, title, description } = req.body
+      const {courseId, subSectionId, title, description } = req.body
       const subSection = await SubSection.findById(subSectionId)
   
       if (!subSection) {
@@ -156,19 +156,12 @@ exports.updateSubSection = async (req, res) => {
   
       await subSection.save()
   
-      // find updated section and return it
-      const updatedSection = await Section.findById(sectionId).populate(
-        "subSection"
-      )
-  
-      console.log("updated section", updatedSection)
 
       const updatedCourse = await Course.findById(courseId).populate({path:'courseContent', populate : {path:'subSection'}}).exec();
   
       return res.json({
         success: true,
         message: "Section updated successfully",
-        data: updatedSection,
         course: updatedCourse,
       })
     } catch (error) {

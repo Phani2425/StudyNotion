@@ -122,7 +122,7 @@ exports.editCourse = async (req, res) => {
           },
         })
         .populate("category")
-        .populate("ratingAndReviews")
+        .populate("ratingAndReview")
         .populate({
           path: "courseContent",
           populate: {

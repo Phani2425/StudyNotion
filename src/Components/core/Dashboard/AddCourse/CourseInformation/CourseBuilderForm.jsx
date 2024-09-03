@@ -34,6 +34,7 @@ const CourseBuilderForm = () => {
 
   const cancelEdit = () => {
     seteditSectionFlag(false);
+    setsectionToBeEdited(null);
     //as we are using useForm hook hence it is important to set the input field empty iif dont want to edit it because the section is already created and saved to db
     setValue('section', '')
   }
@@ -73,10 +74,12 @@ const CourseBuilderForm = () => {
     try{
 
       if(editSectionFlag){
-          result = await updateSection ({sectionName: formData.section,sectionId:sectionToBeEdited,courseid: course._id }, token);
+          result = await updateSection ({sectionName: formData.section,sectionId:sectionToBeEdited,courseId: course._id }, token);
+          console.log('result after update section:- ' ,result);
       }
       else{
            result = await createSection({sectionName: formData.section,courseId:course._id}, token);
+           console.log('result after update section:- ' ,result);
       }
 
       if(!result){
@@ -107,6 +110,20 @@ const CourseBuilderForm = () => {
 
   //then when we click on edit button of shown section the due "separation of data" property of map function i can get the section id which i want to edit... so i will create a state variable which will store the section id i want to edit now... so when i will click on edit button of a section i will set its avlue as the id associated with that section and while calling to updateSection api i will pass that state variable to it 
 
+  //FUNCTION THAT WILL BE PASSED AS PROP WITH THE NESTEDVIEW COMPONENNT AND WILL BE CALLED WHEN SOMEONE CLICKS ON EDIT SECTION BUTTON
+  function handleEditSection (sectionId, sectionName){
+
+    if(sectionToBeEdited === sectionId) {
+      //if it is already editing and user clicks on edit then it should cancel the edit
+      cancelEdit();
+      return;
+    }
+
+    seteditSectionFlag(true);
+    setsectionToBeEdited(sectionId);
+    setValue('section', sectionName);
+  }
+
   return (
     <div className='text-white bg-richblack-800 p-4 flex flex-col gap-5 rounded-lg'>
       <h1 className='text-2xl text-white font-semibold mb-5'>Course Builder</h1>
@@ -126,7 +143,7 @@ const CourseBuilderForm = () => {
             }
               
              {/* button part */}
-             <div>
+             <div className='flex gap-4'>
                   <button type='submit' className='flex self-start mt-5 justify-center items-center gap-2 text-yellow-50 bg-transparent border-2 border-yellow-50 rounded-md px-3 py-2 hover:bg-yellow-50 hover:text-black font-semibold transition-all duration-200 '>{editSectionFlag ? 'Edit Section Name' : 'Create Section'}
                   <IoIosAddCircleOutline size={20} /> </button>
                   {/* button that will apear only when edit flag is true */}
@@ -145,7 +162,7 @@ const CourseBuilderForm = () => {
       {/* nested view section */}
 
       {
-        course.courseContent.length > 0 && (<NestedView/>)
+        course?.courseContent?.length > 0 && (<NestedView handleEditSection={handleEditSection} />)
       }
 
       <div className='flex justify-end gap-3'>
@@ -158,3 +175,22 @@ const CourseBuilderForm = () => {
 }
 
 export default CourseBuilderForm
+
+
+//LETS UNDERSTAND THE FLOW OF THE SECTION CREATION AND EDITING THEM
+
+//intitially the sectionedit flag is false so buttons are there in their noraml look and when i input some text into the input field and click on the button then the form data get registered and a  new section gets created which will be shown in the nestedview component as there we are mapping all the sections of the course and showing them
+
+//so in that componenent beside the section there are section edit and sectio delete buttons . so when i click on delete button then a pop up comes and if i click yes then section get deletd and course from redux gets updated for whihc ui also rerenders as it has subscribed the course state
+
+//this deletion feature will be handled in that <NestedViewComponent> it self
+
+//but  when we click on edit button then the form button in this page i.e courseBuilderForm changes and the section name appears on the input and when we change the section name and clcik the edit button then that section get updated....
+
+//this means someg=how these two components are communicating with each other for which upon clcking on edit button of some section present in <NestedView> component the structure of its parent compoonent changes [button,input field, cancel edit button] etc... and aslo upon submittin by editting the section it also get updated in the <NestedView> component
+
+//so what we will do we will create a funnction and pass that to the <NestedView> component . when someone clicks on edit button of any section the that function is called bby passing the sectionId and the sectionName in it
+
+//the sectionId is allocated to the stateVariable "sectionToBeEdited" so that when the form submitted again the id present in this state varibale get edited
+
+//the sectionName is placed in the inoutFileld for editing and set the statevariable i.e "editSectionFlag" to be tru so that upon submitting the form the updatesection api get called and the section get edited with new name

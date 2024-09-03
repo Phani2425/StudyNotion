@@ -9,8 +9,10 @@ import toast from "react-hot-toast";
 import { setCourse } from "../../../../../redux/slices/courseSlice";
 import { deleteSection } from "../../../../../Services/operations/courseDetailAPI";
 import { deleteSubsection } from "../../../../../Services/operations/courseDetailAPI";
+import SubSectionModal from "./SubSectionModal";
+import ConfirmationModal from '../../../Common/ConfirmationModal'
 
-const NestedView = () => {
+const NestedView = ({handleEditSection}) => {
   //state variables  which track which type of modal we want to open... is it add type(modal for adding a subsection) or view type(modal for only viewing subsection) or edit type (modal for edititng a subsection)
   const [addSubsection, setaddSubsection] = useState(null);
   const [editSubsection, seteditSubsection] = useState(null);
@@ -23,7 +25,7 @@ const NestedView = () => {
   const { course } = useSelector((state) => state.course);
 
   //state variable for confirmation modal
-  const [ConfirmationModal, setConfirmationModal] = useState(null);
+  const [confirmationModal, setconfirmationModal] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -37,6 +39,7 @@ const NestedView = () => {
 
       console.log("printing course after deleting section : -", result);
 
+      setconfirmationModal(null);
       dispatch(setCourse(result));
       toast.dismiss(toastId);
       toast.success("Section deleted successfully");
@@ -72,9 +75,9 @@ const NestedView = () => {
   };
 
   return (
-    <>
-      <div className="bg-richblack-700 p-4 rounded-lg flex flex-col items-center">
-        {course?.courseContent?.map((section) => (
+    <div className="relative">
+      <div className="bg-richblack-700 p-4 rounded-lg flex flex-col ">
+        {course.courseContent.map((section) => (
           // Section Dropdown
           <details key={section._id} open>
             {/* Section Dropdown Content */}
@@ -88,7 +91,7 @@ const NestedView = () => {
               <div className="flex items-center gap-x-3">
                 <button
                   onClick={() =>
-                    handleChangeEditSectionName(
+                    handleEditSection(
                       section._id,
                       section.sectionName
                     )
@@ -98,13 +101,13 @@ const NestedView = () => {
                 </button>
                 <button
                   onClick={() =>
-                    setConfirmationModal({
+                    setconfirmationModal({
                       text1: "Delete this Section?",
                       text2: "All the lectures in this section will be deleted",
                       btn1Text: "Delete",
                       btn2Text: "Cancel",
                       btn1Handler: () => handleDeleteSection(section._id),
-                      btn2Handler: () => setConfirmationModal(null),
+                      btn2Handler: () => setconfirmationModal(null),
                     })
                   }
                 >
@@ -136,14 +139,14 @@ const NestedView = () => {
                   <div className="flex items-center gap-x-3">
                     <button
                       onClick={() => {
-                        seteditSubsection(subSection._id);
+                        seteditSubsection(subSection);
                       }}
                     >
                       <MdEdit className="text-xl text-richblack-300" />
                     </button>
                     <button
                       onClick={() =>
-                        setConfirmationModal({
+                        setconfirmationModal({
                           text1: "Delete this SubSection?",
                           text2:
                             "the lecture of this subsection will be deleted",
@@ -151,7 +154,7 @@ const NestedView = () => {
                           btn2Text: "Cancel",
                           btn1Handler: () =>
                             handleDeleteSubSection(section._id, subSection._id),
-                          btn2Handler: () => setConfirmationModal(null),
+                          btn2Handler: () => setconfirmationModal(null),
                         })
                       }
                     >
@@ -178,16 +181,56 @@ const NestedView = () => {
 
       {/* here we will define the logic of showing different modals */}
 
-      <>
+      
 
       {
-        
+        addSubsection && (
+            <SubSectionModal
+            add={true}
+            setmodalData={setaddSubsection}
+            modalData={addSubsection}
+            />
+        )
+      }
+
+      {
+        viewSubsection && (
+            <SubSectionModal
+                view={true}
+                setmodalData={setviewSubsection}
+                modalData={viewSubsection}
+                />
+        )
+      }
+
+      {
+        editSubsection && (
+            <SubSectionModal
+                edit={true}
+                setmodalData={seteditSubsection}
+                modalData={editSubsection}
+                />
+        )
       }
       
-      </>
+      
+
+      {
+        confirmationModal && (
+            <ConfirmationModal
+              text1={confirmationModal.text1}
+              text2={confirmationModal.text2}
+              btn1Text={confirmationModal.btn1Text}
+              btn2Text={confirmationModal.btn2Text}
+              btn1Handler={confirmationModal.btn1Handler}
+              btn2Handler={confirmationModal.btn2Handler}
+              setshowModal={setconfirmationModal}
+            />
+        )
+      }
 
 
-    </>
+    </div>
   );
 };
 

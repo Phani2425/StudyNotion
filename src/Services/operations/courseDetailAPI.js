@@ -104,14 +104,15 @@ export const createSection = async ({sectionName, courseId},token ) => {
 
 export const updateSection = async ({sectionName, sectionId, courseId},token) => {
     try{
-        const response = await apiConnector('PUT', courseEndpoints.UPDATE_SECTION_API, {sectionName, sectionId,courseId}, {
+        const response = await apiConnector('POST', courseEndpoints.UPDATE_SECTION_API, {sectionName, sectionId,courseId}, {
             'Authorization': `Bearer ${token}`
         });
 
         if(!response.data.success){
             throw new Error(response.data.message);
         }
-
+        
+        console.log(response.data.message);
         return response.data.course;
     }catch(err){
         console.log('error occured while updating a section: ',err.message);
@@ -122,7 +123,7 @@ export const updateSection = async ({sectionName, sectionId, courseId},token) =>
 export const deleteSection = async (courseId , sectionId, token) => {
     try{
 
-        const response = await apiConnector('DELETE', courseEndpoints.DELETE_SECTION_API, {courseId:courseId, sectionId: sectionId}, {
+        const response = await apiConnector('POST', courseEndpoints.DELETE_SECTION_API, {courseId:courseId, sectionId: sectionId}, {
             'Authorization': `Bearer ${token}`
         });
 
@@ -140,7 +141,7 @@ export const deleteSection = async (courseId , sectionId, token) => {
 
 export const deleteSubsection =  async (courseId,sectionId,subSectionId,token) => {
     try{
-        const response = await apiConnector('DELETE', courseEndpoints.DELETE_SUBSECTION_API, {courseId:courseId, sectionId:sectionId, subSectionId: subSectionId}, {
+        const response = await apiConnector('POST', courseEndpoints.DELETE_SUBSECTION_API, {courseId:courseId, sectionId:sectionId, subSectionId: subSectionId}, {
             'Authorization': `Bearer ${token}`
         });
 
@@ -155,9 +156,11 @@ export const deleteSubsection =  async (courseId,sectionId,subSectionId,token) =
     }
 }
 
-export const createSubSection = async (courseId,sectionId,token) => {
+export const createSubSection = async (formData,token) => {
     try{
-        const response = await apiConnector('POST', courseEndpoints.CREATE_SUBSECTION_API, {courseId:courseId, sectionId:sectionId}, {
+        const response = await apiConnector('POST', courseEndpoints.CREATE_SUBSECTION_API, formData, {
+
+            'Content-Type' : 'multipart/form-data',
             'Authorization': `Bearer ${token}`
         });
 
@@ -174,9 +177,11 @@ export const createSubSection = async (courseId,sectionId,token) => {
     }
 }
 
-export const updateSubsection = async (courseId, sectionId, subSectionId, subsectionData, token) => {
+export const updateSubsection = async (formData, token) => {
     try{
-        const response = await apiConnector('PUT', courseEndpoints.UPDATE_SUBSECTION_API, {courseId:courseId, sectionId:sectionId, subSectionId: subSectionId, ...subsectionData}, {
+        const response = await apiConnector('POST', courseEndpoints.UPDATE_SUBSECTION_API, formData, {
+
+            'Content-Type' : 'multipart/form-data',
             'Authorization': `Bearer ${token}`
         });
 
@@ -188,6 +193,29 @@ export const updateSubsection = async (courseId, sectionId, subSectionId, subsec
 
     }catch(err){
         console.log('error occured while updating a subsection: ',err.message);
+        console.error(err.message);
+    }
+}
+
+export const editCourseDetails = async (formData,token) => {
+    try{
+        const response = await apiConnector('POST', courseEndpoints.EDIT_COURSE_API, formData, {
+
+            'Content-Type' : 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        toast.success('Course details updated successfully');
+        console.log("data from the edit course details",response.data.data);
+
+        return response.data.data;
+
+    }catch(err){
+        console.log('error occured while editing course details: ',err.message);
         console.error(err.message);
     }
 }
