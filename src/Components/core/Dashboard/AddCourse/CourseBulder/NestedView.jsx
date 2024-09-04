@@ -97,7 +97,7 @@ const NestedView = ({handleEditSection}) => {
                     )
                   }
                 >
-                  <MdEdit className="text-xl text-richblack-300" />
+                  <MdEdit className="text-xl text-richblack-300 hover:scale-110 hover:text-caribbeangreen-300 transition-all duration-200" />
                 </button>
                 <button
                   onClick={() =>
@@ -111,7 +111,7 @@ const NestedView = ({handleEditSection}) => {
                     })
                   }
                 >
-                  <RiDeleteBin6Line className="text-xl text-richblack-300" />
+                  <RiDeleteBin6Line className="text-xl text-richblack-300 hover:scale-110 transition-all duration-200 hover:text-[#ff0000]" />
                 </button>
                 <span className="font-medium text-richblack-300">|</span>
                 <AiFillCaretDown className={`text-xl text-richblack-300`} />
@@ -142,7 +142,7 @@ const NestedView = ({handleEditSection}) => {
                         seteditSubsection(subSection);
                       }}
                     >
-                      <MdEdit className="text-xl text-richblack-300" />
+                      <MdEdit className="text-xl text-richblack-300 hover:scale-110 hover:text-caribbeangreen-300 transition-all duration-200" />
                     </button>
                     <button
                       onClick={() =>
@@ -158,7 +158,7 @@ const NestedView = ({handleEditSection}) => {
                         })
                       }
                     >
-                      <RiDeleteBin6Line className="text-xl text-richblack-300" />
+                      <RiDeleteBin6Line className="text-xl text-richblack-300 transition-all duration-200 hover:text-[#ff0000]" />
                     </button>
                     <span className="font-medium text-richblack-300">|</span>
                     {/* <AiFillCaretDown className={`text-xl text-richblack-300`} /> */}

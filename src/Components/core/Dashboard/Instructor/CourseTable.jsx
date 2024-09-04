@@ -28,7 +28,7 @@ export default function CoursesTable({courses,setCourses}) {
 
   const handleCourseDelete = async (courseId) => {
     setLoading(true)
-    await deleteCourse({ courseId: courseId }, token)
+    await deleteCourse( courseId , token)
     const result = await getAllCoursesOfInstructor(token)
     if (result) {
       setCourses(result)
@@ -129,19 +129,7 @@ export default function CoursesTable({courses,setCourses}) {
                   <button
                     disabled={loading}
                     onClick={() => {
-                      setConfirmationModal({
-                        text1: "Do you want to delete this course?",
-                        text2:
-                          "All the data related to this course will be deleted",
-                        btn1Text: !loading ? "Delete" : "Loading...  ",
-                        btn2Text: "Cancel",
-                        btn1Handler: !loading
-                          ? () => handleCourseDelete(course._id)
-                          : () => {},
-                        btn2Handler: !loading
-                          ? () => setConfirmationModal(null)
-                          : () => {},
-                      })
+                      setConfirmationModal(true)
                     }}
                     title="Delete"
                     className="px-1 transition-all duration-200 hover:scale-110 hover:text-[#ff0000]"
@@ -149,23 +137,29 @@ export default function CoursesTable({courses,setCourses}) {
                     <RiDeleteBin6Line size={20} />
                   </button>
                 </Td>
+
+                {confirmationModal && <ConfirmationModal 
+         text1= {"Do you want to delete this course?"}
+         text2=
+           {"All the data related to this course will be deleted"}
+         btn1Text= {!loading ? "Delete" : "Loading...  "}
+         btn2Text= {"Cancel"}
+         btn1Handler= {!loading
+           ? () => handleCourseDelete(course._id)
+           : () => {}}
+         btn2Handler= {!loading
+           ? () => setConfirmationModal(null)
+           : () => {}} 
+         setshowModal = {() => {setConfirmationModal(null)}}
+        />}
+
+
               </Tr>
             ))
           )}
         </Tbody>
       </Table>
-      {confirmationModal && <ConfirmationModal 
-         
-            text1='Are you sure you want to delete this course??'
-            text2='Your all lectures will be deleted and all students will get unrolled from this course!!!!'
-            btn1Text={!loading? 'Delete' : 'Loading...  '}
-            btn2Text= 'Cancel'
-            btn1Handler={ ()=> handleCourseDelete(confirmationModal?.courseId)}
-            btn2Handler={()=> setConfirmationModal(null)}
-            setshowModal={()=> setConfirmationModal(false)}
- 
-          
-       />}
+
     </>
   )
 }

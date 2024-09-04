@@ -13,7 +13,7 @@ export default function ConfirmationModal(modalData) {
   }
 
   return (
-    <div ref={refObj} className="fixed inset-0 z-50  !mt-0 grid place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm" onClick={clickHandler}>
+    <div ref={refObj} className="fixed inset-0 z-50  !mt-0 grid place-items-center overflow-auto   backdrop-blur-sm" onClick={clickHandler}>
       <div  className="w-11/12 z-10 max-w-[350px] rounded-lg border border-richblack-400 bg-richblack-800 p-6" >
         <p className="text-2xl font-semibold text-richblack-5">
           {modalData?.text1}

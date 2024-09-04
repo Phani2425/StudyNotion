@@ -15,7 +15,7 @@ export const getAllCoursesOfInstructor = async (token) => {
             throw new Error(response.data.message);
         }
         
-        toast.success('Courses fetched successfully')
+        
         console.log("data from the instructor courses",response.data.data);
 
         return response.data.data;
@@ -25,7 +25,7 @@ export const getAllCoursesOfInstructor = async (token) => {
     }
 }
 
-export const deleteCourse = async ({courseId},token) => {
+export const deleteCourse = async (courseId,token) => {
     try{
         const  response = await apiConnector('DELETE', courseEndpoints.DELETE_COURSE_API, {courseId},
             {
@@ -68,6 +68,8 @@ export const createCourse = async (token,formData) => {
             'Authorization': `Bearer ${token}`
         });
 
+        console.log('response form service layer:- ', response);
+
         if(!response.data.success){
             throw new Error(response.data.message);
         }
@@ -79,6 +81,51 @@ export const createCourse = async (token,formData) => {
     }catch(err){
         toast.error('Failed to create course')
         console.log('error occured while creating course:- ',err.message);
+        console.error(err.message);
+    }
+}
+
+
+export const editCourseDetails = async (formData,token) => {
+    try{
+        const response = await apiConnector('POST', courseEndpoints.EDIT_COURSE_API, formData, {
+
+            'Content-Type' : 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        toast.success('Course details updated successfully');
+        console.log("data from the edit course details",response.data.data);
+
+        return response.data.data;
+
+    }catch(err){
+        console.log('error occured while editing course details: ',err.message);
+        console.error(err.message);
+    }
+}
+
+export const getCourseDetails = async (courseId) => {
+    try{
+
+        const response = await apiConnector('POST', courseEndpoints.COURSE_DETAILS_API ,{courseId})
+
+        console.log('response is: - ',response);
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        console.log("data from the get course details",response.data.courseDetail);
+
+        return response.data.courseDetail;
+
+    }catch(err){
+        console.log('error occured while getting course details: ',err.message);
         console.error(err.message);
     }
 }
@@ -197,25 +244,3 @@ export const updateSubsection = async (formData, token) => {
     }
 }
 
-export const editCourseDetails = async (formData,token) => {
-    try{
-        const response = await apiConnector('POST', courseEndpoints.EDIT_COURSE_API, formData, {
-
-            'Content-Type' : 'multipart/form-data',
-            'Authorization': `Bearer ${token}`
-        });
-
-        if(!response.data.success){
-            throw new Error(response.data.message);
-        }
-
-        toast.success('Course details updated successfully');
-        console.log("data from the edit course details",response.data.data);
-
-        return response.data.data;
-
-    }catch(err){
-        console.log('error occured while editing course details: ',err.message);
-        console.error(err.message);
-    }
-}

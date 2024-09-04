@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import { COURSE_STATUS } from '../../../../../utils/constants';
 import { createCourse } from '../../../../../Services/operations/courseDetailAPI';
 import { setCourse } from '../../../../../redux/slices/courseSlice';
+import { editCourseDetails } from '../../../../../Services/operations/courseDetailAPI';
 
 const CourseInformationForm = () => {
 
@@ -23,14 +24,9 @@ const CourseInformationForm = () => {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: {errors, isSubmitSuccessful}
    } = useForm();
-
-   useEffect(()=> {
-     reset({
-
-     })
-   }, [reset, isSubmitSuccessful]);
 
    //acquiring token to send it in header for authentication and authorisation
    const {token} = useSelector((state)=> state.auth);
@@ -70,17 +66,17 @@ const CourseInformationForm = () => {
        //then course me mujhe bohot se values mile honge to ham unko strings se map karwa denge
 
       //  Function Used: setValue is likely a function from a form handling library like react-hook-form. It is used to set the values of form fields programmatically.
-      //  if (editCourse) {
-      //   // console.log("data populated", editCourse)
-      //   setValue("courseTitle", course.courseName)
-      //   setValue("courseShortDesc", course.courseDescription)
-      //   setValue("coursePrice", course.price)
-      //   setValue("courseTags", course.tag)
-      //   setValue("courseBenefits", course.whatYouWillLearn)
-      //   setValue("courseCategory", course.category)
-      //   setValue("courseRequirements", course.instructions)
-      //   setValue("courseImage", course.thumbnail)
-      // }
+       if (editCourse) {
+        // console.log("data populated", editCourse)
+        setValue("courseTitle", course.courseName)
+        setValue("courseShortDesc", course.courseDescription)
+        setValue("coursePrice", course.price)
+        setValue("courseTags", course.tag)
+        setValue("courseBenefits", course.whatYouWillLearn)
+        setValue("courseCategory", course.category)
+        setValue("courseRequirements", course.instructions)
+        setValue("courseImage", course.thumbnail)
+      }
 
       const [TagsArray , setTagsArray]  = useState([]);
       const [InstructionArray , setInstructionArray]  = useState([]);
@@ -111,7 +107,86 @@ const CourseInformationForm = () => {
             }
       }
 
+      const handleEditCourse = async(Data) => {
+        try{
+          const formData = new FormData();
+
+          formData.append('courseId', course._id);
+
+          if(Data.courseTitle !== course.courseName){
+              formData.append('courseName', Data.courseTitle);
+          }
+          if(Data.courseDescription!== course.courseDescription){
+              formData.append('courseDescription', Data.courseDescription);
+          }
+          if(Data.price!== course.price){
+              formData.append('price', Data.coursePrice);
+          }
+          if(Data.whatYouWillLearn!== course.whatYouWillLearn){
+              formData.append('whatYouWillLearn', Data.courseBenefits);
+          }
+          if(Data.courseTags!== course.tag){
+            TagsArray.forEach((tag) => {
+              formData.append('tag', tag);
+            });
+          }
+          if(Data.courseCategory!== course.category){
+              formData.append('category', Data.courseCategory);
+          }
+          if(Data.instructions!== course.instructions){
+            InstructionArray.forEach((instruction) => {
+              formData.append('instructions', instruction);
+            });
+          }
+
+          const response = await editCourseDetails(formData,token);
+          
+          if(response){
+            dispatch(setCourse(response));
+            dispatch(setStep(2));
+          }
+
+        }catch(e){
+          console.log("Error in editing course", e.message);
+          toast.error('Error in editing course');
+        }
+      }
+
+      const isFormUpdated = () => {
+
+        const currentValues = getValues();
+        if(
+          course.courseName !== currentValues.courseTitle ||
+          course.courseDescription!== currentValues.courseShortDesc ||
+          course.price!== currentValues.coursePrice ||
+          course.whatYouWillLearn!== currentValues.courseBenefits ||
+          course.tag.toString()!== currentValues.courseTags.toString() ||
+          course.category!== currentValues.courseCategory ||
+          course.instructions.toString()!== currentValues.courseRequirements.toString()
+
+        ){
+          return true;
+        }
+
+        return false;
+      }
+
       const submitHandler = async(Data) => {
+
+          //agar form edit mode me hai abhi 
+          if(editCourse){
+            //if there is no change in form then show error message
+            if(!isFormUpdated()){
+              toast.error('No changes made to the form');
+              return;
+            }
+            else{
+               handleEditCourse(Data);
+               return;
+            }
+          }
+
+
           const toastid = toast.loading('Loading...');
           const formData = new FormData();
           formData.append('courseName', Data.courseTitle);
@@ -135,7 +210,7 @@ const CourseInformationForm = () => {
             formData.append('instructions', instruction);
           });
           
-
+  
           try{
               const result = await createCourse(token,formData);
               dispatch(setCourse(result));

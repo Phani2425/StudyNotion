@@ -5,6 +5,7 @@ const Section = require('../models/Section');
 const Category = require('../models/Category');
 const { uploadFileToCloudinary } = require('../utils/cloudinaryFileUpload');
 require('dotenv').config();
+const convertSecondsToDuration = require('../utils/SecToDuration');
 
 //controller for creation  of a course
 

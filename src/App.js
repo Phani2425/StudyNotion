@@ -23,7 +23,7 @@ import StudentOnlyRoute from './Components/core/Auth/StudentOnlyRoute'
 import InstructorOnlyRoute from './Components/core/Auth/InstructorOnlyRoute'
 import InstructorCourses from './Components/core/Dashboard/Instructor/InstructorCourses'
 import AddCourse from './Components/core/Dashboard/AddCourse'
-
+import EditCourse from './Components/core/Dashboard/EditCourse/index'
 
 const App = () => {
 
@@ -56,6 +56,7 @@ const App = () => {
             <Route path='/dashboard/cart' element={<StudentOnlyRoute><Cart/></StudentOnlyRoute>}/>
             <Route path='/dashboard/my-courses' element={<InstructorOnlyRoute><InstructorCourses/></InstructorOnlyRoute>}/>
             <Route path='/dashboard/add-course' element={<InstructorOnlyRoute><AddCourse/></InstructorOnlyRoute>}/>
+            <Route path='/dashboard/edit-course/:courseId' element={<InstructorOnlyRoute><EditCourse/></InstructorOnlyRoute>}/>
             
         </Route>
         
