@@ -101,7 +101,7 @@ const Catalog = () => {
             <div>
               <CourseSlider
                 Courses={catalogPageData?.selectedCategory?.courses}
-              />
+              /> 
             </div>
           </div>
           {/* Section 2 */}

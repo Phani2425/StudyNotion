@@ -9,7 +9,6 @@ const Course_Card = ({course, Height}) => {
     const [avgReviewCount, setAvgReviewCount] = useState(0);
 
     useEffect(()=> {
-        console.log('course going for average rating:- ',course);
         const count = getAverageRating(course.ratingAndReview);
         setAvgReviewCount(count);
     },[course])

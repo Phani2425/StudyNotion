@@ -199,7 +199,7 @@ exports. getCourseDetails = async (req, resp) => {
                                                                 )
                                                              .populate({path: 'studentsEnrolled'})
                                                              .populate({path: 'ratingAndReview'})
-                                                             .populate({path:'instructor'})
+                                                             .populate({path:'instructor',populate:{path:'additionalDetails'}})
                                                              .populate({path:'category'})
                                                              .exec();
 
