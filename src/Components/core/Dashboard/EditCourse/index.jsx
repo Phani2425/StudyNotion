@@ -47,7 +47,7 @@ const EditCourse = () => {
 
 
   return (
-    <div className='flex flex-col items-center gap-5'>
+    <div className='flex flex-col items-center gap-5 w-full'>
         <h1 className='text-richblack-50 font-bold text-3xl'>Edit Course</h1>
 
         {

@@ -24,6 +24,7 @@ import InstructorOnlyRoute from './Components/core/Auth/InstructorOnlyRoute'
 import InstructorCourses from './Components/core/Dashboard/Instructor/InstructorCourses'
 import AddCourse from './Components/core/Dashboard/AddCourse'
 import EditCourse from './Components/core/Dashboard/EditCourse/index'
+import Catalog from './Pages/Catalog'
 
 const App = () => {
 
@@ -59,6 +60,8 @@ const App = () => {
             <Route path='/dashboard/edit-course/:courseId' element={<InstructorOnlyRoute><EditCourse/></InstructorOnlyRoute>}/>
             
         </Route>
+
+        <Route path='/catalog/:catalogName' element={<Catalog/>}/>
         
 
      </Routes>

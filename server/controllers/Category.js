@@ -95,18 +95,17 @@ exports.categoryPageDetails = async (req, res) => {
         .json({ success: false, message: "Category not found" })
     }
     // Handle the case when there are no courses
-    if (selectedCategory.courses.length === 0) {
-      console.log("No courses found for the selected category.")
-      return res.status(404).json({
-        success: false,
-        message: "No courses found for the selected category.",
-      })
-    }
+    // if (selectedCategory.courses.length === 0) {
+    //   console.log("No courses found for the selected category.")
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "No courses found for the selected category.",
+    //   })
+    // }
 
     // Get courses for other categories
-    const categoriesExceptSelected = await Category.find({
-      _id: { $ne: categoryId },
-    })
+    const categoriesExceptSelected = await Category.find({_id: { $ne: categoryId }})
+    console.log('categoryexcluding', categoriesExceptSelected);
     let differentCategory = await Category.findOne(
       categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]
         ._id

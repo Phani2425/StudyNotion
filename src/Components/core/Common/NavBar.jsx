@@ -74,9 +74,9 @@ const NavBar = () => {
                       />
 
                       {/* creating modal */}
-                      <div className="invisible absolute left-[50%] top-[50%] flex flex-col rounded-lg bg-richblack-5 px-2 py-3 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 w-[300px] -translate-x-[40%] translate-y-[40%] z-10 ">
+                      <div className="invisible absolute left-[50%] -top-[135%] flex flex-col rounded-lg bg-richblack-5 px-2 py-3 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 w-[300px] -translate-x-[40%] translate-y-[40%] z-10 ">
                         {/* diamond shape of modal */}
-                        <div className="absolute left-[47%] -top-[10%]  h-6 w-6 rotate-45 bg-richblack-5 opacity-0 group-hover:opacity-100 rounded-md transition-all duration-150 "></div>
+                        <div className="absolute left-[47%] -top-[5%]  h-6 w-6 rotate-45 bg-richblack-5 opacity-0 group-hover:opacity-100 rounded-md transition-all duration-150 "></div>
 
                         {/* adding sublink data */}
 
@@ -88,7 +88,7 @@ const NavBar = () => {
                                 className="hover:bg-richblack-100 rounded-md px-3 py-2 z-10"
                                 to={`/catalog/${link.name}`}
                               >
-                                <p className="text-black font-medium">
+                                <p className="text-black font-semibold">
                                   {link.name}
                                 </p>
                               </Link>

@@ -55,8 +55,8 @@ exports. createCourse = async(req,resp) => {
     console.log(response);
 
     //make db entry in Category model
-    const courseInCategory = await Category.findByIdAndUpdate(category, {$push : {course : response._id}}, {new:true}).populate('courses').exec();
-    console.log(courseInCategory);
+    const courseInCategory = await Category.findByIdAndUpdate(category, {$push : {courses : newCourse._id}}, {new:true}).populate('courses').exec();
+    console.log('course pushed to category:- ',courseInCategory);
     
     //return response 
     resp.status(200).json({
