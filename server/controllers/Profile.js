@@ -3,6 +3,7 @@ const Profile = require('../models/Profile');
 const Course = require('../models/Course');
 const CourseProgress = require('../models/CourseProgress');
 const { uploadFileToCloudinary } = require('../utils/cloudinaryFileUpload');
+const {convertSecondsToDuration} = require('../utils/SecToDuration');
 
 //controlelr for creating profile or in other terms adding additional details to the user data
 //but here wew ill be just updating the profile as we have already created a profile while creating a user and thhat  profile had null data

@@ -14,6 +14,7 @@ export default function EnrolledCourses() {
   const getEnrolledCourses = async () => {
     try {
       const res = await getUserEnrolledCourses(token);
+      console.log('response: -', res);
 
       setEnrolledCourses(res);
     } catch (error) {
@@ -31,7 +32,7 @@ export default function EnrolledCourses() {
         <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
           <div className="loader"></div>
         </div>
-      ) : !enrolledCourses.length ? (
+      ) : enrolledCourses.length===0 ? (
         <p className="grid h-[10vh] w-full place-content-center text-richblack-5">
           You have not enrolled in any course yet.
           {/* TODO: Modify this Empty State */}

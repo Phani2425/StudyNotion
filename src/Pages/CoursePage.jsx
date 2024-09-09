@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getCourseDetails } from '../Services/operations/courseDetailAPI';
 import RatingStars from '../Components/core/Common/RatingStars';
 import { getAverageRating } from '../utils/avgRating';
@@ -7,6 +7,8 @@ import CourseBuyCard from '../Components/core/CoursePage/CourseBuyCard';
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineLiveTv } from "react-icons/md";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
+import ConfirmationModal from "../Components/core/Common/ConfirmationModal";
+import Footer from '../Components/core/Common/Footer';
 
 const CoursePage = () => {
 
@@ -14,6 +16,10 @@ const CoursePage = () => {
   const [course, setcourse] = useState(null);
   const[loading,setloading] = useState(false); 
   const [avgReviewCount, setAvgReviewCount] = useState(0);
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const navigate = useNavigate();
+
+  const [openSectionsArray, setopenSectionsArray] = useState([]);
 
   const fetchCourseDetails = async (courseId) => {
     setloading(true);  // show loading state before fetching data
@@ -53,7 +59,16 @@ const CoursePage = () => {
 
 
   if(loading) {
-    return (<div className='h-full w-full flex justify-center items-center'><div className='loading'></div></div>)
+    return (<div className='h-full w-full flex justify-center items-center'><div className='loader'></div></div>)
+  }
+
+  const isOpen = (index) => {
+    if(openSectionsArray.length === 0){
+      return false;
+    }
+    else{
+      return openSectionsArray.includes(index) ? true : false
+    }
   }
 
 
@@ -74,7 +89,7 @@ const CoursePage = () => {
       </div>
    </div>
    <div className='absolute w-[30%] h-fit p-4 bg-richblack-700 right-0 top-6'>
-      <CourseBuyCard course={course}/>
+      <CourseBuyCard course={course} setConfirmationModal={setConfirmationModal}/>
    </div>
 
 </div>
@@ -93,12 +108,18 @@ const CoursePage = () => {
      <h1 className='text-2xl font-semibold'>Course Content</h1>
      <div className='flex justify-between items-center'>
      <p>{`${course?.courseContent?.length} section(s) ${(course?.courseContent?.flatMap((section)=> {return section.subSection}))?.length} lecture(s) 10s total length`}</p>
-     <div className='text-yellow-50'>Collapse all sections</div>
+     <div className='text-yellow-50 cursor-pointer' onClick={()=>{
+      console.log('collapsing all sections');
+      setopenSectionsArray([]);
+      console.log('printing the arra7y:- ', openSectionsArray)}}>Collapse all sections</div>
      </div>
      
      <div>
         {course?.courseContent?.map((section,index) => (
-          <details>
+          <details key={index}  open={isOpen(index)} onClick={()=>{
+            console.log(openSectionsArray);
+            setopenSectionsArray(prevSections => prevSections.includes(index)? prevSections.filter(i => i!== index) : [...prevSections, index]);
+          }}>
             <summary className='flex px-4 py-3 gap-3 items-center cursor-pointer bg-richblack-600 justify-between'>
             <div className='flex gap-2 items-center '>
             <MdKeyboardArrowDown size={24} />
@@ -112,17 +133,15 @@ const CoursePage = () => {
 
             <div className='flex flex-col gap-2'>
               {section?.subSection?.map((subSection,index) => (
-                <div className='bg-richblack-900 px-4 py-3' key={index}>
-                    <details>
-                        <summary className='flex gap-3'>
+                
+                    <div className='bg-richblack-900 px-4 py-3 flex-col gap-1' key={index} >
+                        <div className='flex gap-3' onClick={(e)=>{e.stopPropagation()}}>
                         <MdOutlineLiveTv />
                         <p>{subSection?.title}</p>
-                        <MdOutlineKeyboardArrowUp size={21} />
-                        </summary>
-                        <p>{subSection?.subSectionDescription}</p>
-                    </details>
-                  <p className='text-richblack-300 mx-6'>{subSection?.description}</p>
-                </div>
+                        </div>
+                        <p className='text-richblack-300 mx-6'>{subSection?.subSectionDescription}</p>
+                    </div>
+               
               ))}
             </div>
           </details>
@@ -141,6 +160,20 @@ const CoursePage = () => {
     </div>
  </div>
 </div>
+
+<Footer/>
+
+  {
+    confirmationModal && 
+    (<ConfirmationModal
+    text1='You are not loged in'
+    text2="login to proceed"
+    btn1Text='Login'
+    btn1Handler = {() => {navigate('/login')}}
+    btn2Text = 'Cancel'
+    btn2Handler = {()=>{setConfirmationModal(false)}}
+    />)
+  }
 
 
        </>

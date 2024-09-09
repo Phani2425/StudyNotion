@@ -6,199 +6,131 @@ const {courseEnrollmentEmail} = require('../mail/templates/courseEnrollmentEmail
 const {paymentSuccessEmail} = require('../mail/templates/paymentSuccessEmail');
 const {sendEmail} = require('../utils/mailSender');
 const mongoose = require('mongoose');
+const { response } = require('express');
 require('dotenv').config();
 
-exports. capturePayment = async (req,resp) => {
+//New code for payment for multiple products
+
+exports. capturePayments = async(req,resp) => {
+
+   const {courses} = req.body;
+   const {userId} = req.user;
+
+   if(courses.length === 0){
+    return response.status(404).json({
+      success: false,
+      message: 'No courses selected for payment'
+    })
+   }
+
+   let totalAmount = 0;
+
+   for(const course_id of courses){
+    let course;
     try{
-        //fetch data [courseId and userId]
-        const  {courseId} = req.body;
-        const userId = req.user.id;
-        //validate
-        //as i know userId will surely come so i will only check courseId
-         if(!courseId){
-            return resp.status(403).json({
-                success: false,
-                message: 'course id is required'
-            })
-         }
-        //valid course details
-        const course = await Course.findById(courseId);
-        if(!course){
-            return resp.status(403).json({
-                success: false,
-                message: 'course not found'
-            })
-        }
-        //check if the user has already purchased the course and doing it again by mistake
-        //but problem is for finding the user id in courseEnrolled field of a course i should have the userId in objectId type
-        //but currently i have userId as string...........so first lets convert that
-        const uid = new mongoose.Types.ObjectId(userId);
-        const isEnrolled = course.studentsEnrolled.includes(uid);
-        if(isEnrolled){
-            return resp.status(403).json({
-                success: false,
-                message: 'you have already enrolled for this course'
-            })
-        }
-        //create an order
-        const amount = course.price;
-        const currency = 'INR';
-
-        const options = {
-            amount: amount*100,
-            currency,
-            receipt: Math.random(Date.now()).toString(),
-            notes:{
-                courseId: courseId,
-                userId: userId
-            }
-        }
-
-        try{
-            //initiate payment using razorpay
-           const orderInfo = await RpInstance.orders.create(options);
-           console.log(orderInfo);
-
-            //return response
-           return resp.status(200).json({
-            success: true,
-            message: 'payment initiated successfully',
-            data: orderInfo,
-            orderId:orderInfo.id,
-            currency:orderInfo.currency,
-            amount:orderInfo.amount,
-            courseName:course.courseName,
-            courseDescription:course.courseDescription,
-            thumbnaill:course.thumbnail,
-
-           })
-
-        }catch(error){
-           console.log("error creating order");
-           console.error(err.message);
-           return resp.status(500).json({
-               success: false,
-               message: 'internal server error',
-               error: err.message
-           })
-        }
-
-    }catch(err){
-        console.log('error occured while capturing payment: ' + err.message);
-        resp.status(500).json({
-            success: false,
-            message: 'internal server error',
-            error: err.message
+      course = await Course.findById(course_id);
+      if(!course){
+        return response.status(404).json({
+          success: false,
+          message: `Course not found with id: ${course_id}`
         })
-        
-    }
-}
+      }
 
-//controller for verifying the signature
-exports. verifyPayment = async (req,resp) => {
-    try{
-        const webHookSecret = process.env.WEB_HOOK_SECRET;
-        const signature = req.headers['x-razorpay-signature'];
-
-        //hashing the webHookSecret for matching it with signature
-        //step:-1
-        const SHAsum = crypto.createHmac('sha256', webHookSecret);
-        //step:2
-        SHAsum.update(JSON.stringify(req.body));
-        //step:-3
-        const digest = SHAsum.digest('hex');
-
-    try{
-        //now we will match these
-        //it have potential of throwing error so we will use try catch block here
-
-        if(digest === signature){
-            console.log('signature matched');
-            //now we will perform some required actions
-            //like updating the course status, sending emails, etc.
-            //ye call frontend se nehi razor pay se aa raha hai so ham yaha pe req me kuch bhej nehi sakte
-            //tophir userId aur courseId kaha se layenge??? ------yaad karo hamne order create karte wakt notes me userId aur courseId bheja tha .....waha se layenge......
-            const {userId, courseId} = req.body.payload.payment.entity.notes;
-            //updatin course
-            const updatedCourse = await Course.findByIdAndUpdate(courseId, {$push : {studentsEnrolled: userId}}, {new:true});
-            console.log(updatedCourse);
-
-            //updating student
-            const updatedStudent = await User.findByIdAndUpdate(userId, {$push: {courses : courseId}}, {new:true});
-            console.log(updatedStudent);
-
-            // send confiramtion Mail [check it once]
-            const mailResponse = await sendEmail(updatedStudent.email, "Course purchased succesfully!",courseEnrollmentEmail(updatedCourse.courseName,updatedStudent.firstName) );
-            console.log(mailResponse);
-
-            //for now i will return success
-            return resp.status(200).json({
-                success: true,
-                message: 'signature matched successfully',
-                updatedCourse,
-                updatedStudent,
-                emailResponse: mailResponse,
-            })
-        }else{
-            console.log('signature did not match');
-            return resp.status(400).json({
-                success: false,
-                message: 'signature did not match'
-            })
-        }
+      //if we got the course the first ii hhave to check if the student is not already enrolled in the course
+      const uid = new mongoose.Types.ObjectId(userId);
+      if(course.studentsEnrolled.includes(uid)){
+        return response.status(403).json({
+          success: false,
+          message: `Student is already enrolled in course: ${course_id}`
+        })
+      }
+      //agar sab sahi raha to total amount cal karlo
+      totalAmount += course.price;
     }catch(err){
-       console.log('error occured during signature matching and database updation',err.message);
-       resp.status(500).json({
+      console.error(err.message);
+      return resp.status(500).json({
         success: false,
-        message: 'internal server error',
+        message: 'Internal server error',
         error: err.message
+      })
+    }
+   }
+
+   const options = {
+    amount:totalAmount*100,
+    currency:'INR',
+    reciept: Math.random( Date.now()).toString(),
+   }
+
+   //now using this option we will create our order
+   try{
+
+    const orderInfo = await RpInstance.orders.create(options);
+
+    console.log('orderInfo  is: -' , orderInfo);
+
+    resp.status(200).json({
+      success:true,
+      message: 'Order created successfully',
+      data: orderInfo
+    })
+
+   }catch(err){
+       console.log('error occured during order creation in payment section : -', err)
+       console.error(err);
+       return resp.status(500).json({
+           success: false,
+           message: 'Internal server error',
+           error: err
        })
-    }
+   }
 
-    }catch(err){
-        console.log('error occured while verifying signature: ' + err.message);
-        resp.status(500).json({
-            success: false,
-            message: 'internal server error',
-            error: err.message
-        })
-    }
 }
 
-//ADDED IN LATER STAGE SO IT NEEDS AREVIEW AND REVISION AS IT MIGHT HAVE ERRORS
 
-// // Send Payment Success Email
-exports. sendPaymentSuccessEmail = async (req, res) => {
-  const { orderId, paymentId, amount } = req.body;
+exports. verifyPayment = async(req, resp) => {
+    const razorpay_order_id = req.body?.razorpay_order_id;
+    const razorpay_payment_id = req.body?.razorpay_payment_id;
+    const razorpay_signature = req.body?.razorpay_signature;
+    const courses = req.body?.courses;
+    const {userId} = req.user;
 
-  const userId = req.user.id
+    //validation
+    if(!razorpay_signature || !courses || !razorpay_payment_id || !razorpay_order_id || !userId){
+      resp.status(400).json({
+        success: false,
+        message: 'All fields are required and your payment failed....'
+      })
+    }
 
-  if (!orderId || !paymentId || !amount || !userId) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Please provide all the details" })
-  }
+    let body = razorpay_order_id + "|" + razorpay_payment_id;
 
-  try {
-    const enrolledStudent = await User.findById(userId);
+    const expectedSignature = crypto.createHmac('sha256',process.env.RAZORPAY_KEY_SECRET).update(body.toString()).digest("hex");
 
-    await sendEmail(
-      enrolledStudent.email,
-      `Payment Received`,
-      paymentSuccessEmail(
-        `${enrolledStudent.firstName} ${enrolledStudent.lastName}`,
-        amount / 100,
-        orderId,
-        paymentId
-      )
-    )
-  } catch (error) {
-    console.log("error in sending mail", error)
-    return res
-      .status(400)
-      .json({ success: false, message: "Could not send email" })
-  }
+    if(expectedSignature === razorpay_signature){
+      //enroll kardo student ko
+
+      await enrollStudents(courses, userId, resp);
+
+      //return resp
+      return resp.status(200).json({
+        success: true,
+        message: 'Payment verified',
+        data: {
+          userId: userId,
+          courses: courses
+        }
+      })
+    }
+
+    //else
+    return resp.status(400).json({
+      success: false,
+      message: 'Payment verification failed',
+
+    })
 }
+
 
 // enroll the student in the courses
 const enrollStudents = async (courses, userId, res) => {
@@ -259,6 +191,211 @@ const enrollStudents = async (courses, userId, res) => {
     }
   }
 }
+
+
+//ADDED IN LATER STAGE SO IT NEEDS AREVIEW AND REVISION AS IT MIGHT HAVE ERRORS
+
+// // Send Payment Success Email
+exports. sendPaymentSuccessEmail = async (req, res) => {
+  const { orderId, paymentId, amount } = req.body;
+
+  const userId = req.user.id
+
+  if (!orderId || !paymentId || !amount || !userId) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Please provide all the details" })
+  }
+
+  try {
+    const enrolledStudent = await User.findById(userId);
+
+    await sendEmail(
+      enrolledStudent.email,
+      `Payment Received`,
+      paymentSuccessEmail(
+        `${enrolledStudent.firstName} ${enrolledStudent.lastName}`,
+        amount / 100,
+        orderId,
+        paymentId
+      )
+    )
+  } catch (error) {
+    console.log("error in sending mail", error)
+    return res
+      .status(400)
+      .json({ success: false, message: "Could not send email" })
+  }
+}
+
+
+
+
+
+
+
+
+
+
+// exports. capturePayment = async (req,resp) => {
+//     try{
+//         //fetch data [courseId and userId]
+//         const  {courseId} = req.body;
+//         const userId = req.user.id;
+//         //validate
+//         //as i know userId will surely come so i will only check courseId
+//          if(!courseId){
+//             return resp.status(403).json({
+//                 success: false,
+//                 message: 'course id is required'
+//             })
+//          }
+//         //valid course details
+//         const course = await Course.findById(courseId);
+//         if(!course){
+//             return resp.status(403).json({
+//                 success: false,
+//                 message: 'course not found'
+//             })
+//         }
+//         //check if the user has already purchased the course and doing it again by mistake
+//         //but problem is for finding the user id in courseEnrolled field of a course i should have the userId in objectId type
+//         //but currently i have userId as string...........so first lets convert that
+//         const uid = new mongoose.Types.ObjectId(userId);
+//         const isEnrolled = course.studentsEnrolled.includes(uid);
+//         if(isEnrolled){
+//             return resp.status(403).json({
+//                 success: false,
+//                 message: 'you have already enrolled for this course'
+//             })
+//         }
+//         //create an order
+//         const amount = course.price;
+//         const currency = 'INR';
+
+//         const options = {
+//             amount: amount*100,
+//             currency,
+//             receipt: Math.random(Date.now()).toString(),
+//             notes:{
+//                 courseId: courseId,
+//                 userId: userId
+//             }
+//         }
+
+//         try{
+//             //initiate payment using razorpay
+//            const orderInfo = await RpInstance.orders.create(options);
+//            console.log(orderInfo);
+
+//             //return response
+//            return resp.status(200).json({
+//             success: true,
+//             message: 'payment initiated successfully',
+//             data: orderInfo,
+//             orderId:orderInfo.id,
+//             currency:orderInfo.currency,
+//             amount:orderInfo.amount,
+//             courseName:course.courseName,
+//             courseDescription:course.courseDescription,
+//             thumbnaill:course.thumbnail,
+
+//            })
+
+//         }catch(error){
+//            console.log("error creating order");
+//            console.error(err.message);
+//            return resp.status(500).json({
+//                success: false,
+//                message: 'internal server error',
+//                error: err.message
+//            })
+//         }
+
+//     }catch(err){
+//         console.log('error occured while capturing payment: ' + err.message);
+//         resp.status(500).json({
+//             success: false,
+//             message: 'internal server error',
+//             error: err.message
+//         })
+        
+//     }
+// }
+
+// //controller for verifying the signature
+// exports. verifyPayment = async (req,resp) => {
+//     try{
+//         const webHookSecret = process.env.WEB_HOOK_SECRET;
+//         const signature = req.headers['x-razorpay-signature'];
+
+//         //hashing the webHookSecret for matching it with signature
+//         //step:-1
+//         const SHAsum = crypto.createHmac('sha256', webHookSecret);
+//         //step:2
+//         SHAsum.update(JSON.stringify(req.body));
+//         //step:-3
+//         const digest = SHAsum.digest('hex');
+
+//     try{
+//         //now we will match these
+//         //it have potential of throwing error so we will use try catch block here
+
+//         if(digest === signature){
+//             console.log('signature matched');
+//             //now we will perform some required actions
+//             //like updating the course status, sending emails, etc.
+//             //ye call frontend se nehi razor pay se aa raha hai so ham yaha pe req me kuch bhej nehi sakte
+//             //tophir userId aur courseId kaha se layenge??? ------yaad karo hamne order create karte wakt notes me userId aur courseId bheja tha .....waha se layenge......
+//             const {userId, courseId} = req.body.payload.payment.entity.notes;
+//             //updatin course
+//             const updatedCourse = await Course.findByIdAndUpdate(courseId, {$push : {studentsEnrolled: userId}}, {new:true});
+//             console.log(updatedCourse);
+
+//             //updating student
+//             const updatedStudent = await User.findByIdAndUpdate(userId, {$push: {courses : courseId}}, {new:true});
+//             console.log(updatedStudent);
+
+//             // send confiramtion Mail [check it once]
+//             const mailResponse = await sendEmail(updatedStudent.email, "Course purchased succesfully!",courseEnrollmentEmail(updatedCourse.courseName,updatedStudent.firstName) );
+//             console.log(mailResponse);
+
+//             //for now i will return success
+//             return resp.status(200).json({
+//                 success: true,
+//                 message: 'signature matched successfully',
+//                 updatedCourse,
+//                 updatedStudent,
+//                 emailResponse: mailResponse,
+//             })
+//         }else{
+//             console.log('signature did not match');
+//             return resp.status(400).json({
+//                 success: false,
+//                 message: 'signature did not match'
+//             })
+//         }
+//     }catch(err){
+//        console.log('error occured during signature matching and database updation',err.message);
+//        resp.status(500).json({
+//         success: false,
+//         message: 'internal server error',
+//         error: err.message
+//        })
+//     }
+
+//     }catch(err){
+//         console.log('error occured while verifying signature: ' + err.message);
+//         resp.status(500).json({
+//             success: false,
+//             message: 'internal server error',
+//             error: err.message
+//         })
+//     }
+// }
+
+
+
 
 
 

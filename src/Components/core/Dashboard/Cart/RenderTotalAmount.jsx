@@ -2,6 +2,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
 import IconBtn from "../../Common/IconBtn"
+
+import {loadStripe} from '@stripe/stripe-js';
+import { resetCart } from "../../../../redux/slices/cartSlice";
+import toast from 'react-hot-toast'
+
 // import { buyCourse } from "../../../../services/operations/studentFeaturesAPI"
 
 export default function RenderTotalAmount() {
@@ -11,10 +16,44 @@ export default function RenderTotalAmount() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const handleBuyCourse = () => {
-    // const courses = cart.map((course) => course._id)
-    // buyCourse(token, courses, user, navigate, dispatch)
-  }
+
+  const handleBuyCourse = async() => {
+    //me buy karne kelie tabhi allow karunga jab user ke paas ek valid authentiaction ka chiz ho aur wo chiz kya ho sakta hai ?????? wo ek token ho skata hai....
+
+    // if(token){
+    //   buyCourse(token, [courseId], user, navigate ,dispatch);
+    //   return;
+    // }
+
+    const stripe = await loadStripe("pk_test_51Pw5u7EYoCAeJ9s3kwZu41RfWGh4Oa96lRI83c2YxUVOC9C4TviS9x5JuT8TTrr6LppZJDtL2j4Z54sOpDYFF54R002oQw3QG4");
+
+    const body = {
+       products:cart,
+       userId:user._id
+    }
+
+    const header = {
+      "Content-Type": "application/json"
+    } 
+
+    const response = await fetch("http://localhost:4000/api/v1/payment/create-checkout-session" , {
+      method:"POST",
+      headers:header,
+      body:JSON.stringify(body)
+    });
+
+    const session = await response.json();
+
+    const result = stripe.redirectToCheckout({
+      sessionId:session.id
+    });
+
+    if(result.error){
+      toast.error('Payment failed');
+    }
+
+}
+
 
   return (
     <div className="min-w-[280px] rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">

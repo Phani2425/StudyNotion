@@ -6,13 +6,16 @@ const {connectToCloudinary} = require('./config/cloudinary');
 const cookieParser = require('cookie-parser');
 const fileUpload  = require('express-fileupload');
 const cors = require("cors");
+const {verifySignature} = require('./controllers/StripePayment')
+
 
 const PORT = process.env.PORT || 6000 ;
 app.listen(PORT, ()=> {
     console.log(`server is listening at port number :- ${PORT}`);
 })
 
-app.use(express.json());
+
+
 app.use(cookieParser());
 //remember this syntax (i used to forget this)
 //we are passing useTempFiles:true because while uploading media to the cloudinary the uploader.upload() method takes tempFilePath of the file by :- fileName.tempFilePath
@@ -35,6 +38,11 @@ app.use(
 connectToDatabase();
 connectToCloudinary();
 
+app.post('/api/v1/payment/verifysignature', express.raw({ type: 'application/json' }), verifySignature);
+
+
+app.use(express.json());
+
 const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
 const courseRoutes = require("./routes/Course");
@@ -47,6 +55,12 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 // app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
+app.use('/api/v1/payment',paymentRoutes);
+
+
+
+
+
 
 
 app.get('/', (req,resp) => {

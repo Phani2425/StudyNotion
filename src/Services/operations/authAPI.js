@@ -125,7 +125,7 @@ export function logout(navigate) {
   return (dispatch) => {
     dispatch(setToken(null))
     dispatch(setUser(null))
-    dispatch(resetCart())
+    // dispatch(resetCart()) 
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     toast.success("Logged Out")
