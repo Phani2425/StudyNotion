@@ -5,7 +5,8 @@ const Section = require('../models/Section');
 const Category = require('../models/Category');
 const { uploadFileToCloudinary } = require('../utils/cloudinaryFileUpload');
 require('dotenv').config();
-const convertSecondsToDuration = require('../utils/SecToDuration');
+const {convertSecondsToDuration} = require('../utils/SecToDuration');
+const CourseProgress = require('../models/CourseProgress');
 
 //controller for creation  of a course
 
@@ -365,7 +366,7 @@ exports. getCourseDetails = async (req, resp) => {
           },
         })
         .populate("category")
-        .populate("ratingAndReviews")
+        .populate("ratingAndReview")
         .populate({
           path: "courseContent",
           populate: {
@@ -403,7 +404,7 @@ exports. getCourseDetails = async (req, resp) => {
         })
       })
   
-      const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+      const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
   
       return res.status(200).json({
         success: true,

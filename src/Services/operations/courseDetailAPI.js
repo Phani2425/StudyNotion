@@ -130,6 +130,32 @@ export const getCourseDetails = async (courseId) => {
     }
 }
 
+export const getFullDetailsOfCourse = async(courseId, token) => {
+    try{
+
+        const response = await apiConnector('POST', courseEndpoints.GET_FULL_COURSE_DETAILS_AUTHENTICATED, {courseId: courseId},
+            {
+                'Authorization' : `Bearer ${token}`
+            }
+        )
+
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+
+        console.log('response of the full course details is:- ', response.data.data);
+
+        return response.data.data;
+
+
+
+    }catch(err){
+        console.log('error occured while getting full details of course: ',err.message);
+        console.error(err.message);
+    }
+}
+
 export const createSection = async ({sectionName, courseId},token ) => {
     try{
 
@@ -240,6 +266,31 @@ export const updateSubsection = async (formData, token) => {
 
     }catch(err){
         console.log('error occured while updating a subsection: ',err.message);
+        console.error(err.message);
+    }
+}
+
+export const saveReview = async (courseId, rating, review, token) => {
+    const toastId = toast.loading('Posting Review...');
+    try{
+
+        const response = await apiConnector('POST', courseEndpoints.CREATE_RATING_API, {courseId: courseId, rating: rating, review: review}, 
+            {
+            'Authorization': `Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error(response.data.message);
+        }
+         
+        toast.dismiss(toastId);
+        toast.success('Review Posted Successfully');
+        
+
+    }catch(err){
+        toast.dismiss(toastId);
+        toast.error('Failed to save review');
+        console.log('error occured while saving review: ',err.message);
         console.error(err.message);
     }
 }
