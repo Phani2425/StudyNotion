@@ -149,3 +149,23 @@ export async function getUserEnrolledCourses(token) {
   return result
 }
 
+export const getInstructorData = async (token) => {
+  try{
+
+    const response = await apiConnector('GET', profile.INSTRUCTOR_DASHBOARD, null, {
+      'Authorization': `Bearer ${token}`
+    });
+
+    if(!response.data.success){
+      throw new Error(response.data.message);
+    }
+
+    console.log('data from instructor dashboard api:- ', response.data);
+    return response.data;
+
+  }catch(err){
+    console.log('GET_INSTRUCTOR_DATA ERROR:- ',err.message);
+    toast.error('Failed to fetch instructor data');
+  }
+  
+}

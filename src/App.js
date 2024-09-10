@@ -27,6 +27,7 @@ import EditCourse from './Components/core/Dashboard/EditCourse/index'
 import Catalog from './Pages/Catalog'
 import CoursePage from './Pages/CoursePage'
 import ViewCourse from './Pages/ViewCourse'
+import Instructor from './Components/core/Dashboard/InstructorDashboard/Instructor'
 
 const App = () => {
 
@@ -60,6 +61,7 @@ const App = () => {
             <Route path='/dashboard/my-courses' element={<InstructorOnlyRoute><InstructorCourses/></InstructorOnlyRoute>}/>
             <Route path='/dashboard/add-course' element={<InstructorOnlyRoute><AddCourse/></InstructorOnlyRoute>}/>
             <Route path='/dashboard/edit-course/:courseId' element={<InstructorOnlyRoute><EditCourse/></InstructorOnlyRoute>}/>
+            <Route path='/dashboard/instructor' element={<InstructorOnlyRoute><Instructor/></InstructorOnlyRoute>} />
             
         </Route>
 

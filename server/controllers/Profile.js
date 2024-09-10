@@ -267,10 +267,10 @@ exports.getEnrolledCourses = async (req, res) => {
 
 exports.instructorDashboard = async (req, res) => {
   try {
-    const courseDetails = await Course.find({ instructor: req.user.id }).populate({path:'courseContent',populate : {path: 'Subsection'}}).exec();
+    const courseDetails = await Course.find({ instructor: req.user.id }).populate({path:'courseContent',populate : {path: 'subSection'}}).exec();
 
     const courseData = courseDetails.map((course) => {
-      const totalStudentsEnrolled = Course?.studentsEnroled?.length
+      const totalStudentsEnrolled = course?.studentsEnrolled?.length
       const totalAmountGenerated = totalStudentsEnrolled * course?.price
 
       // Create a new object with the additional fields
@@ -287,10 +287,11 @@ exports.instructorDashboard = async (req, res) => {
     })
 
     res.status(200).json(
-      { courses: courseData,
+      { 
         success:true,
         message: "Course data fetched successfully",
-        allCourseDetaills : courseDetails
+        courses: courseData,
+        allCourseDetails : courseDetails
        }
     )
   } catch (error) {
