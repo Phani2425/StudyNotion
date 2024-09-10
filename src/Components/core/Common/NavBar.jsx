@@ -42,6 +42,8 @@ const NavBar = () => {
     getLinks();
   },[]);
 
+
+
   return (
     <div
       className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 transition-all duration-200`}
@@ -117,7 +119,7 @@ const NavBar = () => {
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
               {totalItems > 0 && (
-                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                <span className="absolute -bottom-2 -right-2 h-5 w-5 flex justify-center items-center overflow-hidden rounded-full bg-richblack-600 text-xs font-bold text-yellow-100 animate-bounce">
                   {totalItems}
                 </span>
               )}

@@ -295,3 +295,24 @@ export const saveReview = async (courseId, rating, review, token) => {
     }
 }
 
+
+export const markLectureAsComplete = async (courseId, subsectionId, token) => {
+    try{
+
+        const response = await apiConnector('POST', courseEndpoints.LECTURE_COMPLETION_API, {courseId: courseId, subsectionId: subsectionId}, {
+            'Authorization' : `Bearer ${token}`
+        })
+
+        if(!response.data.success){
+            toast.error('Lecture can not be marked as complete');
+            throw new Error(response.data.message);
+            
+        }
+
+        
+
+    }catch(err){
+        console.log('error occured while marking lecture as complete: ',err.message);
+        console.error(err.message);
+    }
+}

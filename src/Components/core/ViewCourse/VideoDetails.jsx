@@ -5,6 +5,7 @@ import { updateCompletedLectures } from '../../../redux/slices/viewCourseSlice';
 import "video-react/dist/video-react.css"; // import css
 import { Player } from 'video-react';
 import IconBtn from '../Common/IconBtn';
+import { markLectureAsComplete } from '../../../Services/operations/courseDetailAPI';
 
 const VideoDetails = () => {
 
@@ -157,12 +158,8 @@ const VideoDetails = () => {
       setloading(true);
 
       try{
-        //  const response = markLectureAsComplete({courseId: courseId, subsectionId: subsectionId}, token);
+          await markLectureAsComplete(courseId,subsectionId, token);
 
-        //  if(!response){
-        //     console.log('Failed to mark lecture as complete');
-        //     return;
-        //  }
 
           dispatch(updateCompletedLectures(subsectionId));
 

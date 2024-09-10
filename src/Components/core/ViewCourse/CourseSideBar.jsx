@@ -83,7 +83,7 @@ const CourseSideBar = ({setReviewModal}) => {
                                         section?.subSection?.map((subsection,index) => (
                                             <div key={index}  className={`flex gap-3  px-5 py-2 ${
                                                 lecturePlaying === subsection._id
-                                                  ? "bg-yellow-200 font-semibold text-richblack-800"
+                                                  ? "bg-yellow-100 font-semibold text-richblack-800"
                                                   : "hover:bg-richblack-900"
                                               } `}
                                               onClick={() => {

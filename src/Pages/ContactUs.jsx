@@ -1,7 +1,7 @@
 import React from 'react'
 import ContactDetails from '../Components/core/ContactPage/ContactDetails'
 import ContactForm from '../Components/core/ContactPage/ContactForm'
-// import ReviewSlider from '../components/common/ReviewSlider'
+import ReviewSlider from '../Components/core/Common/ReviewSlider'
 import Footer from '../Components/core/Common/Footer'
 
 const ContactUs = () => {
@@ -18,7 +18,7 @@ const ContactUs = () => {
           Reviews from other learners
         </h1>
         {/* ReviewSlider */}
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
         
        <Footer/>

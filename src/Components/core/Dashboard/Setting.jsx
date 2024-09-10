@@ -72,7 +72,7 @@ const Setting = () => {
 
     <div className="flex justify-between bg-richblack-800 px-12 py-9 w-full rounded-lg">
       <div className="flex gap-7 items-center">
-        <img src={ `${user?.image}`} className="rounded-full w-20 h-20" />
+        <img src={ `${user?.image}`} className="rounded-full w-20 h-20 object-cover" />
         <div className='flex flex-col items-start justify-center gap-5'>
            <h2 className="font-semibold text-lg">Change Profile Picture</h2>
            

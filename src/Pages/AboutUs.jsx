@@ -11,6 +11,7 @@ import StatsComponenet from "../Components/core/AboutPage/StatsComponenet"
 import HighlightText from "../Components/core/HomePage/HighlightText"
 // import ReviewSlider from "../components/common/ReviewSlider"
 import Footer from "../Components/core/Common/Footer"
+import ReviewSlider from "../Components/core/Common/ReviewSlider"
 
 const About = () => {
   return (
@@ -114,7 +115,7 @@ const About = () => {
           Reviews from other learners
         </h1>
         {/* ReviewSlider */}
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
       {/* Footer  */}
       <Footer />

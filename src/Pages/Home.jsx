@@ -9,6 +9,7 @@ import LearningLanguageSection from "../Components/core/HomePage/LearningLanguag
 import InstructorSection from "../Components/core/HomePage/InstructorSection";
 import ExploreMore from "../Components/core/HomePage/ExploreMore";
 import CountUp from "react-countup";
+import ReviewSlider from "../Components/core/Common/ReviewSlider";
 
 
 //images
@@ -233,7 +234,7 @@ const Home = () => {
           Reviews from other learners
         </h1>
 
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
 
       <Footer/>

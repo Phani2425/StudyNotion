@@ -93,8 +93,9 @@ const enrollStudent = async (userID,courses,resp) => {
        const user = await User.findById(userID);
 
        courses.forEach(async (course) => {
-        if(course.studentsEnrolled.includes(userID)){
+        if(course.studentsEnrolled.includes(user._id)){
             console.log(`user is already enrolled in the course having coourseId : - ${course._id}`);
+            return;  //if user is already enrolled, skip this course and continue with the next one.
         }
         else{
            const updatedCourse =  await Course.findByIdAndUpdate(course._id,{$push : {studentsEnrolled : userID}}, {new:true});

@@ -46,14 +46,16 @@ exports.updateCourseProgress = async (req, res) => {
     // Save the updated course progress
     await courseProgress.save()
 
-    return res.status(200).json({ message: "Course progress updated" })
+    return res.status(200).json({ 
+      success:true,
+      message: "Course progress updated" })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ error: "Internal server error" })
   }
 }
 
-//ADDED IN LATER STAGE SO REVIW ONCE
+ 
 exports.getProgressPercentage = async (req, res) => {
   const { courseId } = req.body
   const userId = req.user.id
