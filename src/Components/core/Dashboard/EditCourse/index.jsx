@@ -11,7 +11,6 @@ const EditCourse = () => {
    const dispatch = useDispatch();
 
    const {course} = useSelector((state) => state.course);
-   const {token} = useSelector((state) => state.auth);
 
    const [loading,setLoading] = useState(false);
 
@@ -41,8 +40,11 @@ const EditCourse = () => {
    }
 
    //page load hote hii hame course details chahiye fromthe course id we got from the url
+
+
    useEffect(() => {
       fetchCourseDetails();
+         // eslint-disable-next-line react-hooks/exhaustive-deps
    },[]);
 
 

@@ -22,7 +22,7 @@ const SignupForm = () => {
 
   const [FormData, setFormData] = useState({firstName: '',lastName: '',email:'',password:'',confirmPassword:''});
 
-  const { firstName, lastName, email, password, confirmPassword } = FormData;
+  const { password, confirmPassword } = FormData;
   
 
   const changeHandler = (event) => {

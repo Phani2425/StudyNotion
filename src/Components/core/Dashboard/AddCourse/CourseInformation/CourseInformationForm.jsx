@@ -22,10 +22,9 @@ const CourseInformationForm = () => {
    const {
     register,
     handleSubmit,
-    reset,
     setValue,
     getValues,
-    formState: {errors, isSubmitSuccessful}
+    formState: {errors}
    } = useForm();
 
    //acquiring token to send it in header for authentication and authorisation
@@ -56,6 +55,7 @@ const CourseInformationForm = () => {
   //as i need to get these without any user interaction so i will use useEffect hook
    useEffect(() => {
      fetchAllCategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
    },[])
 
 
@@ -82,7 +82,7 @@ const CourseInformationForm = () => {
       const [InstructionArray , setInstructionArray]  = useState([]);
 
       const keyDownHandler = (e) => {
-         if((e.key == 'Enter' || e.key == ',') && e.target.value !== ''){
+         if((e.key === 'Enter' || e.key === ',') && e.target.value !== ''){
           e.preventDefault();
           setTagsArray([...TagsArray,e.target.value])
           e.target.value = '' ;

@@ -42,7 +42,7 @@ const ImageUploader = ({setThumbnailFormData}) => {
     >
       
      {
-        uploaded ? (<img className='w-fit h-fit rounded-lg' src={`${previewSource}`}></img>) : (
+        uploaded ? (<img className='w-fit h-fit rounded-lg' src={`${previewSource}`} alt='preview'></img>) : (
             <FileUploader handleChange={handleChange} types={fileTypes} >
                             <div className='flex flex-col gap-7 items-center'>
         <div className='flex flex-col items-center gap-2 text-richblack-25'>

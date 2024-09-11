@@ -14,13 +14,12 @@ const SubSectionModal = ({modalData, setmodalData, add=false, view=false, edit=f
     const {
         register,
         handleSubmit,
-        reset,
         setValue,
         getValues,
-        formState: {errors, isSubmitSuccessful}
+        formState: {errors}
     } = useForm();
 
-    const [videoFile, setvideoFile] = useState(null);
+    // const [videoFile, setvideoFile] = useState(null);
 
     const dispatch = useDispatch();
     const [loading, setloading] = useState(false);
@@ -41,6 +40,7 @@ const SubSectionModal = ({modalData, setmodalData, add=false, view=false, edit=f
         setValue("lectureDesc", modalData.description)
         setValue("lectureVideo", modalData.videoUrl)
       }
+         // eslint-disable-next-line react-hooks/exhaustive-deps
      },[])
 
      //function to check wheather user changed some value in the form in edit mode or alll the data are same as before and nothing changed
@@ -167,7 +167,7 @@ const SubSectionModal = ({modalData, setmodalData, add=false, view=false, edit=f
                 video={true}
                 viewData = {view ? modalData.videoUrl :null }
                 editData = {edit ? modalData.videoUrl :null }
-                setvideoFile = {setvideoFile}
+                // setvideoFile = {setvideoFile}
                 />
 
                 <div className='flex flex-col gap-1'>

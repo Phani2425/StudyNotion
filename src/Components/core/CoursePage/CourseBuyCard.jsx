@@ -2,8 +2,7 @@ import React from 'react'
 import { MdArrowRight } from "react-icons/md";
 import { addToCart } from '../../../redux/slices/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { buyCourse } from '../../../Services/operations/studentFeaturesAPI';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { FaShareSquare } from "react-icons/fa";
 import toast from 'react-hot-toast';
@@ -18,7 +17,6 @@ const CourseBuyCard = ({course,setConfirmationModal}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {courseId} = useParams();
 
   const {cart} = useSelector((state)=>state.cart);
 
@@ -84,7 +82,7 @@ const CourseBuyCard = ({course,setConfirmationModal}) => {
   return (
     <div className='text-white flex flex-col gap-2'>
         <div className='flex flex-col gap-2'>
-            <img src={course?.thumbnail} className='rounded-lg'/>
+            <img src={course?.thumbnail} alt='courseImg' className='rounded-lg'/>
             <h1 className='self-start text-2xl font-bold' >{`Rs. ${course?.price}`}</h1>
         </div>
         <div className='flex flex-col gap-3'>

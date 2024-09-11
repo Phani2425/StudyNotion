@@ -82,7 +82,7 @@ const NavBar = () => {
 
                         {/* adding sublink data */}
 
-                        {subLinks.length > 0 ? (
+                        {subLinks?.length > 0 ? (
                           subLinks.map((link, index) => {
                             return (
                               <Link

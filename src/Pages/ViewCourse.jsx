@@ -31,6 +31,8 @@ const ViewCourse = () => {
       }
 
       setCourseSpecificData(courseId, token);
+
+         // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
 
@@ -41,10 +43,10 @@ const ViewCourse = () => {
          </div>
          <div className='w-[calc(100vw-20%)] absolute right-0 min-h-[calc(100vh-3.5rem)] bg-richblack-900 p-4 flex flex-col items-start'>
              <VideoDetails/>
-             <div >
+             {/* <div >
                 <h1></h1>
                 <p></p>
-             </div>
+             </div> */}
          </div>
 
          {reviewModal && <CourseReviewModal setReviewModal={setReviewModal} courseId= {courseId}/>}

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { sidebarLinks } from "../../../data/dashboard-links";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 //mere pass abhi sirf icons ka nnam hain in data so to use them i will impport all the icons .....not exactly all but all the icons having vsc as their prefix .... because all icons in our data  have vsc as their prefix
 //what a geniuss observation
@@ -16,7 +15,6 @@ const Sidebar = ({setshowModal}) => {
   const { user } = useSelector((state) => state.profile);
   console.log("user from the redux store:- ", user);
 
-  const dispatch = useDispatch();
   const loaction = useLocation();
   console.log(loaction.pathname);
 
@@ -49,6 +47,8 @@ const Sidebar = ({setshowModal}) => {
               </NavLink>
             );
           }
+
+          return null;
         })}
       </div>
 

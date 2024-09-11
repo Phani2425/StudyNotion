@@ -13,13 +13,11 @@ const CourseBuilderForm = () => {
 
   const {
     register,
-    reset,
     setValue,
     handleSubmit,
-    formState : {errors, isSubmitSuccessful}
+    formState : {errors}
   } = useForm();
 
-  const [loading, setloading] = useState(false);
 
   //nested view pain ethi course value darkar that we saved in the course slice in prev step
   const {course} = useSelector((state)=> state.course)
@@ -69,7 +67,6 @@ const CourseBuilderForm = () => {
 //ame jetebele section name deiki create setcion re click karuche setevbele section create hauchi au hel pare jadi ame edit button re click karuche setebel ie amaku edit pain allow karuchi au edit kariki jetebel puni same button re click karuche section data update bi heijauchi [au ame ete januche kemiti ki ketebele section create hauchi au ketebel section update hauchi???? ] [ simple jetebele "editSectionFlag" false thiba au ame form submit kale then section create hauchi and we are calling section creation api but when its value is true and ame form submit karuche then that means we are updating it ] [also depending upon that flag the text on button also changes to make us know about wheathe we are creating or updating]
 
   const submitHandler = async (formData)=>{
-    setloading(true);
     let result;
     try{
 
@@ -97,7 +94,6 @@ const CourseBuilderForm = () => {
       console.log('error occured while creating sections and subsections :- ',err.message);
       console.error(err.message);
     }finally{
-      setloading(false);
       
     }
   }

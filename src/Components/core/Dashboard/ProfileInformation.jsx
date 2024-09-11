@@ -27,6 +27,7 @@ const ProfileInformation = () => {
       contactNo: user?.additionaldetails?.contactNo,
       about: user?.additionaldetails?.about,
     });
+       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reset, isSubmitSuccessful]);
 
   return (

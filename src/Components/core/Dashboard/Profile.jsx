@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import IconBtn from "../Common/IconBtn";
 import { FaEdit } from "react-icons/fa";
-import dateFormat, { masks } from "dateformat";
+import dateFormat from "dateformat";
 
 
 const Profile = () => {
@@ -21,7 +21,7 @@ const Profile = () => {
 
       <div className="flex justify-between bg-richblack-800 px-7 py-9 w-full rounded-lg">
         <div className="flex gap-4">
-          <img src={`${user?.image}`} className="rounded-full w-12 h-12 object-cover" />
+          <img src={`${user?.image}`} alt="userImage" className="rounded-full w-12 h-12 object-cover" />
           <div>
              <h2 className="font-semibold text-lg">{user?.firstName} {user.lastName}</h2>
              <p className="text-richblack-100">{user?.email}</p>

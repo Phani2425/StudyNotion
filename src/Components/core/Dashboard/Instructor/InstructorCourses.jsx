@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { setCourses } from '../../../../redux/slices/courseSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {getAllCoursesOfInstructor} from '../../../../Services/operations/courseDetailAPI'
 import CoursesTable from './CourseTable';
 import IconBtn from '../../Common/IconBtn';
@@ -39,6 +38,7 @@ const navigate = useNavigate();
 
   useEffect(()=>{
      fetchAllCoursesForInstructor();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   return (

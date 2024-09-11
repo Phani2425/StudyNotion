@@ -39,6 +39,7 @@ const CourseSideBar = ({setReviewModal}) => {
          setactiveStatus(courseSectionData?.[currentSectionIndex]?._id);
          setlecturePlaying(currentLectureId);
        })()
+          // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [location.pathname, courseEntireData , courseSectionData])
 
   return (

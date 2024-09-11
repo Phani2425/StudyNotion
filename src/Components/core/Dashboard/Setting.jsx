@@ -17,7 +17,7 @@ const Setting = () => {
   const [loading,setloading] = useState(false);
   const [file, setfile] = useState(null);
   //why  we need previewSource??? kain na jetebele file upload  haba setebele mu js ra gote special objcet "fileReader" ra instance use kariki file ku read karinebi as a url by using a method called "readAsDataUrl()" then it will return me the url of the file and i will aplpply the url in to the image section of the profile
-  const [previewSource, setpreviewSource] = useState(null);
+  const [ setpreviewSource] = useState(null);
 
   const changeHandler = (e) => {
     //2 step
@@ -72,7 +72,7 @@ const Setting = () => {
 
     <div className="flex justify-between bg-richblack-800 px-12 py-9 w-full rounded-lg">
       <div className="flex gap-7 items-center">
-        <img src={ `${user?.image}`} className="rounded-full w-20 h-20 object-cover" />
+        <img src={ `${user?.image}`} className="rounded-full w-20 h-20 object-cover" alt='userimage' />
         <div className='flex flex-col items-start justify-center gap-5'>
            <h2 className="font-semibold text-lg">Change Profile Picture</h2>
            

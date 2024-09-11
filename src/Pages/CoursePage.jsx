@@ -6,7 +6,6 @@ import { getAverageRating } from '../utils/avgRating';
 import CourseBuyCard from '../Components/core/CoursePage/CourseBuyCard';
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineLiveTv } from "react-icons/md";
-import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import ConfirmationModal from "../Components/core/Common/ConfirmationModal";
 import Footer from '../Components/core/Common/Footer';
 
@@ -152,7 +151,7 @@ const CoursePage = () => {
      <div className='flex flex-col gap-4 mt-10'>
        <h1 className='text-2xl font-semibold'>Author</h1>
        <div className='flex flex-row gap-2 items-center'>
-        <img className='h-9 w-9 rounded-full' src={course?.instructor?.image}/>
+        <img className='h-9 w-9 rounded-full' src={course?.instructor?.image} alt='instructorImage'/>
         <span className='text-lg text-richblack-25'>{`${course?.instructor?.firstName} ${course?.instructor?.lastName}`}</span>
        </div>
        <p className=' text-richblack-5'>I will be leading this course with my utmost dedication and dicipline........</p>

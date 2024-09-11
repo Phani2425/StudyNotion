@@ -15,12 +15,11 @@ const VideoDetails = () => {
     const location = useLocation();
     const playerRef = useRef();
     const {token} = useSelector((state) => state.auth);
-    const {courseSectionData, courseEntireData, completedLectures, totalNoOfLectures } = useSelector((state) => state.viewCourse);
+    const {courseSectionData, courseEntireData, completedLectures } = useSelector((state) => state.viewCourse);
 
     const [videoData, setvideoData] = useState([]);
     const [videoEnded, setvideoEnded] = useState(false);
     const [loading, setloading] = useState(false);
-    const [PreviewSource, setPreviewSource] = useState('');
 
     useEffect(() => {
         ;(async () => {
@@ -38,10 +37,10 @@ const VideoDetails = () => {
             )
             // console.log("filteredVideoData", filteredVideoData)
             setvideoData(filteredVideoData[0])
-            setPreviewSource(courseEntireData.thumbnail)
             setvideoEnded(false);
           }
         })()
+           // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [courseSectionData, courseEntireData, location.pathname])
 
   // check if the lecture is the first video of the course
@@ -154,7 +153,7 @@ const VideoDetails = () => {
   }
 
   const handleLectureCompletion = async () => {
-          {/* dummy code */}
+          
       setloading(true);
 
       try{
@@ -183,6 +182,7 @@ const VideoDetails = () => {
                 aspectRatio='16:9' 
                 onEnded={() => setvideoEnded(true)}
                 src={videoData?.videoUrl}
+                
                 
                 >
 

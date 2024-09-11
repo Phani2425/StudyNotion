@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
 
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
@@ -9,7 +9,7 @@ import { HiClock } from "react-icons/hi"
 import { RiDeleteBin6Line } from "react-icons/ri"
 import { useNavigate } from "react-router-dom"
 
-import dateFormat,{masks} from "dateformat"
+import dateFormat from "dateformat"
 import {
   deleteCourse,
   getAllCoursesOfInstructor,
@@ -19,7 +19,7 @@ import ConfirmationModal from "../../Common/ConfirmationModal"
 
 
 export default function CoursesTable({courses,setCourses}) {
-  const dispatch = useDispatch()
+
   const navigate = useNavigate()
   const { token } = useSelector((state) => state.auth)
   const [loading, setLoading] = useState(false)

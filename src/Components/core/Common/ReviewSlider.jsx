@@ -3,7 +3,7 @@ import {Swiper, SwiperSlide} from "swiper/react"
 import "swiper/css"
 import "swiper/css/free-mode"
 import "swiper/css/pagination"
-import { Autoplay,FreeMode,Navigation, Pagination}  from 'swiper/modules'
+import { Autoplay,FreeMode, Pagination}  from 'swiper/modules'
 import ReactStars from 'react-rating-stars-component';
 import { getAllReviews } from '../../../Services/operations/reviewAndrating'
 import { FaStar } from 'react-icons/fa'
@@ -47,7 +47,7 @@ const ReviewSlider = () => {
           modules={[FreeMode, Pagination, Autoplay]}
           className="w-full "
         >
-          {reviewArray.map((review, i) => {
+          {reviewArray?.map((review, i) => {
             return (
               <SwiperSlide key={i}>
                 <div className="flex flex-col gap-3 bg-richblack-800 p-3 text-[14px] text-richblack-25">

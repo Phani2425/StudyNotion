@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { apiConnector } from '../Services/apiconnector';
 import { categories } from '../Services/apis';
 import { getCatalogData } from '../Services/operations/catalogAndComponentData';
-import Course_Card from '../Components/core/CategoryPage/Course-card';
+import CourseCard from '../Components/core/CategoryPage/Course-card';
 import CourseSlider from '../Components/core/CategoryPage/CourseSlider';
 import { useSelector } from "react-redux"
 
@@ -124,7 +124,7 @@ const Catalog = () => {
                 {catalogPageData?.mostSellingCourses
                   ?.slice(0, 4)
                   .map((course, i) => (
-                    <Course_Card course={course} key={i} Height={"h-[400px]"} />
+                    <CourseCard course={course} key={i} Height={"h-[400px]"} />
                   ))}
               </div>
             </div>
