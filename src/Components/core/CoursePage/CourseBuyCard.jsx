@@ -43,7 +43,7 @@ const CourseBuyCard = ({course,setConfirmationModal}) => {
           
         } 
   
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/payment/create-checkout-session` , {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/payment/create-checkout-session` , {
           method:"POST",
           headers:headers,
           body:JSON.stringify(body)
