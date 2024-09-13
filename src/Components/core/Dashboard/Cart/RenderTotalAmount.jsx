@@ -32,7 +32,7 @@ export default function RenderTotalAmount() {
       "Content-Type": "application/json"
     } 
 
-    const response = await fetch("http://localhost:4000/api/v1/payment/create-checkout-session" , {
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/payment/create-checkout-session` , {
       method:"POST",
       headers:header,
       body:JSON.stringify(body)
