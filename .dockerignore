@@ -1,0 +1,24 @@
+# Node
+node_modules
+npm-debug.log
+build
+
+# Environment (ignore all .env files)
+**/.env
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Version control
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+
+# OS
+.DS_Store
+Thumbs.db
