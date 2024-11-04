@@ -11,18 +11,18 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - EMAIL_HOST=${EMAIL_HOST}
-      - EMAIL_USER=${EMAIL_USER}
-      - EMAIL_PASS=${EMAIL_PASS}
-      - CLOUDINARY_NAME=${CLOUDINARY_NAME}
-      - API_KEY=${API_KEY}
-      - API_SECRET=${API_SECRET}
-      - CLOUDINARY_FOLDER=${CLOUDINARY_FOLDER}
-      - JWT_SECRET=${JWT_SECRET}
-      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - DATABASE_URL=mongodb+srv://mohantyphanibhusan:eyddSHTvuYPyLJEY@studynotiondb.egbl5.mongodb.net/CompanyDatabase
+      - EMAIL_HOST=smtp.gmail.com
+      - EMAIL_USER=mohantyphanibhusan@gmail.com
+      - EMAIL_PASS=ygnnzolsvwxlnqap
+      - CLOUDINARY_NAME=dwdffshqd
+      - API_KEY=158173115974515
+      - API_SECRET=5ToDbwGd91ilrDSDYLCcFJaCe6Y
+      - CLOUDINARY_FOLDER=STUDYNOTION
+      - JWT_SECRET=phaniBhusanMohanty
+      - STRIPE_WEBHOOK_SECRET=whsec_BoaFrGHbyqbL81QVYP0tsRtgEeRIpwa5
+      - STRIPE_SECRET_KEY=sk_test_51Pw5u7EYoCAeJ9s3ZW8w3uLjN2xbAIOp5sUoQdhX8MA2VPCYfsRBq0SyhIQDXCBwKk7EXqGzHxROH7YyOC6tJwCh00h4BbD6kR
+      - ADMIN_EMAIL=mohantyphanibhusan@gmail.com
     volumes:
       - ./server:/app
       - /app/node_modules
