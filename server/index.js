@@ -9,7 +9,7 @@ const cors = require("cors");
 const { verifySignature } = require('./controllers/StripePayment')
 
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
 	console.log(`server is listening at port number :- ${PORT}`);
 })

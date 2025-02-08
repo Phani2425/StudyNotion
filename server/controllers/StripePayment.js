@@ -33,8 +33,8 @@ exports. startPayment = async(req,resp) => {
             mode:'payment',
             payment_method_types:['card'],
             line_items:lineItem,
-            success_url:'https://study-notion-frontend-e5647fp6a-phani2425s-projects.vercel.app/dashboard/enrolled-courses',
-            cancel_url:'https://study-notion-frontend-e5647fp6a-phani2425s-projects.vercel.app/dashboard/cart'
+            success_url:'https://study-notion-frontend-nine-sable.vercel.app/dashboard/enrolled-courses',
+            cancel_url:'https://study-notion-frontend-nine-sable.vercel.app/dashboard/cart'
         })
 
         resp.json({id:session.id});
